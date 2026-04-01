@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#EEEEE8"/>
+  <rect x="0" y="0" width="800" height="600" fill="url(#grad1)"/>
+  <defs>
+    <radialGradient id="grad1" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#FF00C8" stop-opacity="0.15"/>
+      <stop offset="50%" stop-color="#7C3AED" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#0047FF" stop-opacity="0.08"/>
+    </radialGradient>
+  </defs>
+  <text x="50%" y="46%" dominant-baseline="middle" text-anchor="middle"
+    font-family="monospace" font-size="13" letter-spacing="4" fill="#888880"
+    text-transform="uppercase">AI VISUAL</text>
+  <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle"
+    font-family="monospace" font-size="11" letter-spacing="2" fill="#C0C0C0">COMING SOON</text>
+</svg>

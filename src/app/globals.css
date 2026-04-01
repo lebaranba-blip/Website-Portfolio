@@ -1,0 +1,262 @@
+@import "tailwindcss";
+
+:root {
+  /* Trendy warm off-white — 2025/2026 premium studios */
+  --bg:         #EDEAE4;
+  --surface:    #E5E2DC;
+  --surface-2:  #DAD7D0;
+  --border:     rgba(0, 0, 0, 0.08);
+  --text:       #0A0A0A;
+  --muted:      rgba(0, 0, 0, 0.45);
+  --cyan:       #0891B2;
+  --orange:     #EA580C;
+  --blue:       #1D4ED8;
+  --chrome:     linear-gradient(135deg, #888 0%, #bbb 40%, #666 70%, #999 100%);
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --duration:   0.6s;
+
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --font-sans: var(--font-space-grotesk);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ── Typography scale (8px grid) ──────────────────────────────
+   Display / h1:  line-height 1.0  (tight, cinematic)
+   Heading / h2:  line-height 1.0
+   Body:          line-height 1.6  (8px × 3 at 16px)
+──────────────────────────────────────────────────────────────── */
+
+
+html {
+  background: var(--bg);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans), 'Space Grotesk', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+  /* Lenis требует чтобы scroll был на html/body, не на дочерних элементах */
+  overflow-x: clip;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.2); border-radius: 2px; }
+
+/* Focus */
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+/* Grain overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 9999;
+  animation: grain 8s steps(10) infinite;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-2%, -3%); }
+  20% { transform: translate(3%, 2%); }
+  30% { transform: translate(-1%, 4%); }
+  40% { transform: translate(2%, -1%); }
+  50% { transform: translate(-3%, 3%); }
+  60% { transform: translate(1%, -2%); }
+  70% { transform: translate(-2%, 1%); }
+  80% { transform: translate(3%, -3%); }
+  90% { transform: translate(-1%, 2%); }
+}
+
+/* Text reveal mask utility */
+.text-mask-wrapper {
+  overflow: hidden;
+  display: block;
+}
+
+/* Buttons — min 44px touch target (Apple HIG / Material) */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 28px;
+  min-height: 44px;
+  border-radius: 9999px;
+  background: var(--text);
+  color: var(--bg);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+  transition: opacity 0.2s ease-out, box-shadow 0.25s ease-out, transform 0.15s ease-out;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-primary:hover {
+  opacity: 0.88;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: scale(0.97) translateY(0);
+  opacity: 1;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 28px;
+  min-height: 44px;
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+  border: 1.5px solid rgba(0, 0, 0, 0.2);
+  transition: border-color 0.2s ease-out, color 0.2s ease-out, box-shadow 0.25s ease-out, transform 0.15s ease-out;
+  cursor: pointer;
+  text-decoration: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-secondary:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 20px 4px rgba(8, 145, 178, 0.1);
+  transform: translateY(-1px);
+}
+
+.btn-secondary:active {
+  transform: scale(0.97) translateY(0);
+}
+
+/* Chrome gradient text */
+.chrome-text {
+  background: var(--chrome);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--cyan) 0%, var(--orange) 60%, var(--blue) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Work card */
+.work-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s;
+  cursor: pointer;
+}
+
+.work-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 40px 6px rgba(8, 145, 178, 0.1), 0 16px 48px rgba(0, 0, 0, 0.12);
+}
+
+.work-card img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  transform: scale(1.0);
+  will-change: transform;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.work-card:hover img {
+  transform: scale(1.05);
+}
+
+/* Telegram button — spinning conic border */
+@property --tg-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes tg-spin {
+  to { --tg-angle: 360deg; }
+}
+
+.tg-btn-border {
+  animation: tg-spin 4s linear infinite;
+  background: conic-gradient(
+    from var(--tg-angle),
+    #0891B2 0%,
+    #EA580C 33%,
+    #1D4ED8 66%,
+    #0891B2 100%
+  );
+}
+
+@keyframes tg-glow-spin {
+  to { --tg-angle: 360deg; }
+}
+
+/* Marquee */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Live dot glow pulse */
+.live-dot-glow {
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  background: #0891B2;
+  filter: blur(5px);
+  opacity: 0;
+  animation: dot-glow 2.2s ease-in-out infinite;
+}
+
+@keyframes dot-glow {
+  0%, 100% { opacity: 0; transform: scale(0.8); }
+  50%       { opacity: 0.7; transform: scale(2.0); }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *:not(.marquee-track):not(.tg-btn-border):not(.tg-btn), *:not(.marquee-track):not(.tg-btn-border):not(.tg-btn)::before, *:not(.marquee-track):not(.tg-btn-border):not(.tg-btn)::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  body::before { animation: none; }
+  .live-dot-glow { animation: none; }
+}

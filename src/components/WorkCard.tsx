@@ -1,0 +1,129 @@
+"use client"
+import { useEffect, useRef } from "react"
+import { motion } from "framer-motion"
+import type { Work } from "@/data/works"
+import { EASE_DEFAULT, CATEGORY_COLORS, CATEGORY_HUE } from "@/lib/constants"
+
+interface WorkCardProps {
+  work: Work
+  index: number
+}
+
+export default function WorkCard({ work }: WorkCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const hue = CATEGORY_HUE[work.category] ?? 185
+
+  useEffect(() => {
+    const card = cardRef.current
+    if (!card) return
+
+    const onMove = (e: PointerEvent) => {
+      const rect = card.getBoundingClientRect()
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+      card.style.backgroundImage = `radial-gradient(
+        240px 240px at ${x}px ${y}px,
+        hsl(${hue} 70% 65% / 0.13), transparent
+      )`
+    }
+
+    const onLeave = () => {
+      card.style.backgroundImage = "none"
+    }
+
+    card.addEventListener("pointermove", onMove)
+    card.addEventListener("pointerleave", onLeave)
+    return () => {
+      card.removeEventListener("pointermove", onMove)
+      card.removeEventListener("pointerleave", onLeave)
+    }
+  }, [hue])
+
+  return (
+    <motion.div
+      ref={cardRef}
+      className="work-card group relative"
+      tabIndex={0}
+      role="article"
+      aria-label={work.title}
+      style={{
+        border: "1px solid rgba(0,0,0,0.07)",
+        borderRadius: "12px",
+        outline: "none",
+      }}
+      variants={{
+        hidden: { opacity: 0, y: 32 },
+        visible: { opacity: 1, y: 0 },
+      }}
+      transition={{ duration: 0.65, ease: EASE_DEFAULT }}
+      suppressHydrationWarning
+    >
+      {/* Image */}
+      <div className="overflow-hidden relative" style={{ aspectRatio: "4/3", borderRadius: "11px 11px 0 0" }}>
+        <motion.img
+          src={work.image}
+          alt={work.alt}
+          loading="lazy"
+          width={800}
+          height={600}
+          className="w-full h-full object-cover"
+          style={{ willChange: "transform" }}
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.6, ease: EASE_DEFAULT }}
+          suppressHydrationWarning
+        />
+
+        {work.desc && (
+          <motion.div
+            className="absolute inset-0 flex flex-col justify-end p-5"
+            style={{ background: "linear-gradient(to top, rgba(10,10,10,0.75) 0%, transparent 55%)" }}
+            initial={{ opacity: 0 }}
+            whileHover={{ opacity: 1 }}
+            whileFocus={{ opacity: 1 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+          >
+            <motion.p
+              className="text-sm leading-relaxed font-light"
+              style={{ color: "rgba(255,255,255,0.88)" }}
+              initial={{ y: 8, opacity: 0 }}
+              whileHover={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.05, ease: EASE_DEFAULT }}
+            >
+              {work.desc}
+            </motion.p>
+          </motion.div>
+        )}
+      </div>
+
+      {/* Info */}
+      <div className="p-5">
+        <div className="flex items-center justify-between mb-2">
+          <span className={`text-xs font-mono uppercase tracking-widest ${CATEGORY_COLORS[work.category] ?? "opacity-40"}`}>
+            {work.category}
+          </span>
+          <span className="text-xs font-mono opacity-25" style={{ color: "var(--text)" }}>
+            {work.year}
+          </span>
+        </div>
+        <div className="flex items-center justify-between gap-2">
+          <h3
+            className="font-semibold text-lg leading-snug transition-colors duration-200 group-hover:opacity-70"
+            style={{ color: "var(--text)" }}
+          >
+            {work.title}
+          </h3>
+          <motion.span
+            className="text-base flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            style={{ color: "var(--muted)" }}
+            aria-hidden="true"
+            initial={{ x: -4 }}
+            whileHover={{ x: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            →
+          </motion.span>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
