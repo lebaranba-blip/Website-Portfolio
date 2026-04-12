@@ -140,7 +140,6 @@ export default function StickyNav() {
                 onClick={(e) => {
                   e.preventDefault()
                   setMobileOpen(false)
-                  const lenis = (window as unknown as { lenis?: { scrollTo: (target: string, opts?: object) => void } }).lenis
                   if (lenis) lenis.scrollTo(item.href, { duration: 1.2 })
                   else document.querySelector(item.href)?.scrollIntoView({ behavior: "smooth" })
                 }}

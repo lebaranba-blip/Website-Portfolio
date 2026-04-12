@@ -60,7 +60,7 @@ export default function Footer() {
               letterSpacing: "-0.04em",
               color: "var(--text)",
               lineHeight: "0.95",
-              fontSize: "clamp(2.8rem, 11.5vw, 10.5rem)",
+              fontSize: "clamp(2.2rem, 11.5vw, 10.5rem)",
               width: "100vw",
               marginLeft: "calc(-1 * (50vw - 50%))",
               paddingLeft: "calc(50vw - 50% + 1.5rem)",
@@ -109,7 +109,7 @@ export default function Footer() {
                       letterSpacing: "0.18em",
                       textTransform: "uppercase",
                       color: "var(--muted)",
-                      opacity: 0.6,
+                      opacity: 0.75,
                       whiteSpace: "nowrap",
                     }}
                   >
@@ -146,7 +146,7 @@ export default function Footer() {
         </motion.div>
 
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-6" style={{ borderTop: "1px solid var(--border)" }}>
-          <p className="text-xs font-mono opacity-50">© {year} Дмитрий — AI & Design</p>
+          <p className="text-xs font-mono opacity-65">© {year} Дмитрий — AI & Design</p>
           <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="text-xs font-mono opacity-85 hover:opacity-100 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]" style={{ color: "inherit" }}>TG</a>
         </div>
       </div>

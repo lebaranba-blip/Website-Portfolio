@@ -4,9 +4,10 @@ import dynamic from "next/dynamic"
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion"
 import { usePreloaderDone } from "@/lib/preloader-context"
 import { MenuBar } from "@/components/ui/glow-menu"
-import { NAV_ITEMS, EASE_DEFAULT } from "@/lib/constants"
+import { NAV_ITEMS, EASE_DEFAULT, TELEGRAM_URL } from "@/lib/constants"
 import { useLenis } from "@/lib/lenis-context"
 import TelegramButton from "@/components/ui/telegram-button"
+import { Menu, X } from "lucide-react"
 
 const WebGLShader = dynamic(() => import("@/components/ui/web-gl-shader"), { ssr: false })
 
@@ -47,6 +48,7 @@ function CountUp({ num, suffix, active, delay = 0 }: { num: number; suffix: stri
 export default function HeroSection() {
   const prefersReduced = useReducedMotion()
   const [activeItem, setActiveItem] = useState<string | undefined>()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const preloaderDone = usePreloaderDone()
   const lenis = useLenis()
 
@@ -64,8 +66,11 @@ export default function HeroSection() {
       {/* ── WebGL Beam — depth-0, atmospheric ── */}
       <WebGLShader />
 
-      {/* ── HEADER — desktop only ── */}
-      <header className="relative z-20 flex items-center justify-center px-6 md:px-10 py-5 flex-shrink-0">
+      {/* ── HEADER ── */}
+      <header className="relative z-20 flex items-center justify-between md:justify-center px-6 md:px-10 py-5 flex-shrink-0">
+        {/* Spacer left on mobile */}
+        <div className="w-10 md:hidden" />
+
         {/* GlowMenu — center, desktop only */}
         <nav aria-label="Основная навигация" className="hidden md:block">
           <MenuBar
@@ -78,7 +83,59 @@ export default function HeroSection() {
             }}
           />
         </nav>
+
+        {/* Burger — mobile only */}
+        <button
+          className="md:hidden flex items-center justify-center w-10 h-10 rounded-full"
+          style={{ background: "rgba(0,0,0,0.06)" }}
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label={mobileMenuOpen ? "Закрыть меню" : "Открыть меню"}
+          aria-expanded={mobileMenuOpen}
+        >
+          {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+        </button>
       </header>
+
+      {/* Mobile menu overlay */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-8 md:hidden"
+          style={{ background: "var(--bg)" }}
+        >
+          <button
+            className="absolute top-5 right-6 w-10 h-10 flex items-center justify-center rounded-full"
+            style={{ background: "rgba(0,0,0,0.06)" }}
+            onClick={() => setMobileMenuOpen(false)}
+            aria-label="Закрыть меню"
+          >
+            <X size={18} />
+          </button>
+          {NAV_ITEMS.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="text-3xl font-light"
+              style={{ color: "var(--text)" }}
+              onClick={(e) => {
+                e.preventDefault()
+                setMobileMenuOpen(false)
+                if (lenis) lenis.scrollTo(item.href, { duration: 1.2 })
+                else document.querySelector(item.href)?.scrollIntoView({ behavior: "smooth" })
+              }}
+            >
+              {item.label}
+            </a>
+          ))}
+          <a
+            href={TELEGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary text-sm px-6 py-3 mt-4"
+          >
+            Написать
+          </a>
+        </div>
+      )}
 
       {/* ── CENTER CONTENT — depth-4 ── */}
       <div className="relative z-20 flex-1 flex items-center justify-center px-6 -mt-20 md:mt-0">
@@ -131,9 +188,9 @@ export default function HeroSection() {
 
           {/* Subline */}
           <motion.p
-            className="text-base md:text-lg font-mono max-w-md mb-10 leading-[1.6]"
-            style={{ color: "var(--text)", opacity: 0.85 }}
-            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 0.85, y: 0 } }}
+            className="text-[15px] md:text-lg font-mono max-w-md mb-10 leading-[1.6]"
+            style={{ color: "var(--text)", opacity: 0.9 }}
+            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 0.9, y: 0 } }}
             initial="hidden"
             animate={preloaderDone ? "visible" : "hidden"}
             transition={{ duration: 0.7, delay: 0.45, ease: EASE_DEFAULT }}
@@ -144,7 +201,7 @@ export default function HeroSection() {
 
           {/* CTA */}
           <motion.div
-            className="flex items-center justify-center mb-12"
+            className="flex items-center justify-center mb-12 w-full sm:w-auto px-4 sm:px-0"
             variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
             initial="hidden"
             animate={preloaderDone ? "visible" : "hidden"}

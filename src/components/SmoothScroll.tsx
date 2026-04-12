@@ -16,7 +16,6 @@ export default function SmoothScroll({ children }: { children?: React.ReactNode 
     })
 
     setLenis(instance)
-    ;(window as unknown as { lenis?: Lenis }).lenis = instance
 
     let rafId: number
     const raf = (time: number) => {
@@ -28,7 +27,6 @@ export default function SmoothScroll({ children }: { children?: React.ReactNode 
     return () => {
       cancelAnimationFrame(rafId)
       instance.destroy()
-      delete (window as unknown as { lenis?: Lenis }).lenis
       setLenis(null)
     }
   }, [])

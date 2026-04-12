@@ -74,18 +74,19 @@ export default function FeaturedWorkCard({ work }: Props) {
           background: "var(--surface)",
         }}
         onClick={handleCardClick}
-        whileHover={{ scale: 1.005 }}
+        whileHover={{ scale: 1.01, boxShadow: "0 12px 40px rgba(0,0,0,0.1)" }}
         transition={{ duration: 0.4, ease: EASE_DEFAULT }}
         suppressHydrationWarning
       >
         {/* Poster image */}
-        <div className="relative w-full" style={{ aspectRatio: "21/9" }}>
+        <div className="relative w-full">
           <Image
             src={work.image}
             alt={work.alt}
-            fill
+            width={1800}
+            height={600}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1280px"
-            className="object-cover"
+            className="w-full h-auto object-contain"
             priority
             quality={85}
           />
@@ -93,23 +94,26 @@ export default function FeaturedWorkCard({ work }: Props) {
           {/* Gradient overlay */}
           <div
             className="absolute inset-0"
-            style={{ background: "linear-gradient(to top, rgba(10,10,10,0.72) 0%, rgba(10,10,10,0.1) 50%, transparent 100%)" }}
+            style={{ background: "linear-gradient(to top, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.45) 40%, transparent 75%)" }}
           />
 
           {/* Info overlay */}
           <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex items-end justify-between gap-4">
             <div>
-              <span className={`text-xs font-mono uppercase tracking-widest mb-2 block ${CATEGORY_COLORS[work.category] ?? "opacity-40"}`}>
+              <span
+                className="text-xs font-mono uppercase tracking-widest mb-2 block"
+                style={{ color: "rgba(255,255,255,0.6)", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}
+              >
                 {work.category} · {work.year}
               </span>
               <h3
                 className="font-bold leading-none"
-                style={{ color: "#fff", fontSize: "clamp(1.5rem, 4vw, 2.5rem)" }}
+                style={{ color: "#fff", fontSize: "clamp(1.5rem, 4vw, 2.5rem)", textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
               >
                 {work.title}
               </h3>
               {work.desc && (
-                <p className="mt-2 text-sm font-light" style={{ color: "rgba(255,255,255,0.65)", maxWidth: "480px" }}>
+                <p className="mt-2 text-sm font-light" style={{ color: "rgba(255,255,255,0.75)", maxWidth: "480px", textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}>
                   {work.desc}
                 </p>
               )}

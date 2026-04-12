@@ -2,11 +2,13 @@
 import Image from "next/image"
 import { motion, useReducedMotion } from "framer-motion"
 import { EASE_DEFAULT } from "@/lib/constants"
+import { useLenis } from "@/lib/lenis-context"
 import TextReveal from "@/components/ui/TextReveal"
 import { services, skills } from "@/data/services"
 
 export default function About() {
   const prefersReduced = useReducedMotion()
+  const lenis = useLenis()
 
   return (
     <motion.section
@@ -79,7 +81,7 @@ export default function About() {
                 priority
                 quality={85}
                 sizes="(max-width: 768px) 42vw, 360px"
-                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block" }}
+                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 15%", display: "block" }}
               />
             </div>
             {/* Имя — только на мобиле (рядом с фото) */}
@@ -154,7 +156,6 @@ export default function About() {
               style={{ color: "var(--text)" }}
               onClick={(e) => {
                 e.preventDefault()
-                const lenis = (window as unknown as { lenis?: { scrollTo: (t: string) => void } }).lenis
                 if (lenis) lenis.scrollTo("#contact")
                 else document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
               }}
