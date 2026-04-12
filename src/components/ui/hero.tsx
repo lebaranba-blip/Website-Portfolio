@@ -18,6 +18,7 @@ const STATS = [
 function CountUp({ num, suffix, active, delay = 0 }: { num: number; suffix: string; active: boolean; delay?: number }) {
   const [display, setDisplay] = useState(0)
   const started = useRef(false)
+  const rafId = useRef<number>(0)
 
   useEffect(() => {
     if (!active || started.current) return
@@ -29,11 +30,14 @@ function CountUp({ num, suffix, active, delay = 0 }: { num: number; suffix: stri
         const progress = Math.min((now - start) / duration, 1)
         const ease = 1 - Math.pow(1 - progress, 4)
         setDisplay(Math.round(ease * num))
-        if (progress < 1) requestAnimationFrame(tick)
+        if (progress < 1) rafId.current = requestAnimationFrame(tick)
       }
-      requestAnimationFrame(tick)
+      rafId.current = requestAnimationFrame(tick)
     }, delay)
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(timer)
+      cancelAnimationFrame(rafId.current)
+    }
   }, [active, num, delay])
 
   return <>{display}{suffix}</>

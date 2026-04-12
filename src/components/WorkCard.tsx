@@ -1,5 +1,6 @@
 "use client"
 import { useEffect, useRef } from "react"
+import Image from "next/image"
 import { motion } from "framer-motion"
 import type { Work } from "@/data/works"
 import { EASE_DEFAULT, CATEGORY_COLORS, CATEGORY_HUE } from "@/lib/constants"
@@ -60,18 +61,24 @@ export default function WorkCard({ work }: WorkCardProps) {
     >
       {/* Image */}
       <div className="overflow-hidden relative" style={{ aspectRatio: "4/3", borderRadius: "11px 11px 0 0" }}>
-        <motion.img
-          src={work.image}
-          alt={work.alt}
-          loading="lazy"
-          width={800}
-          height={600}
-          className="w-full h-full object-cover"
+        <motion.div
+          className="w-full h-full"
           style={{ willChange: "transform" }}
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.6, ease: EASE_DEFAULT }}
           suppressHydrationWarning
-        />
+        >
+          <Image
+            src={work.image}
+            alt={work.alt}
+            width={800}
+            height={600}
+            loading="lazy"
+            quality={85}
+            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+            className="w-full h-full object-cover"
+          />
+        </motion.div>
 
         {work.desc && (
           <motion.div

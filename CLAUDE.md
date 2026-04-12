@@ -672,3 +672,160 @@ npm run dev
 2. Сделай скриншот (`/screenshot-check`) чтобы видеть текущее состояние
 3. Начинай с Приоритета 1 (Hero видео) если есть `.webm` файл
 4. Иначе — с Приоритета 2 (контент) или 3 (визуал)
+
+---
+
+---
+
+# 📋 ГАЙД: КАК ДОБАВИТЬ НОВЫЙ ПРОЕКТ НА САЙТ
+
+## Шаг 1 — Подготовь медиа-файлы
+
+1. Скопируй изображения (PNG или JPG) и видео (MP4) в папку:
+   ```
+   portfolio-next/public/works/<название-проекта>/
+   ```
+   Пример: `public/works/gump/poster.png`
+
+2. Именуй файлы латиницей без пробелов: `billboard.png`, `ad.mp4`
+
+3. Next.js автоматически оптимизирует PNG → WebP при запросе (не нужно конвертировать вручную)
+
+## Шаг 2 — Добавь проект в `src/data/works.ts`
+
+**Обычный проект** (карточка в сетке):
+```ts
+{
+  id: "project-id",
+  title: "Название",
+  category: "Branding",         // AI Visual | Photo & Video | Branding | Promo | Automation
+  image: "/works/project/cover.png",
+  alt: "Описание для скринридеров",
+  year: 2025,
+  desc: "Короткое описание (показывается при hover)",
+}
+```
+
+**Большой featured-проект** (карточка на всю ширину + галерея по клику):
+```ts
+{
+  id: "project-id",
+  title: "Название",
+  category: "Branding",
+  image: "/works/project/cover.png",
+  alt: "...",
+  year: 2025,
+  desc: "Описание",
+  featured: true,
+  fullVideo: "/works/project/ad.mp4",   // опционально
+  gallery: [
+    { src: "/works/project/img1.png", alt: "Постер", aspect: "portrait" },
+    { src: "/works/project/img2.png", alt: "Билборд", aspect: "landscape" },
+    { src: "/works/project/img3.png", alt: "Лого", aspect: "square" },
+  ],
+}
+```
+
+**Aspect-значения:**
+- `"portrait"` — выше чем шире (фото людей, постеры)
+- `"landscape"` — шире чем выше (билборды, фургоны, баннеры)
+- `"square"` — квадрат (логотипы, иконки)
+
+## Шаг 3 — Проверь результат
+
+```bash
+# В терминале из папки portfolio-next:
+npm run dev
+# Открой http://localhost:3000 → прокрути до Works
+```
+
+Или используй `/screenshot-check` — Claude сделает скриншот автоматически.
+
+## Шаг 4 — Задеплой на Vercel
+
+```bash
+git add .
+git commit -m "Add project: Название"
+git push
+# Vercel подхватит автоматически, деплой 1-2 минуты
+```
+
+---
+
+---
+
+# 🔍 ПРАВИЛА UI/UX ПРОВЕРКИ
+
+**ОБЯЗАТЕЛЬНО** использовать эти скиллы каждый раз когда пользователь просит проверить, улучшить или оценить любой UI/UX элемент сайта.
+
+## Когда применять
+
+Применяй эти правила при любом из запросов:
+- "проверь", "посмотри", "оцени", "как выглядит"
+- "улучши", "переделай", "сделай красивее"
+- "есть баги?", "что не так?", "аудит"
+- "добавь компонент / секцию / блок"
+- "сделай адаптив / мобильную версию"
+
+## Порядок проверки (всегда в этом порядке)
+
+### 1. Скриншот — `/screenshot-check`
+**Всегда первый шаг.** Получить визуальную картину до начала любых изменений.
+- Скриншот на 1440px (десктоп)
+- Скриншот на 375px (мобиль)
+- Описать что видно: раскладка, контент, проблемы
+
+### 2. UI/UX анализ — `/ui-ux-pro-max`
+Проверить по приоритетам (1→10):
+
+| # | Проверка | Что смотреть |
+|---|----------|-------------|
+| 1 | **Accessibility** | Контраст 4.5:1, alt-тексты, aria-labels, keyboard nav |
+| 2 | **Touch & Interaction** | Размеры кнопок ≥44px, hover→tap, loading states |
+| 3 | **Performance** | WebP/lazy load, CLS, нет layout thrashing |
+| 4 | **Style** | Стиль соответствует бренду (premium light minimalism) |
+| 5 | **Layout & Responsive** | Mobile-first, нет горизонтального скролла |
+| 6 | **Typography & Color** | Base 16px, line-height 1.5, цветовые токены |
+| 7 | **Animation** | 150–300ms duration, reduced-motion support |
+| 8 | **Forms & Feedback** | Видимые лейблы, ошибки рядом с полем |
+| 9 | **Navigation** | Predictable back, активные состояния nav |
+
+### 3. Код-паттерны — `/frontend-patterns`
+Проверить код компонента:
+- Нет ли дублирования (DRY)
+- Правильная типизация TypeScript
+- Нет утечек памяти (removeEventListener, clearTimeout)
+- RAF throttle на scroll/pointermove обработчиках
+- Правильный dependency array в useEffect
+
+### 4. Исправить всё найденное
+После анализа — список проблем с приоритетами:
+- 🔴 Критично (баги, сломанная функциональность, WCAG violations)
+- 🟡 Важно (визуальные несоответствия, UX проблемы)
+- 🟢 Улучшения (polish, мелкие правки)
+
+### 5. Финальный скриншот — `/screenshot-check`
+После всех исправлений — повторный скриншот для подтверждения.
+
+## Стандарты этого проекта
+
+```
+Фон:        #EDEAE4 (warm off-white)
+Текст:      #0A0A0A
+Muted:      rgba(0,0,0,0.45)
+Акцент:     cyan #0891B2, orange #EA580C
+Шрифт:      Space Grotesk + JetBrains Mono
+Анимации:   EASE_DEFAULT = [0.16, 1, 0.3, 1], stagger 0.07–0.08s
+Стиль:      Premium light minimalism, cinematic
+Touch:      min-height 44px на всех интерактивных элементах
+```
+
+## Пример использования
+
+Пользователь: "проверь секцию Works"
+
+1. `/screenshot-check` → скриншот Works на 1440px и 375px
+2. `/ui-ux-pro-max` → анализ по 9 приоритетам
+3. `/frontend-patterns` → анализ кода Works.tsx и WorkCard.tsx
+4. Список проблем → исправление
+5. `/screenshot-check` → финальное подтверждение

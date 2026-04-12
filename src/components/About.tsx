@@ -1,4 +1,5 @@
 "use client"
+import Image from "next/image"
 import { motion, useReducedMotion } from "framer-motion"
 import { EASE_DEFAULT } from "@/lib/constants"
 import TextReveal from "@/components/ui/TextReveal"
@@ -69,13 +70,15 @@ export default function About() {
         >
           {/* Мобиль: фото 160px + имя рядом */}
           <div className="flex items-end gap-5 md:block">
-            <div style={{ borderRadius: 20, overflow: "hidden", boxShadow: "0 16px 48px rgba(0,0,0,0.14)", aspectRatio: "3/4", width: "clamp(140px, 42vw, 360px)", flexShrink: 0 }}>
-              <img
-                src="/about.png"
+            <div style={{ borderRadius: 20, overflow: "hidden", boxShadow: "0 16px 48px rgba(0,0,0,0.14)", aspectRatio: "3/4", width: "clamp(140px, 42vw, 360px)", flexShrink: 0, position: "relative" }}>
+              <Image
+                src="/about.webp"
                 alt="Дмитрий"
-                width={360}
-                height={480}
-                loading="eager"
+                width={720}
+                height={960}
+                priority
+                quality={85}
+                sizes="(max-width: 768px) 42vw, 360px"
                 style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block" }}
               />
             </div>

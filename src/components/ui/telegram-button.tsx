@@ -66,7 +66,7 @@ export default function TelegramButton({ className, size = "md" }: TelegramButto
 
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: STYLES }} />
+      <style>{STYLES}</style>
       <motion.a
         ref={ref}
         href={TELEGRAM_URL}

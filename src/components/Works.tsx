@@ -1,6 +1,7 @@
 "use client"
 import { motion, useReducedMotion } from "framer-motion"
 import WorkCard from "@/components/WorkCard"
+import FeaturedWorkCard from "@/components/FeaturedWorkCard"
 import { works } from "@/data/works"
 import { EASE_DEFAULT } from "@/lib/constants"
 import TextReveal from "@/components/ui/TextReveal"
@@ -82,9 +83,13 @@ export default function Works() {
         viewport={{ once: true, margin: "-60px" }}
         suppressHydrationWarning
       >
-        {works.map((work, i) => (
-          <WorkCard key={work.id} work={work} index={i} />
-        ))}
+        {works.map((work, i) =>
+          work.gallery ? (
+            <FeaturedWorkCard key={work.id} work={work} />
+          ) : (
+            <WorkCard key={work.id} work={work} index={i} />
+          )
+        )}
       </motion.div>
 
     </motion.section>
