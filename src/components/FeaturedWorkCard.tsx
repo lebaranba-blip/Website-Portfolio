@@ -30,7 +30,9 @@ export default function FeaturedWorkCard({ work }: Props) {
     if (!expanded || !videoRef.current) return
     const v = videoRef.current
     v.muted = true
-    v.play().catch(() => {})
+    v.play().catch((err) => {
+      console.warn("Video autoplay failed:", err)
+    })
     return () => {
       v.pause()
     }

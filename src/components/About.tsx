@@ -233,7 +233,7 @@ export default function About() {
         </TextReveal>
 
         <motion.div
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-5"
+          className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4"
           variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.07 } } }}
           initial="hidden"
           whileInView="visible"
@@ -243,7 +243,7 @@ export default function About() {
           {skills.map((skill, i) => (
             <motion.div
               key={skill}
-              className={`px-4 py-3 rounded-lg text-center group cursor-default relative overflow-hidden${i === skills.length - 1 && skills.length % 2 !== 0 ? " col-span-2 sm:col-span-1" : ""}`}
+              className="px-4 py-3 rounded-lg text-center group cursor-default relative overflow-hidden"
               style={{
                 background: "rgba(0,0,0,0.03)",
                 border: "1px solid rgba(0,0,0,0.06)",

@@ -33,6 +33,7 @@ export default function CustomCursor() {
       mouseY = e.clientY
       setIsVisible(true)
       setUsingKeyboard(false)
+      document.body.classList.add("cursor-hidden")
       dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`
 
       trail.push({ x: mouseX, y: mouseY, age: 0, size: 3.5 })
@@ -41,7 +42,12 @@ export default function CustomCursor() {
 
     const onLeave = () => setIsVisible(false)
     const onEnter = () => setIsVisible(true)
-    const onKeyDown = (e: KeyboardEvent) => { if (e.key === "Tab") setUsingKeyboard(true) }
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Tab") {
+        setUsingKeyboard(true)
+        document.body.classList.remove("cursor-hidden")
+      }
+    }
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -84,6 +90,7 @@ export default function CustomCursor() {
       document.removeEventListener("keydown", onKeyDown)
       window.removeEventListener("resize", resize)
       cancelAnimationFrame(rafId)
+      document.body.classList.remove("cursor-hidden")
     }
   }, [])
 
@@ -100,7 +107,7 @@ export default function CustomCursor() {
           width: 8,
           height: 8,
           borderRadius: "50%",
-          background: "#0A0A0A",
+          background: "var(--text)",
           pointerEvents: "none",
           zIndex: 99999,
           opacity: isVisible ? 1 : 0,
@@ -128,7 +135,7 @@ export default function CustomCursor() {
 
       <style>{`
         @media (pointer: fine) {
-          ${!usingKeyboard ? "*, *::before, *::after { cursor: none !important; }" : ""}
+          body.cursor-hidden *, body.cursor-hidden *::before, body.cursor-hidden *::after { cursor: none !important; }
         }
         :focus-visible {
           outline: 2px solid var(--cyan) !important;

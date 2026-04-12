@@ -5,6 +5,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { usePreloaderDone } from "@/lib/preloader-context"
 import { MenuBar } from "@/components/ui/glow-menu"
 import { NAV_ITEMS, EASE_DEFAULT } from "@/lib/constants"
+import { useLenis } from "@/lib/lenis-context"
 import TelegramButton from "@/components/ui/telegram-button"
 
 const WebGLShader = dynamic(() => import("@/components/ui/web-gl-shader"), { ssr: false })
@@ -18,7 +19,7 @@ const STATS = [
 function CountUp({ num, suffix, active, delay = 0 }: { num: number; suffix: string; active: boolean; delay?: number }) {
   const [display, setDisplay] = useState(0)
   const started = useRef(false)
-  const rafId = useRef<number>(0)
+  const rafId = useRef<number | null>(null)
 
   useEffect(() => {
     if (!active || started.current) return
@@ -36,7 +37,7 @@ function CountUp({ num, suffix, active, delay = 0 }: { num: number; suffix: stri
     }, delay)
     return () => {
       clearTimeout(timer)
-      cancelAnimationFrame(rafId.current)
+      if (rafId.current !== null) cancelAnimationFrame(rafId.current)
     }
   }, [active, num, delay])
 
@@ -47,6 +48,7 @@ export default function HeroSection() {
   const prefersReduced = useReducedMotion()
   const [activeItem, setActiveItem] = useState<string | undefined>()
   const preloaderDone = usePreloaderDone()
+  const lenis = useLenis()
 
   const { scrollY } = useScroll()
   const contentY = useTransform(scrollY, [0, 600], [0, prefersReduced ? 0 : -60])
@@ -71,9 +73,8 @@ export default function HeroSection() {
             activeItem={activeItem}
             onItemClick={(label, href) => {
               setActiveItem(label)
-              const lenis = (window as unknown as { lenis?: { scrollTo: (target: string, opts?: object) => void } }).lenis
               if (lenis && href) lenis.scrollTo(href, { duration: 1.2, easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) })
-              else document.querySelector(href)?.scrollIntoView({ behavior: "smooth" })
+              else if (href) document.querySelector(href)?.scrollIntoView({ behavior: "smooth" })
             }}
           />
         </nav>

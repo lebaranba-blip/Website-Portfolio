@@ -1,5 +1,5 @@
 "use client"
-import { useState, useRef, useCallback } from "react"
+import { useState, useRef, useCallback, useEffect } from "react"
 import { motion, useSpring } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { TELEGRAM_URL } from "@/lib/constants"
@@ -16,7 +16,7 @@ const STYLES = `
     100% { background-position: 0% 50%; }
   }
   .tg-btn {
-    background: linear-gradient(270deg, #0891B2, #EA580C, #1D4ED8, #0891B2);
+    background: linear-gradient(270deg, var(--cyan), var(--orange), var(--blue), var(--cyan));
     background-size: 300% 300%;
     padding: 1.5px;
     border-radius: 9999px;
@@ -38,8 +38,13 @@ const STYLES = `
 export default function TelegramButton({ className, size = "md" }: TelegramButtonProps) {
   const pad = size === "md" ? "px-7 py-3.5 text-sm" : "px-4 py-2 text-xs"
   const ref = useRef<HTMLAnchorElement>(null)
+  const shimmerTimers = useRef<ReturnType<typeof setTimeout>[]>([])
   const [hovered, setHovered] = useState(false)
   const [shimmer, setShimmer] = useState(false)
+
+  useEffect(() => {
+    return () => { shimmerTimers.current.forEach(clearTimeout) }
+  }, [])
 
   const mx = useSpring(0, { stiffness: 180, damping: 22 })
   const my = useSpring(0, { stiffness: 180, damping: 22 })
@@ -52,10 +57,12 @@ export default function TelegramButton({ className, size = "md" }: TelegramButto
   }, [mx, my])
 
   const handleMouseEnter = useCallback(() => {
+    shimmerTimers.current.forEach(clearTimeout)
+    shimmerTimers.current = []
     setHovered(true)
     setShimmer(false)
-    setTimeout(() => setShimmer(true), 10)
-    setTimeout(() => setShimmer(false), 700)
+    shimmerTimers.current.push(setTimeout(() => setShimmer(true), 10))
+    shimmerTimers.current.push(setTimeout(() => setShimmer(false), 700))
   }, [])
 
   const handleMouseLeave = useCallback(() => {

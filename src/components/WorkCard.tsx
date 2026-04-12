@@ -10,7 +10,7 @@ interface WorkCardProps {
   index: number
 }
 
-export default function WorkCard({ work }: WorkCardProps) {
+export default function WorkCard({ work, index }: WorkCardProps) {
   const cardRef = useRef<HTMLDivElement>(null)
   const hue = CATEGORY_HUE[work.category] ?? 185
 
@@ -73,9 +73,10 @@ export default function WorkCard({ work }: WorkCardProps) {
             alt={work.alt}
             width={800}
             height={600}
-            loading="lazy"
+            loading={index === 0 ? "eager" : "lazy"}
+            priority={index === 0}
             quality={85}
-            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+            sizes="(max-width: 640px) calc(100vw - 24px), (max-width: 1024px) calc(50vw - 16px), calc(33.33vw - 18px)"
             className="w-full h-full object-cover"
           />
         </motion.div>
@@ -94,6 +95,7 @@ export default function WorkCard({ work }: WorkCardProps) {
               style={{ color: "rgba(255,255,255,0.88)" }}
               initial={{ y: 8, opacity: 0 }}
               whileHover={{ y: 0, opacity: 1 }}
+              whileFocus={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.05, ease: EASE_DEFAULT }}
             >
               {work.desc}

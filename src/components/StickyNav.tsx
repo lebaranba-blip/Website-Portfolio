@@ -4,12 +4,14 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { MenuBar } from "@/components/ui/glow-menu"
 import MagneticWrapper from "@/components/MagneticWrapper"
 import { TELEGRAM_URL, NAV_ITEMS, EASE_DEFAULT } from "@/lib/constants"
+import { useLenis } from "@/lib/lenis-context"
 
 export default function StickyNav() {
   const [visible, setVisible] = useState(false)
   const [activeItem, setActiveItem] = useState<string | undefined>()
   const [mobileOpen, setMobileOpen] = useState(false)
   const prefersReduced = useReducedMotion()
+  const lenis = useLenis()
 
   // Show/hide nav on scroll
   useEffect(() => {
@@ -77,7 +79,6 @@ export default function StickyNav() {
                 activeItem={activeItem}
                 onItemClick={(label, href) => {
                   setActiveItem(label)
-                  const lenis = (window as unknown as { lenis?: { scrollTo: (target: string, opts?: object) => void } }).lenis
                   if (lenis && href) {
                     lenis.scrollTo(href, { duration: 1.2, easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) })
                   }
