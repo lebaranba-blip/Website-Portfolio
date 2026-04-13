@@ -8,7 +8,7 @@ export default function SmoothScroll({ children }: { children?: React.ReactNode 
 
   useEffect(() => {
     const instance = new Lenis({
-      lerp: 0.04,
+      lerp: 0.07,
       smoothWheel: true,
       wheelMultiplier: 0.8,
       touchMultiplier: 1.2,

@@ -178,8 +178,8 @@ export default function About() {
           {services.map((s) => (
             <motion.div
               key={s.num}
-              className="flex items-center gap-5 py-5 border-b group cursor-default relative overflow-hidden"
-              style={{ borderColor: "var(--border)" }}
+              className="flex items-center gap-5 py-5 group cursor-default relative overflow-hidden"
+              style={{ boxShadow: "0 1px 0 0 var(--border)" }}
               variants={{ hidden: { opacity: 0, x: 24 }, visible: { opacity: 1, x: 0 } }}
               transition={{ duration: 0.55, ease: EASE_DEFAULT }}
               whileHover={{ x: 5 }}
@@ -223,7 +223,7 @@ export default function About() {
       </div>
 
       {/* Skills section */}
-      <div className="mt-24 pt-16 border-t" style={{ borderColor: "var(--border)" }}>
+      <div className="mt-24 pt-16" style={{ boxShadow: "0 -1px 0 0 var(--border)" }}>
         <TextReveal className="mb-8">
           <h3
             className="font-semibold text-sm tracking-[0.2em] uppercase"

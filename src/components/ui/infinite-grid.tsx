@@ -38,39 +38,22 @@ export default function InfiniteGrid() {
   )
 
   return (
-    <>
-      <style>{`
-        @keyframes grid-scroll {
-          from { transform: translate(0, 0); }
-          to   { transform: translate(40px, 40px); }
-        }
-        .grid-scroll-inner {
-          animation: grid-scroll 4s linear infinite;
-          width: calc(100% + 40px);
-          height: calc(100% + 40px);
-          position: absolute;
-          top: -40px;
-          left: -40px;
-        }
-      `}</style>
-
-      <div
-        className="fixed inset-0 pointer-events-none overflow-hidden text-black z-0"
-        aria-hidden="true"
-      >
-        {/* dim static layer */}
-        <div className="absolute inset-0 opacity-[0.07]">
-          <div className="grid-scroll-inner">{gridSvg}</div>
-        </div>
-
-        {/* cursor reveal layer — follows mouse anywhere on page */}
-        <motion.div
-          className="absolute inset-0 opacity-[0.22]"
-          style={{ maskImage, WebkitMaskImage: maskImage }}
-        >
-          <div className="grid-scroll-inner">{gridSvg}</div>
-        </motion.div>
+    <div
+      className="fixed inset-0 pointer-events-none overflow-hidden text-black z-0"
+      aria-hidden="true"
+    >
+      {/* static base layer */}
+      <div className="absolute inset-0 opacity-[0.07]">
+        {gridSvg}
       </div>
-    </>
+
+      {/* cursor reveal layer */}
+      <motion.div
+        className="absolute inset-0 opacity-[0.22]"
+        style={{ maskImage, WebkitMaskImage: maskImage }}
+      >
+        {gridSvg}
+      </motion.div>
+    </div>
   )
 }

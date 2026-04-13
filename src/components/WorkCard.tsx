@@ -63,7 +63,6 @@ export default function WorkCard({ work, index }: WorkCardProps) {
       <div className="overflow-hidden relative" style={{ aspectRatio: "4/3", borderRadius: "11px 11px 0 0" }}>
         <motion.div
           className="w-full h-full"
-          style={{ willChange: "transform" }}
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.6, ease: EASE_DEFAULT }}
           suppressHydrationWarning

@@ -10,7 +10,7 @@ export default function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer id="contact" className="relative pt-24 pb-10 px-6 md:px-10 overflow-x-hidden" style={{ borderTop: "1px solid var(--border)" }}>
+    <footer id="contact" className="relative pt-24 pb-10 px-6 md:px-10 overflow-x-hidden" style={{ boxShadow: "-1px 0 0 0 var(--border), 0 -1px 0 0 var(--border)" }}>
       <div
         aria-hidden="true"
         className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full pointer-events-none"
@@ -83,7 +83,7 @@ export default function Footer() {
         {/* Marquee strip — анимированная бегущая строка */}
         <div
           className="relative overflow-hidden mb-14 py-3"
-          style={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}
+          style={{ boxShadow: "0 -1px 0 0 var(--border), 0 1px 0 0 var(--border)" }}
           aria-hidden="true"
         >
           <div
@@ -145,7 +145,7 @@ export default function Footer() {
           <TelegramButton size="md" />
         </motion.div>
 
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-6" style={{ borderTop: "1px solid var(--border)" }}>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-6" style={{ boxShadow: "0 -1px 0 0 var(--border)" }}>
           <p className="text-xs font-mono opacity-65">© {year} Дмитрий — AI & Design</p>
           <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="text-xs font-mono opacity-85 hover:opacity-100 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]" style={{ color: "inherit" }}>TG</a>
         </div>
