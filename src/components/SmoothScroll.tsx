@@ -7,6 +7,9 @@ export default function SmoothScroll({ children }: { children?: React.ReactNode 
   const [lenis, setLenis] = useState<Lenis | null>(null)
 
   useEffect(() => {
+    // Disable Lenis on touch devices — native scroll is smoother on mobile
+    if (window.matchMedia("(pointer: coarse)").matches) return
+
     const instance = new Lenis({
       lerp: 0.07,
       smoothWheel: true,
