@@ -16,6 +16,7 @@ export interface Work {
   video?: string
   gallery?: GalleryItem[]
   fullVideo?: string
+  workflow?: string
 }
 
 export const works: Work[] = [
@@ -29,6 +30,7 @@ export const works: Work[] = [
     desc: "Полный брендинг для сети пончиков. Айдентика, упаковка, мерч, реклама.",
     featured: true,
     fullVideo: "/works/gump/ad.mp4",
+    workflow: "/Workflow.png",
     gallery: [
       { src: "/works/gump/poster.png", alt: "Постер", aspect: "portrait" },
       { src: "/works/gump/billboard.png", alt: "Билборд", aspect: "landscape" },

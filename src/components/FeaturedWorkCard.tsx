@@ -265,6 +265,29 @@ export default function FeaturedWorkCard({ work }: Props) {
                   </button>
                 </motion.div>
               )}
+
+              {/* Workflow image */}
+              {work.workflow && (
+                <motion.div
+                  className="mt-5 rounded-xl overflow-hidden"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4, ease: EASE_DEFAULT }}
+                  suppressHydrationWarning
+                >
+                  <h3 className="font-black mb-4" style={{ fontSize: "clamp(1.8rem,4vw,3rem)", letterSpacing: "-0.04em", color: "var(--text)" }}>AI Workflow</h3>
+                  <Image
+                    src={work.workflow}
+                    alt="AI Workflow"
+                    width={1600}
+                    height={900}
+                    quality={90}
+                    sizes="(max-width: 768px) 100vw, 1280px"
+                    className="w-full h-auto rounded-xl"
+                    loading="lazy"
+                  />
+                </motion.div>
+              )}
             </div>
           </motion.div>
         )}
