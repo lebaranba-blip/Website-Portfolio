@@ -1,9 +1,10 @@
 "use client"
 import { useState, useRef, useEffect } from "react"
+import { createPortal } from "react-dom"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 import type { Work } from "@/data/works"
-import { EASE_DEFAULT, CATEGORY_COLORS } from "@/lib/constants"
+import { EASE_DEFAULT } from "@/lib/constants"
 
 interface Props {
   work: Work
@@ -22,8 +23,33 @@ const itemVariants = {
 export default function FeaturedWorkCard({ work }: Props) {
   const [expanded, setExpanded] = useState(false)
   const [muted, setMuted] = useState(true)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const [mounted, setMounted] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const expandRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => { setMounted(true) }, [])
+
+  // Esc to close lightbox + lock body scroll
+  useEffect(() => {
+    if (lightboxIndex === null) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightboxIndex(null)
+      if (e.key === "ArrowRight" && work.gallery) {
+        setLightboxIndex((i) => (i === null ? null : (i + 1) % work.gallery!.length))
+      }
+      if (e.key === "ArrowLeft" && work.gallery) {
+        setLightboxIndex((i) => (i === null ? null : (i - 1 + work.gallery!.length) % work.gallery!.length))
+      }
+    }
+    window.addEventListener("keydown", onKey)
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => {
+      window.removeEventListener("keydown", onKey)
+      document.body.style.overflow = prevOverflow
+    }
+  }, [lightboxIndex, work.gallery])
 
   // Auto-play video when expand opens, pause on collapse
   useEffect(() => {
@@ -165,11 +191,14 @@ export default function FeaturedWorkCard({ work }: Props) {
                   initial="hidden"
                   animate="visible"
                 >
-                  {work.gallery.map((item) => (
-                    <motion.div
+                  {work.gallery.map((item, idx) => (
+                    <motion.button
+                      type="button"
                       key={item.src}
-                      className="mb-3 break-inside-avoid overflow-hidden rounded-xl"
+                      className="mb-3 block w-full break-inside-avoid overflow-hidden rounded-xl cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]"
                       variants={itemVariants}
+                      onClick={(e) => { e.stopPropagation(); setLightboxIndex(idx) }}
+                      aria-label={`Открыть ${item.alt} на весь экран`}
                     >
                       <Image
                         src={item.src}
@@ -180,7 +209,7 @@ export default function FeaturedWorkCard({ work }: Props) {
                         loading="lazy"
                         quality={85}
                       />
-                    </motion.div>
+                    </motion.button>
                   ))}
                 </motion.div>
               )}
@@ -240,6 +269,95 @@ export default function FeaturedWorkCard({ work }: Props) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* ── Lightbox ── */}
+      {mounted ? createPortal(
+      <AnimatePresence>
+        {lightboxIndex !== null && work.gallery && (
+          <motion.div
+            key="lightbox"
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10"
+            style={{ background: "rgba(10,10,10,0.92)", backdropFilter: "blur(8px)" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, ease: EASE_DEFAULT }}
+            onClick={() => setLightboxIndex(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-label={work.gallery[lightboxIndex].alt}
+          >
+            <motion.div
+              key={work.gallery[lightboxIndex].src}
+              className="relative max-w-[92vw] max-h-[88vh] flex items-center justify-center"
+              initial={{ scale: 0.94, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.96, opacity: 0 }}
+              transition={{ duration: 0.3, ease: EASE_DEFAULT }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image
+                src={work.gallery[lightboxIndex].src}
+                alt={work.gallery[lightboxIndex].alt}
+                width={1920}
+                height={1920}
+                quality={92}
+                className="w-auto h-auto max-w-[92vw] max-h-[88vh] object-contain rounded-lg"
+                priority
+              />
+            </motion.div>
+
+            {/* Close button */}
+            <button
+              onClick={(e) => { e.stopPropagation(); setLightboxIndex(null) }}
+              className="absolute top-4 right-4 md:top-6 md:right-6 flex items-center justify-center w-12 h-12 rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--cyan)]"
+              style={{ background: "rgba(255,255,255,0.25)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.4)", color: "#fff", zIndex: 10 }}
+              aria-label="Закрыть"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+
+            {/* Prev */}
+            {work.gallery.length > 1 && (
+              <button
+                onClick={(e) => { e.stopPropagation(); setLightboxIndex((i) => i === null ? null : (i - 1 + work.gallery!.length) % work.gallery!.length) }}
+                className="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 flex items-center justify-center w-14 h-14 rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--cyan)]"
+                style={{ background: "rgba(255,255,255,0.25)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.5)", color: "#fff", boxShadow: "0 4px 24px rgba(0,0,0,0.5)", zIndex: 10 }}
+                aria-label="Предыдущее"
+              >
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+              </button>
+            )}
+
+            {/* Next */}
+            {work.gallery.length > 1 && (
+              <button
+                onClick={(e) => { e.stopPropagation(); setLightboxIndex((i) => i === null ? null : (i + 1) % work.gallery!.length) }}
+                className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 flex items-center justify-center w-14 h-14 rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--cyan)]"
+                style={{ background: "rgba(255,255,255,0.25)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.5)", color: "#fff", boxShadow: "0 4px 24px rgba(0,0,0,0.5)", zIndex: 10 }}
+                aria-label="Следующее"
+              >
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </button>
+            )}
+
+            {/* Counter */}
+            <div
+              className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-full text-xs font-mono"
+              style={{ background: "rgba(255,255,255,0.2)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.35)", color: "#fff", zIndex: 10 }}
+            >
+              {lightboxIndex + 1} / {work.gallery.length}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>, document.body) : null}
     </div>
   )
 }

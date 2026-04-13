@@ -74,14 +74,14 @@ export default function About() {
           <div className="flex items-end gap-5 md:block">
             <div style={{ borderRadius: 20, overflow: "hidden", boxShadow: "0 16px 48px rgba(0,0,0,0.14)", aspectRatio: "3/4", width: "clamp(140px, 42vw, 360px)", flexShrink: 0, position: "relative" }}>
               <Image
-                src="/about.webp"
+                src="/about2.png"
                 alt="Дмитрий"
                 width={720}
                 height={960}
                 priority
                 quality={85}
                 sizes="(max-width: 768px) 42vw, 360px"
-                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 15%", display: "block" }}
+                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 10%", display: "block" }}
               />
             </div>
             {/* Имя — только на мобиле (рядом с фото) */}
