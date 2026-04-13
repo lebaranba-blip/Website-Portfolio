@@ -23,7 +23,7 @@ export const works: Work[] = [
     id: "gump-donuts",
     title: "Gump Donuts",
     category: "Branding",
-    image: "/works/gump/баннер.png",
+    image: "/works/gump/banner.png",
     alt: "Gump Donuts — брендинг пончиков",
     year: 2026,
     desc: "Полный брендинг для сети пончиков. Айдентика, упаковка, мерч, реклама.",
