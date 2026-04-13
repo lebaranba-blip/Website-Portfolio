@@ -71,7 +71,7 @@ export default function About() {
           suppressHydrationWarning
         >
           {/* Мобиль: фото 160px + имя рядом */}
-          <div className="flex items-end gap-5 md:block">
+          <div className="flex items-center gap-5 md:block">
             <div style={{ borderRadius: 20, overflow: "hidden", boxShadow: "0 16px 48px rgba(0,0,0,0.14)", aspectRatio: "3/4", width: "clamp(140px, 42vw, 360px)", flexShrink: 0, position: "relative" }}>
               <Image
                 src="/about2.png"

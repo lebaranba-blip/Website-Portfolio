@@ -24,6 +24,7 @@ export default function FeaturedWorkCard({ work }: Props) {
   const [expanded, setExpanded] = useState(false)
   const [muted, setMuted] = useState(true)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const [workflowOpen, setWorkflowOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const expandRef = useRef<HTMLDivElement>(null)
@@ -32,9 +33,9 @@ export default function FeaturedWorkCard({ work }: Props) {
 
   // Esc to close lightbox + lock body scroll
   useEffect(() => {
-    if (lightboxIndex === null) return
+    if (lightboxIndex === null && !workflowOpen) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setLightboxIndex(null)
+      if (e.key === "Escape") { setLightboxIndex(null); setWorkflowOpen(false) }
       if (e.key === "ArrowRight" && work.gallery) {
         setLightboxIndex((i) => (i === null ? null : (i + 1) % work.gallery!.length))
       }
@@ -49,7 +50,7 @@ export default function FeaturedWorkCard({ work }: Props) {
       window.removeEventListener("keydown", onKey)
       document.body.style.overflow = prevOverflow
     }
-  }, [lightboxIndex, work.gallery])
+  }, [lightboxIndex, workflowOpen, work.gallery])
 
   // Auto-play video when expand opens, pause on collapse
   useEffect(() => {
@@ -269,23 +270,30 @@ export default function FeaturedWorkCard({ work }: Props) {
               {/* Workflow image */}
               {work.workflow && (
                 <motion.div
-                  className="mt-5 rounded-xl overflow-hidden"
+                  className="mt-5"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.4, ease: EASE_DEFAULT }}
                   suppressHydrationWarning
                 >
                   <h3 className="font-black mb-4" style={{ fontSize: "clamp(1.8rem,4vw,3rem)", letterSpacing: "-0.04em", color: "var(--text)" }}>AI Workflow</h3>
-                  <Image
-                    src={work.workflow}
-                    alt="AI Workflow"
-                    width={1600}
-                    height={900}
-                    quality={90}
-                    sizes="(max-width: 768px) 100vw, 1280px"
-                    className="w-full h-auto rounded-xl"
-                    loading="lazy"
-                  />
+                  <button
+                    type="button"
+                    className="block w-full overflow-hidden rounded-xl cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]"
+                    onClick={(e) => { e.stopPropagation(); setWorkflowOpen(true) }}
+                    aria-label="Открыть AI Workflow на весь экран"
+                  >
+                    <Image
+                      src={work.workflow}
+                      alt="AI Workflow"
+                      width={1600}
+                      height={900}
+                      quality={90}
+                      sizes="(max-width: 768px) 100vw, 1280px"
+                      className="w-full h-auto rounded-xl hover:scale-[1.02] transition-transform duration-500"
+                      loading="lazy"
+                    />
+                  </button>
                 </motion.div>
               )}
             </div>
@@ -381,6 +389,55 @@ export default function FeaturedWorkCard({ work }: Props) {
           </motion.div>
         )}
       </AnimatePresence>, document.body) : null}
+
+      {/* ── Workflow Lightbox ── */}
+      {mounted && work.workflow ? createPortal(
+        <AnimatePresence>
+          {workflowOpen && (
+            <motion.div
+              key="workflow-lightbox"
+              className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10"
+              style={{ background: "rgba(10,10,10,0.95)", backdropFilter: "blur(8px)" }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25, ease: EASE_DEFAULT }}
+              onClick={() => setWorkflowOpen(false)}
+              role="dialog"
+              aria-modal="true"
+              aria-label="AI Workflow"
+            >
+              <motion.div
+                className="relative max-w-[95vw] max-h-[90vh]"
+                initial={{ scale: 0.94, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.96, opacity: 0 }}
+                transition={{ duration: 0.3, ease: EASE_DEFAULT }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Image
+                  src={work.workflow}
+                  alt="AI Workflow"
+                  width={1600}
+                  height={900}
+                  quality={92}
+                  className="w-auto h-auto max-w-[95vw] max-h-[90vh] object-contain rounded-lg"
+                  priority
+                />
+              </motion.div>
+              <button
+                onClick={(e) => { e.stopPropagation(); setWorkflowOpen(false) }}
+                className="absolute top-4 right-4 md:top-6 md:right-6 flex items-center justify-center w-12 h-12 rounded-full"
+                style={{ background: "rgba(255,255,255,0.25)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.4)", color: "#fff", zIndex: 10 }}
+                aria-label="Закрыть"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>, document.body) : null}
     </div>
   )
 }
