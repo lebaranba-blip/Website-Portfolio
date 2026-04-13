@@ -68,7 +68,7 @@ export default function WebGLShader() {
     const initScene = () => {
       refs.scene = new THREE.Scene()
       refs.renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true })
-      refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5))
+      refs.renderer.setPixelRatio(1) // always 1 — reduces GPU load significantly
       refs.renderer.setClearColor(0x000000, 0)
 
       refs.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, -1)
@@ -111,7 +111,7 @@ export default function WebGLShader() {
     }
 
     const animate = () => {
-      if (refs.uniforms) refs.uniforms.time.value += 0.01
+      if (refs.uniforms) refs.uniforms.time.value += 0.006
       if (refs.renderer && refs.scene && refs.camera) {
         refs.renderer.render(refs.scene, refs.camera)
       }
@@ -127,10 +127,27 @@ export default function WebGLShader() {
     }
 
     initScene()
+
+    // Pause RAF when Hero is off-screen
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (!refs.animationId) animate()
+        } else {
+          if (refs.animationId) {
+            cancelAnimationFrame(refs.animationId)
+            refs.animationId = null
+          }
+        }
+      },
+      { threshold: 0.01 }
+    )
+    observer.observe(canvas)
     animate()
     window.addEventListener("resize", handleResize)
 
     return () => {
+      observer.disconnect()
       if (refs.animationId) cancelAnimationFrame(refs.animationId)
       window.removeEventListener("resize", handleResize)
       if (refs.mesh) {

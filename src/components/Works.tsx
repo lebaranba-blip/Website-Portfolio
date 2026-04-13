@@ -14,13 +14,13 @@ export default function Works() {
       id="works"
       className="pt-28 pb-24 md:py-32 px-6 md:px-10 max-w-7xl mx-auto"
       variants={{
-        hidden: { clipPath: "inset(5% 2% 0% 2% round 20px)", opacity: 0.4 },
-        visible: { clipPath: "inset(0% 0% 0% 0% round 0px)", opacity: 1 },
+        hidden: { opacity: 0, y: 24 },
+        visible: { opacity: 1, y: 0 },
       }}
       initial={prefersReduced ? false : "hidden"}
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 1.0, ease: EASE_DEFAULT }}
+      transition={{ duration: 0.7, ease: EASE_DEFAULT }}
       suppressHydrationWarning
     >
 
