@@ -92,7 +92,7 @@ export default function About() {
               >
                 Дмитрий
               </h2>
-              <p className="font-mono text-[10px] tracking-[0.18em] uppercase mt-2" style={{ color: "rgba(0,0,0,0.42)" }}>
+              <p className="font-mono text-[10px] tracking-[0.18em] uppercase mt-2" style={{ color: "rgba(0,0,0,0.6)" }}>
                 AI&nbsp;Visual · Design
               </p>
             </div>
@@ -178,7 +178,7 @@ export default function About() {
           {services.map((s) => (
             <motion.div
               key={s.num}
-              className="flex items-center gap-5 py-5 group cursor-default relative overflow-hidden"
+              className="flex items-center gap-5 py-3.5 md:py-5 group cursor-default relative overflow-hidden"
               style={{ boxShadow: "0 1px 0 0 var(--border)" }}
               variants={{ hidden: { opacity: 0, x: 24 }, visible: { opacity: 1, x: 0 } }}
               transition={{ duration: 0.55, ease: EASE_DEFAULT }}
@@ -262,7 +262,7 @@ export default function About() {
                 whileHover={{ opacity: 1 }}
                 transition={{ duration: 0.25 }}
               />
-              <p className="text-sm font-mono leading-tight relative z-10">{skill}</p>
+              <p className="text-xs md:text-sm font-mono leading-tight relative z-10">{skill}</p>
             </motion.div>
           ))}
         </motion.div>

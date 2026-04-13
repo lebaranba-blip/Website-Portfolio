@@ -12,7 +12,7 @@ export default function Works() {
   return (
     <motion.section
       id="works"
-      className="py-24 md:py-32 px-6 md:px-10 max-w-7xl mx-auto"
+      className="pt-28 pb-24 md:py-32 px-6 md:px-10 max-w-7xl mx-auto"
       variants={{
         hidden: { clipPath: "inset(5% 2% 0% 2% round 20px)", opacity: 0.4 },
         visible: { clipPath: "inset(0% 0% 0% 0% round 0px)", opacity: 1 },

@@ -68,8 +68,8 @@ export default function HeroSection() {
 
       {/* ── HEADER ── */}
       <header className="relative z-20 flex items-center justify-between md:justify-center px-6 md:px-10 py-5 flex-shrink-0">
-        {/* Spacer left on mobile */}
-        <div className="w-10 md:hidden" />
+        {/* Logo — mobile only */}
+        <a href="#hero" className="md:hidden font-black text-lg tracking-tighter" style={{ color: "var(--text)" }}>DM</a>
 
         {/* GlowMenu — center, desktop only */}
         <nav aria-label="Основная навигация" className="hidden md:block">
@@ -201,7 +201,7 @@ export default function HeroSection() {
 
           {/* CTA */}
           <motion.div
-            className="flex items-center justify-center mb-12 w-full sm:w-auto px-4 sm:px-0"
+            className="flex items-center justify-center mb-12"
             variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
             initial="hidden"
             animate={preloaderDone ? "visible" : "hidden"}
@@ -233,7 +233,7 @@ export default function HeroSection() {
                 transition={{ duration: 0.5, delay: 0.8 + i * 0.07, ease: EASE_DEFAULT }}
                 suppressHydrationWarning
               >
-                <span className="font-black text-xl leading-none" style={{ color: "var(--text)" }}>
+                <span className="font-black text-2xl md:text-xl leading-none" style={{ color: "var(--text)" }}>
                   <CountUp num={s.num} suffix={s.suffix} active={preloaderDone} delay={900 + i * 150} />
                 </span>
                 <span className="text-xs font-mono mt-1 opacity-40 tracking-wide">{s.label}</span>
