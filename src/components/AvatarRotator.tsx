@@ -60,7 +60,7 @@ export default function AvatarRotator({ images }: Props) {
       <div
         ref={containerRef}
         className="relative w-full overflow-hidden rounded-2xl cursor-grab active:cursor-grabbing"
-        style={{ maxWidth: 480, aspectRatio: "3/4", background: "var(--surface)", margin: "0 auto" }}
+        style={{ maxWidth: 480, aspectRatio: "3/4", background: "var(--surface)", margin: "0 auto", maxHeight: "60vh" }}
         onPointerDown={onPointerDown}
         onPointerUp={onPointerUp}
         aria-label="360° вид аватара — перетащите или нажмите стрелки"

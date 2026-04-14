@@ -213,9 +213,10 @@ export default function AiAvatarPage() {
         {/* ── Hero ── */}
         <FadeSection
           className="px-6 md:px-12 max-w-6xl mx-auto"
-          style={{ paddingTop: "120px", paddingBottom: "80px" } as React.CSSProperties}
+          style={{ paddingTop: "100px", paddingBottom: "80px" } as React.CSSProperties}
         >
-          <div className="flex flex-col md:flex-row gap-16 items-center">
+          {/* Мобиль: текст сверху, фото снизу. Десктоп: фото слева, текст справа */}
+          <div className="flex flex-col-reverse md:flex-row gap-10 md:gap-16 items-center">
             {/* Hero image */}
             <GlowCard
               className="w-full rounded-2xl overflow-hidden flex-shrink-0 cursor-pointer"
@@ -235,7 +236,7 @@ export default function AiAvatarPage() {
 
             <div className="flex-1 flex flex-col justify-center">
               <motion.span
-                className="text-xs font-mono uppercase tracking-widest mb-6 block"
+                className="text-xs font-mono uppercase tracking-widest mb-4 block"
                 style={{ color: "var(--muted)" }}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -244,8 +245,8 @@ export default function AiAvatarPage() {
                 AI Visual · 2026 · Freepik Spaces
               </motion.span>
               <motion.h1
-                className="font-black leading-none mb-8"
-                style={{ fontSize: "clamp(3.5rem, 8vw, 7rem)", letterSpacing: "-0.04em", color: "var(--text)" }}
+                className="font-black leading-none mb-6"
+                style={{ fontSize: "clamp(3rem, 8vw, 7rem)", letterSpacing: "-0.04em", color: "var(--text)" }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15, duration: 0.7, ease: EASE_DEFAULT }}
@@ -253,7 +254,7 @@ export default function AiAvatarPage() {
                 AI Avatar
               </motion.h1>
               <motion.p
-                className="text-xl leading-relaxed"
+                className="text-base md:text-xl leading-relaxed"
                 style={{ color: "var(--muted)" }}
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
