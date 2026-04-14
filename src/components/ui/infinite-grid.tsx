@@ -41,6 +41,7 @@ export default function InfiniteGrid() {
     <div
       className="fixed inset-0 pointer-events-none overflow-hidden text-black z-0"
       aria-hidden="true"
+      style={{ contain: "strict", transform: "translateZ(0)" }}
     >
       {/* static base layer */}
       <div className="absolute inset-0 opacity-[0.07]">

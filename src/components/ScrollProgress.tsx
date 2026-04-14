@@ -1,8 +1,10 @@
 "use client"
 import { useEffect, useRef } from "react"
+import { useLenis } from "@/lib/lenis-context"
 
 export default function ScrollProgress() {
   const barRef = useRef<HTMLDivElement>(null)
+  const lenis = useLenis()
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
@@ -10,16 +12,23 @@ export default function ScrollProgress() {
     const bar = barRef.current
     if (!bar) return
 
-    const onScroll = () => {
-      const scrolled = window.scrollY
+    const update = (scrolled: number) => {
       const total = document.documentElement.scrollHeight - window.innerHeight
       const progress = total > 0 ? scrolled / total : 0
       bar.style.transform = `scaleX(${progress})`
     }
 
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
+    if (lenis) {
+      const onLenisScroll = ({ scroll }: { scroll: number }) => update(scroll)
+      lenis.on("scroll", onLenisScroll)
+      return () => lenis.off("scroll", onLenisScroll)
+    }
+
+    // Fallback — touch devices where Lenis is disabled
+    const onNativeScroll = () => update(window.scrollY)
+    window.addEventListener("scroll", onNativeScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onNativeScroll)
+  }, [lenis])
 
   return (
     <div

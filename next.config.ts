@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    qualities: [75, 85, 92],
+    deviceSizes: [640, 1080, 1440, 1920, 2560],
+    imageSizes: [320, 480, 640, 800, 1200],
+  },
   async headers() {
     return [
       {

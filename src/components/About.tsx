@@ -79,7 +79,7 @@ export default function About() {
                 width={720}
                 height={960}
                 priority
-                quality={85}
+                quality={92}
                 sizes="(max-width: 768px) 42vw, 360px"
                 style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 10%", display: "block" }}
               />

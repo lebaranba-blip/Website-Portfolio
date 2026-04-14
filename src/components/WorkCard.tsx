@@ -53,20 +53,15 @@ export default function WorkCard({ work, index }: WorkCardProps) {
         outline: "none",
       }}
       variants={{
-        hidden: { opacity: 0, y: 32 },
-        visible: { opacity: 1, y: 0 },
+        hidden: { opacity: 0 },
+        visible: { opacity: 1 },
       }}
-      transition={{ duration: 0.65, ease: EASE_DEFAULT }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
       suppressHydrationWarning
     >
       {/* Image */}
       <div className="overflow-hidden relative" style={{ aspectRatio: "4/3", borderRadius: "11px 11px 0 0" }}>
-        <motion.div
-          className="w-full h-full"
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.6, ease: EASE_DEFAULT }}
-          suppressHydrationWarning
-        >
+        <div className="w-full h-full">
           <Image
             src={work.image}
             alt={work.alt}
@@ -74,11 +69,11 @@ export default function WorkCard({ work, index }: WorkCardProps) {
             height={600}
             loading={index === 0 ? "eager" : "lazy"}
             priority={index === 0}
-            quality={85}
+            quality={92}
             sizes="(max-width: 640px) calc(100vw - 24px), (max-width: 1024px) calc(50vw - 16px), calc(33.33vw - 18px)"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           />
-        </motion.div>
+        </div>
 
         {work.desc && (
           <motion.div

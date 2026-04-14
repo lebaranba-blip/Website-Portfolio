@@ -13,37 +13,37 @@ export default function StickyNav() {
   const prefersReduced = useReducedMotion()
   const lenis = useLenis()
 
-  // Show/hide nav on scroll
+  // Show/hide nav + active section — synced with Lenis
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.85)
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
+    const threshold = window.innerHeight * 0.85
 
-  // Closest section to viewport center — с RAF throttle
-  useEffect(() => {
-    let ticking = false
-    const onScroll = () => {
-      if (ticking) return
-      ticking = true
-      requestAnimationFrame(() => {
-        const center = window.innerHeight / 2
-        let closest: string | undefined
-        let minDist = Infinity
-        NAV_ITEMS.forEach((item) => {
-          const el = document.getElementById(item.sectionId)
-          if (!el) return
-          const rect = el.getBoundingClientRect()
-          const dist = Math.abs(rect.top + rect.height / 2 - center)
-          if (dist < minDist) { minDist = dist; closest = item.label }
-        })
-        if (closest) setActiveItem(closest)
-        ticking = false
+    const onScroll = ({ scroll }: { scroll: number }) => {
+      setVisible(scroll > threshold)
+
+      // Closest section to viewport center
+      const center = window.innerHeight / 2
+      let closest: string | undefined
+      let minDist = Infinity
+      NAV_ITEMS.forEach((item) => {
+        const el = document.getElementById(item.sectionId)
+        if (!el) return
+        const rect = el.getBoundingClientRect()
+        const dist = Math.abs(rect.top + rect.height / 2 - center)
+        if (dist < minDist) { minDist = dist; closest = item.label }
       })
+      if (closest) setActiveItem(closest)
     }
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
+
+    if (lenis) {
+      lenis.on("scroll", onScroll)
+      return () => lenis.off("scroll", onScroll)
+    }
+
+    // Fallback — touch devices
+    const onNativeScroll = () => onScroll({ scroll: window.scrollY })
+    window.addEventListener("scroll", onNativeScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onNativeScroll)
+  }, [lenis])
 
   // Scroll lock при открытом мобильном меню
   useEffect(() => {
@@ -81,6 +81,8 @@ export default function StickyNav() {
                   setActiveItem(label)
                   if (lenis && href) {
                     lenis.scrollTo(href, { duration: 1.2, easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) })
+                  } else if (href) {
+                    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" })
                   }
                 }}
               />

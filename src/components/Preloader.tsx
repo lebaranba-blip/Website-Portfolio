@@ -15,6 +15,13 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
   }, [onComplete])
 
   useEffect(() => {
+    // Пропускаем прелоадер при повторных посещениях в той же сессии
+    if (sessionStorage.getItem("preloader-done")) {
+      setVisible(false)
+      safeComplete()
+      return
+    }
+
     const duration = 2000
     const interval = 16
     const steps = duration / interval
@@ -28,6 +35,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
 
       if (current >= steps) {
         clearInterval(timer)
+        sessionStorage.setItem("preloader-done", "1")
         setTimeout(() => setVisible(false), 400)
       }
     }, interval)

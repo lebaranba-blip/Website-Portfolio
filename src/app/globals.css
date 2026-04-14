@@ -48,7 +48,6 @@ body {
 }
 
 html, body {
-  /* Lenis требует чтобы scroll был на html/body, не на дочерних элементах */
   overflow-x: clip;
 }
 
@@ -188,7 +187,6 @@ html, body {
 
 .work-card:hover img {
   transform: scale(1.05);
-  will-change: transform;
 }
 
 /* Telegram button — spinning conic border */

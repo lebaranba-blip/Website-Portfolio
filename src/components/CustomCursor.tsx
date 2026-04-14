@@ -52,7 +52,7 @@ export default function CustomCursor() {
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      trail.forEach((p, i) => {
+      trail.forEach((p) => {
         p.age += 1
         const life = 1 - p.age / MAX_TRAIL
         const size = Math.max(0.01, p.size * life)
@@ -130,6 +130,8 @@ export default function CustomCursor() {
           opacity: isVisible ? 1 : 0,
           transition: "opacity 0.3s",
           mixBlendMode: "normal",
+          transform: "translateZ(0)",
+          contain: "strict",
         }}
       />
 

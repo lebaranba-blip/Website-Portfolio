@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect, useRef } from "react"
 import dynamic from "next/dynamic"
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion"
+import { motion, useReducedMotion, useMotionValue, useTransform } from "framer-motion"
 import { usePreloaderDone } from "@/lib/preloader-context"
 import { MenuBar } from "@/components/ui/glow-menu"
 import { NAV_ITEMS, EASE_DEFAULT, TELEGRAM_URL } from "@/lib/constants"
@@ -52,9 +52,23 @@ export default function HeroSection() {
   const preloaderDone = usePreloaderDone()
   const lenis = useLenis()
 
-  const { scrollY } = useScroll()
+  const scrollY = useMotionValue(0)
   const contentY = useTransform(scrollY, [0, 600], [0, prefersReduced ? 0 : -60])
   const contentOpacity = useTransform(scrollY, [0, 350], [1, 0])
+
+  useEffect(() => {
+    if (prefersReduced) return
+    // Sync with Lenis scroll to avoid jitter
+    if (lenis) {
+      const onLenisScroll = ({ scroll }: { scroll: number }) => scrollY.set(scroll)
+      lenis.on("scroll", onLenisScroll)
+      return () => lenis.off("scroll", onLenisScroll)
+    }
+    // Fallback for when Lenis is not active (mobile / touch)
+    const onNativeScroll = () => scrollY.set(window.scrollY)
+    window.addEventListener("scroll", onNativeScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onNativeScroll)
+  }, [lenis, prefersReduced, scrollY])
 
   return (
     <section
