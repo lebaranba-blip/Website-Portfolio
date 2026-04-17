@@ -198,6 +198,34 @@ export default function FeaturedWorkCard({ work }: Props) {
               className="mt-3 rounded-2xl p-5 md:p-8"
               style={{ border: "1px solid rgba(0,0,0,0.07)", background: "var(--surface)" }}
             >
+              {work.fullVideo && (
+                <div className="relative mb-6 rounded-xl overflow-hidden" style={{ background: "#000" }}>
+                  <video
+                    ref={videoRef}
+                    src={work.fullVideo}
+                    className="w-full h-auto"
+                    style={{ display: "block", maxHeight: "70vh" }}
+                    muted
+                    loop
+                    playsInline
+                    controls={false}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                  <button
+                    onClick={(e) => { e.stopPropagation(); handleToggleMute() }}
+                    className="absolute bottom-3 right-3 w-9 h-9 flex items-center justify-center rounded-full text-white transition-opacity hover:opacity-80"
+                    style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(4px)" }}
+                    aria-label={muted ? "Включить звук" : "Выключить звук"}
+                  >
+                    {muted ? (
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                    ) : (
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
+                    )}
+                  </button>
+                </div>
+              )}
+
               {work.gallery && work.gallery.length > 0 && (
                 <motion.div
                   className="columns-2 md:columns-3 lg:columns-4 gap-3"

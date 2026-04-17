@@ -162,10 +162,11 @@ function FadeSection({ children, className, style }: { children: React.ReactNode
     <motion.section
       className={className}
       style={style}
-      initial={{ opacity: 0, y: 32 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.7, ease: EASE_DEFAULT }}
+      transition={{ duration: 0.6, ease: EASE_DEFAULT }}
+      suppressHydrationWarning
     >
       {children}
     </motion.section>
@@ -241,6 +242,7 @@ export default function AiAvatarPage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1, duration: 0.6, ease: EASE_DEFAULT }}
+                suppressHydrationWarning
               >
                 AI Visual · 2026 · Freepik Spaces
               </motion.span>
@@ -250,6 +252,7 @@ export default function AiAvatarPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15, duration: 0.7, ease: EASE_DEFAULT }}
+                suppressHydrationWarning
               >
                 AI Avatar
               </motion.h1>
@@ -259,6 +262,7 @@ export default function AiAvatarPage() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25, duration: 0.6, ease: EASE_DEFAULT }}
+                suppressHydrationWarning
               >
                 AI-модель для брендов — заменяет живую модель в каталогах,
                 лукбуках и рекламе. Любой образ, любой формат, без съёмок.
@@ -309,6 +313,7 @@ export default function AiAvatarPage() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
+            suppressHydrationWarning
           >
             {[
               { src: "/works/ai-avatar/clothes.png",     alt: "Лукбук — Miu Miu Academic",  galleryIdx: 0 },
@@ -403,9 +408,9 @@ export default function AiAvatarPage() {
             </p>
           </div>
 
-          {/* Лэйаут: 3 колонки, все одинаковой высоты */}
+          {/* Десктоп: 3 колонки асимметрично. Мобиль: 2 колонки */}
           <motion.div
-            className="grid gap-3"
+            className="hidden md:grid gap-3"
             style={{ gridTemplateColumns: "1.2fr 1fr 1fr", gridTemplateRows: "1fr 1fr", height: 700 }}
             variants={{ visible: { transition: { staggerChildren: 0.07 } } }}
             initial="hidden"
@@ -420,8 +425,6 @@ export default function AiAvatarPage() {
             >
               <video src="/works/ai-avatar/ugc/freepik_closeup-portrait-of-woman_2781037723.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover" />
             </motion.div>
-
-            {/* Колонка 2 верх */}
             <motion.div
               variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_DEFAULT } } }}
               className="rounded-2xl overflow-hidden"
@@ -429,8 +432,6 @@ export default function AiAvatarPage() {
             >
               <video src="/works/ai-avatar/ugc/freepik_young-woman-with-curly-bl_2781040377.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover" />
             </motion.div>
-
-            {/* Колонка 3 верх */}
             <motion.div
               variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_DEFAULT } } }}
               className="rounded-2xl overflow-hidden"
@@ -438,8 +439,6 @@ export default function AiAvatarPage() {
             >
               <video src="/works/ai-avatar/ugc/freepik_extreme-macro-of-lips-lip_2781032383.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover" />
             </motion.div>
-
-            {/* Колонка 2 низ */}
             <motion.div
               variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_DEFAULT } } }}
               className="rounded-2xl overflow-hidden"
@@ -447,8 +446,6 @@ export default function AiAvatarPage() {
             >
               <video src="/works/ai-avatar/ugc/freepik_young-woman-with-curly-bl_2781042514.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover" />
             </motion.div>
-
-            {/* Колонка 3 низ */}
             <motion.div
               variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_DEFAULT } } }}
               className="rounded-2xl overflow-hidden"
@@ -456,6 +453,33 @@ export default function AiAvatarPage() {
             >
               <video src="/works/ai-avatar/ugc/freepik_young-woman-with-curly-bl_2781057141.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover" />
             </motion.div>
+          </motion.div>
+
+          {/* Мобиль: 2 колонки */}
+          <motion.div
+            className="grid md:hidden gap-3"
+            style={{ gridTemplateColumns: "1fr 1fr" }}
+            variants={{ visible: { transition: { staggerChildren: 0.07 } } }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+          >
+            {[
+              "/works/ai-avatar/ugc/freepik_closeup-portrait-of-woman_2781037723.mp4",
+              "/works/ai-avatar/ugc/freepik_young-woman-with-curly-bl_2781040377.mp4",
+              "/works/ai-avatar/ugc/freepik_extreme-macro-of-lips-lip_2781032383.mp4",
+              "/works/ai-avatar/ugc/freepik_young-woman-with-curly-bl_2781042514.mp4",
+              "/works/ai-avatar/ugc/freepik_young-woman-with-curly-bl_2781057141.mp4",
+            ].map((src) => (
+              <motion.div
+                key={src}
+                variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE_DEFAULT } } }}
+                className="rounded-xl overflow-hidden"
+                style={{ aspectRatio: "9/16", background: "var(--surface)" }}
+              >
+                <video src={src} autoPlay muted loop playsInline className="w-full h-full object-cover" />
+              </motion.div>
+            ))}
           </motion.div>
         </FadeSection>
 

@@ -56,47 +56,73 @@ export default function AvatarRotator({ images }: Props) {
 
   return (
     <div className="flex flex-col items-center gap-6 select-none">
-      {/* Image container */}
-      <div
-        ref={containerRef}
-        className="relative w-full overflow-hidden rounded-2xl cursor-grab active:cursor-grabbing"
-        style={{ maxWidth: 480, aspectRatio: "3/4", background: "var(--surface)", margin: "0 auto", maxHeight: "60vh" }}
-        onPointerDown={onPointerDown}
-        onPointerUp={onPointerUp}
-        aria-label="360° вид аватара — перетащите или нажмите стрелки"
-        role="img"
-      >
-        <AnimatePresence initial={false} custom={direction} mode="wait">
-          <motion.div
-            key={current}
-            custom={direction}
-            variants={variants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.25, ease: EASE_DEFAULT }}
-            className="absolute inset-0"
-            suppressHydrationWarning
-          >
-            <Image
-              src={images[current].src}
-              alt={images[current].alt}
-              fill
-              className="object-cover object-top"
-              quality={92}
-              priority={current === 0}
-              draggable={false}
-            />
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Drag hint */}
-        <div
-          className="absolute bottom-3 left-1/2 -translate-x-1/2 text-xs font-mono px-3 py-1 rounded-full pointer-events-none"
-          style={{ background: "rgba(0,0,0,0.35)", color: "rgba(255,255,255,0.8)", backdropFilter: "blur(4px)" }}
+      {/* Image container + side arrows */}
+      <div className="relative w-full flex items-center gap-3" style={{ maxWidth: 560, margin: "0 auto" }}>
+        {/* Prev arrow */}
+        <button
+          onClick={() => go(-1)}
+          className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full transition-opacity hover:opacity-70 active:scale-95"
+          style={{ background: "var(--surface)", border: "1px solid rgba(0,0,0,0.08)", color: "var(--text)" }}
+          aria-label="Предыдущий ракурс"
         >
-          ← перетащи →
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+
+        <div
+          ref={containerRef}
+          className="relative flex-1 overflow-hidden rounded-2xl cursor-grab active:cursor-grabbing"
+          style={{ aspectRatio: "3/4", background: "var(--surface)", maxHeight: "60vh" }}
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+          aria-label="360° вид аватара — перетащите или нажмите стрелки"
+          role="img"
+        >
+          <AnimatePresence initial={false} custom={direction} mode="wait">
+            <motion.div
+              key={current}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.25, ease: EASE_DEFAULT }}
+              className="absolute inset-0"
+              suppressHydrationWarning
+            >
+              <Image
+                src={images[current].src}
+                alt={images[current].alt}
+                fill
+                className="object-cover object-top"
+                quality={92}
+                priority={current === 0}
+                draggable={false}
+              />
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Drag hint — hidden on touch devices */}
+          <div
+            className="absolute bottom-3 left-1/2 -translate-x-1/2 text-xs font-mono px-3 py-1 rounded-full pointer-events-none hidden md:block"
+            style={{ background: "rgba(0,0,0,0.35)", color: "rgba(255,255,255,0.8)", backdropFilter: "blur(4px)" }}
+          >
+            ← перетащи →
+          </div>
         </div>
+
+        {/* Next arrow */}
+        <button
+          onClick={() => go(1)}
+          className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full transition-opacity hover:opacity-70 active:scale-95"
+          style={{ background: "var(--surface)", border: "1px solid rgba(0,0,0,0.08)", color: "var(--text)" }}
+          aria-label="Следующий ракурс"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
       </div>
 
       {/* Dots */}
