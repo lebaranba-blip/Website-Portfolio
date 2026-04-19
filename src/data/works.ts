@@ -30,6 +30,7 @@ export const works: Work[] = [
     year: 2026,
     desc: "Полный брендинг для сети пончиков. Айдентика, упаковка, мерч, реклама.",
     featured: true,
+    href: "/works/gump",
     fullVideo: "/works/gump/ad.mp4",
     workflow: "/Workflow.png",
     gallery: [
