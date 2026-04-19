@@ -309,8 +309,8 @@ export default function GumpDonutsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ gridAutoRows: "1fr" }}>
             {/* Логотип */}
             <motion.div
-              className="rounded-2xl overflow-hidden flex items-center justify-center p-12 cursor-pointer"
-              style={{ background: "var(--surface)", aspectRatio: "3/2" }}
+              className="rounded-2xl overflow-hidden flex items-center justify-center cursor-pointer"
+              style={{ background: "#fff", aspectRatio: "3/2", padding: "10%" }}
               onClick={() => openIdentity(0)}
               whileHover={{ scale: 1.01, boxShadow: "0 8px 30px rgba(0,0,0,0.08)" }}
               transition={{ duration: 0.35, ease: EASE_DEFAULT }}
@@ -321,7 +321,7 @@ export default function GumpDonutsPage() {
                 alt="Логотип Gump Donuts"
                 width={400}
                 height={400}
-                className="w-full max-w-xs h-auto"
+                className="w-full h-auto"
                 quality={92}
               />
             </motion.div>
