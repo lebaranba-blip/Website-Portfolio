@@ -493,6 +493,25 @@ export default function GumpDonutsPage() {
               />
             </motion.div>
 
+            {/* Результат генерации */}
+            <motion.div
+              className="mt-8 rounded-2xl overflow-hidden"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.15, ease: EASE_DEFAULT }}
+              suppressHydrationWarning
+            >
+              <Image
+                src="/works/gump/space1.png"
+                alt="Gump Donuts — фотореалистичный рендер: астронавт за рулём брендированного фургона в космосе"
+                width={1280}
+                height={853}
+                className="w-full h-auto rounded-2xl"
+                quality={92}
+              />
+            </motion.div>
+
             {/* 3 тезиса */}
             <motion.div
               className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8"
