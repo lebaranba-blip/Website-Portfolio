@@ -310,7 +310,7 @@ export default function GumpDonutsPage() {
             {/* Логотип */}
             <motion.div
               className="rounded-2xl overflow-hidden flex items-center justify-center cursor-pointer"
-              style={{ background: "#fff", aspectRatio: "3/2" }}
+              style={{ background: "#1B3FD8", aspectRatio: "3/2" }}
               onClick={() => openIdentity(0)}
               whileHover={{ scale: 1.01, boxShadow: "0 8px 30px rgba(0,0,0,0.08)" }}
               transition={{ duration: 0.35, ease: EASE_DEFAULT }}
