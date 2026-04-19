@@ -7,6 +7,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import { TELEGRAM_URL, EASE_DEFAULT } from "@/lib/constants"
 
 // ── Медиа ─────────────────────────────────────────────────────────────────
+const POSTER_ITEM = { src: "/works/gump/poster.png", alt: "Gump Donuts — Glazing Through the Galaxy" }
+
 const IDENTITY_ITEMS = [
   { src: "/works/gump/logo.png",      alt: "Логотип Gump Donuts",       aspect: "square"    },
   { src: "/works/gump/truck.png",     alt: "Брендированный фургон",     aspect: "landscape" },
@@ -47,7 +49,8 @@ function Lightbox({ images, index, onClose, onNav }: {
   index: number
   onClose: () => void
   onNav: (i: number) => void
-}) {
+})
+ {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose()
@@ -179,12 +182,15 @@ function VideoPlayer({ src }: { src: string }) {
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────
+type LightboxSet = { images: { src: string; alt: string }[]; index: number }
+
 export default function GumpDonutsPage() {
-  const [lightbox, setLightbox] = useState<number | null>(null)
+  const [lightbox, setLightbox] = useState<LightboxSet | null>(null)
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
 
-  const openLightbox = useCallback((i: number) => setLightbox(i), [])
+  const openIdentity = useCallback((i: number) => setLightbox({ images: IDENTITY_ITEMS, index: i }), [])
+  const openPoster = useCallback(() => setLightbox({ images: [POSTER_ITEM], index: 0 }), [])
   const closeLightbox = useCallback(() => setLightbox(null), [])
 
   return (
@@ -225,10 +231,11 @@ export default function GumpDonutsPage() {
             {/* Hero image */}
             <motion.div
               className="w-full rounded-2xl overflow-hidden flex-shrink-0 cursor-pointer"
-              style={{ background: "var(--surface)", maxWidth: 480 }}
-              onClick={() => openLightbox(2)}
+              style={{ background: "var(--surface)", maxWidth: 480, maxHeight: "70vh" }}
+              onClick={openPoster}
               whileHover={{ scale: 1.01, boxShadow: "0 12px 40px rgba(0,0,0,0.1)" }}
-              transition={{ duration: 0.35, ease: EASE_DEFAULT }}
+              animate={{ y: [0, -8, 0] }}
+              transition={{ y: { duration: 6, repeat: Infinity, ease: "easeInOut" }, scale: { duration: 0.35, ease: EASE_DEFAULT } }}
               suppressHydrationWarning
             >
               <Image
@@ -236,7 +243,8 @@ export default function GumpDonutsPage() {
                 alt="Gump Donuts — Glazing Through the Galaxy"
                 width={960}
                 height={1280}
-                className="w-full h-auto"
+                className="w-full h-auto object-cover"
+                style={{ maxHeight: "70vh" }}
                 priority
                 quality={92}
               />
@@ -271,8 +279,8 @@ export default function GumpDonutsPage() {
                 transition={{ delay: 0.25, duration: 0.6, ease: EASE_DEFAULT }}
                 suppressHydrationWarning
               >
-                Концептуальный брендинг для сети пончиков. Персонаж, айдентика,
-                упаковка, мерч и промо-видео — всё через AI.
+                Бренд пончиков с характером. Маскот, стиль, упаковка,
+                мерч и рекламный ролик. Без студии — только AI.
               </motion.p>
             </div>
           </div>
@@ -290,10 +298,10 @@ export default function GumpDonutsPage() {
               Идея
             </h2>
             <p className="mt-4 text-base leading-relaxed" style={{ color: "var(--muted)", maxWidth: 560 }}>
-              Gump — отсыл к Форресту Гампу. Простой, честный, с душой.
-              Маскот-бегун с пончиком в руке: не фастфуд-корпорация, а персонаж
-              с историей. Бренд иронизирует над культурой ЗОЖ — не запрещает
-              вкусное, а предлагает заработать его бегом.
+              Имя взято у Форреста Гампа. Простой парень, который просто бежит.
+              Маскот — бородатый бегун с пончиком. Не корпорация, а живой персонаж.
+              Слоган «EAT OR REGRET.» — ирония над ЗОЖ-культурой: хочешь пончик?
+              Заслужи. Или просто съешь и не пожалей.
             </p>
           </div>
 
@@ -303,7 +311,7 @@ export default function GumpDonutsPage() {
             <motion.div
               className="rounded-2xl overflow-hidden flex items-center justify-center p-12 cursor-pointer"
               style={{ background: "var(--surface)", aspectRatio: "3/2" }}
-              onClick={() => openLightbox(0)}
+              onClick={() => openIdentity(0)}
               whileHover={{ scale: 1.01, boxShadow: "0 8px 30px rgba(0,0,0,0.08)" }}
               transition={{ duration: 0.35, ease: EASE_DEFAULT }}
               suppressHydrationWarning
@@ -322,7 +330,7 @@ export default function GumpDonutsPage() {
             <motion.div
               className="rounded-2xl overflow-hidden cursor-pointer"
               style={{ background: "var(--surface)", aspectRatio: "3/2" }}
-              onClick={() => openLightbox(2)}
+              onClick={() => openIdentity(2)}
               whileHover={{ scale: 1.01, boxShadow: "0 8px 30px rgba(0,0,0,0.08)" }}
               transition={{ duration: 0.35, ease: EASE_DEFAULT }}
               suppressHydrationWarning
@@ -349,7 +357,7 @@ export default function GumpDonutsPage() {
                 opacity: 0.08,
               }}
               initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 0.08, y: 0 }}
+              whileInView={{ opacity: 0.15, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: EASE_DEFAULT }}
               suppressHydrationWarning
@@ -377,19 +385,20 @@ export default function GumpDonutsPage() {
           </div>
 
           {/* Цветовая палитра */}
-          <div className="flex gap-3 mb-10">
+          <div className="flex gap-4 mb-10">
             {[
-              { color: "#1B3FD8", label: "Gump Blue" },
-              { color: "#F472B6", label: "Donut Pink" },
-              { color: "#0A0A0A", label: "Night" },
-              { color: "#FFFFFF", label: "Glaze" },
-            ].map(({ color, label }) => (
+              { color: "#1B3FD8", label: "Gump Blue",   hex: "#1B3FD8" },
+              { color: "#F472B6", label: "Donut Pink",  hex: "#F472B6" },
+              { color: "#0A0A0A", label: "Night",       hex: "#0A0A0A" },
+              { color: "#FFFFFF", label: "Glaze",       hex: "#FFFFFF" },
+            ].map(({ color, label, hex }) => (
               <div key={color} className="flex flex-col items-center gap-2">
                 <div
                   className="w-12 h-12 md:w-16 md:h-16 rounded-xl"
                   style={{ background: color, border: color === "#FFFFFF" ? "1px solid rgba(0,0,0,0.1)" : undefined }}
                 />
-                <span className="text-xs font-mono" style={{ color: "var(--muted)" }}>{label}</span>
+                <span className="text-xs font-mono font-bold" style={{ color: "var(--text)" }}>{label}</span>
+                <span className="text-xs font-mono" style={{ color: "var(--muted)" }}>{hex}</span>
               </div>
             ))}
           </div>
@@ -409,7 +418,7 @@ export default function GumpDonutsPage() {
                 type="button"
                 className="mb-3 block w-full break-inside-avoid overflow-hidden rounded-xl cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]"
                 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } } }}
-                onClick={() => openLightbox(idx)}
+                onClick={() => openIdentity(idx)}
                 aria-label={`Открыть: ${item.alt}`}
                 suppressHydrationWarning
               >
@@ -448,8 +457,8 @@ export default function GumpDonutsPage() {
                 AI Pipeline
               </h2>
               <p className="mt-3 text-base" style={{ color: "rgba(255,255,255,0.5)", maxWidth: 520 }}>
-                Управляемая генерация с сохранением 100% айдентики бренда.
-                Логотип и фургон — жёсткие референсы, нейросеть не фантазирует.
+                Нейросеть не фантазирует — она работает по референсам.
+                Логотип и фургон зафиксированы. Бренд узнаётся в любой сцене.
               </p>
             </div>
 
@@ -463,10 +472,10 @@ export default function GumpDonutsPage() {
               suppressHydrationWarning
             >
               <Image
-                src="/works/gump/pipeline.png"
-                alt="AI Pipeline — схема воркфлоу Gump Donuts"
-                width={2303}
-                height={2207}
+                src="/works/gump/workflow-board.png"
+                alt="AI Pipeline — Kling воркфлоу Gump Donuts"
+                width={1920}
+                height={1080}
                 className="w-full h-auto"
                 quality={92}
               />
@@ -544,16 +553,16 @@ export default function GumpDonutsPage() {
             >
               {[
                 {
-                  title: "100% сохранение айдентики",
-                  text: "Нейросеть не фантазирует. Логотип и фургон используются как жёсткие референсы — бренд узнаваем в любой сцене.",
+                  title: "Бренд не теряется",
+                  text: "Логотип и фургон — жёсткие референсы на каждом шаге. Маскот одинаков в любой сцене: космос, улица, студия.",
                 },
                 {
-                  title: "Инженерный промптинг",
-                  text: "Каждая сцена строится через точную настройку физики света, ракурсов камеры и взаимодействия объектов.",
+                  title: "Промптинг как режиссура",
+                  text: "Свет, ракурс, физика объектов — всё прописывается руками. Не генерация наугад, а управляемый результат.",
                 },
                 {
-                  title: "Альтернатива 3D-продакшену",
-                  text: "Качество CGI-уровня без студии и месяцев работы. Предсказуемый результат, готовый к запуску в рекламе.",
+                  title: "CGI без студии",
+                  text: "Фотореалистичные рендеры за часы, не месяцы. Готово к рекламе — без 3D-художников и рендер-ферм.",
                 },
               ].map(({ title, text }) => (
                 <motion.div
@@ -583,8 +592,8 @@ export default function GumpDonutsPage() {
               В движении
             </h2>
             <p className="mt-3 text-base" style={{ color: "var(--muted)", maxWidth: 480 }}>
-              Рекламный ролик создан через AI — от концепции до финального рендера.
-              Пончик в невесомости как визуальная метафора слогана «Glazing Through the Galaxy».
+              Ролик от концепции до монтажа — без съёмочной группы.
+                «Glazing Through the Galaxy» — пончик в невесомости как буквальный ответ на слоган.
             </p>
           </div>
           <VideoPlayer src="/works/gump/ad.mp4" />
@@ -596,15 +605,21 @@ export default function GumpDonutsPage() {
 
         {/* ── О проекте ── */}
         <FadeSection className="px-6 md:px-12 max-w-6xl mx-auto py-20">
+          <div className="mb-10">
+            <span className="text-xs font-mono uppercase tracking-widest mb-3 block" style={{ color: "var(--muted)" }}>— 05</span>
+            <h2 className="font-black leading-none" style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", letterSpacing: "-0.04em", color: "var(--text)" }}>
+              О проекте
+            </h2>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
                 title: "Задача",
                 content: (
                   <p className="text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
-                    Создать концептуальный бренд пончиков с характером — маскот,
-                    айдентика, носители и промо-видео. Показать, что AI-инструменты
-                    дают результат уровня профессиональной студии.
+                    Сделать бренд пончиков, который запоминается. Маскот с историей,
+                    стиль на всех носителях, рекламный ролик. И доказать, что
+                    AI-инструменты дают студийное качество.
                   </p>
                 ),
               },
@@ -653,7 +668,7 @@ export default function GumpDonutsPage() {
             Хотите такой же бренд?
           </h2>
           <p className="mb-10 text-base" style={{ color: "var(--muted)" }}>
-            Концепция, маскот, айдентика и промо — всё через AI. Быстро и без студии.
+            Концепция, маскот, стиль и видео — с нуля. Если нужен бренд, который работает.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" className="btn-primary">
@@ -670,7 +685,12 @@ export default function GumpDonutsPage() {
       {/* Lightbox */}
       <AnimatePresence>
         {mounted && lightbox !== null && (
-          <Lightbox images={IDENTITY_ITEMS} index={lightbox} onClose={closeLightbox} onNav={setLightbox} />
+          <Lightbox
+            images={lightbox.images}
+            index={lightbox.index}
+            onClose={closeLightbox}
+            onNav={(i) => setLightbox(lb => lb ? { ...lb, index: i } : null)}
+          />
         )}
       </AnimatePresence>
     </>
