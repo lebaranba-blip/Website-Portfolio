@@ -298,11 +298,11 @@ export default function GumpDonutsPage() {
           </div>
 
           {/* Логотип + слоган */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ gridAutoRows: "1fr" }}>
             {/* Логотип */}
             <motion.div
               className="rounded-2xl overflow-hidden flex items-center justify-center p-12 cursor-pointer"
-              style={{ background: "var(--surface)", minHeight: 300 }}
+              style={{ background: "var(--surface)", aspectRatio: "3/2" }}
               onClick={() => openLightbox(0)}
               whileHover={{ scale: 1.01, boxShadow: "0 8px 30px rgba(0,0,0,0.08)" }}
               transition={{ duration: 0.35, ease: EASE_DEFAULT }}
@@ -321,7 +321,7 @@ export default function GumpDonutsPage() {
             {/* Билборд — слоган */}
             <motion.div
               className="rounded-2xl overflow-hidden cursor-pointer"
-              style={{ background: "var(--surface)" }}
+              style={{ background: "var(--surface)", aspectRatio: "3/2" }}
               onClick={() => openLightbox(2)}
               whileHover={{ scale: 1.01, boxShadow: "0 8px 30px rgba(0,0,0,0.08)" }}
               transition={{ duration: 0.35, ease: EASE_DEFAULT }}
