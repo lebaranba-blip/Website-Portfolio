@@ -431,10 +431,114 @@ export default function GumpDonutsPage() {
           <div style={{ height: 1, background: "rgba(0,0,0,0.07)" }} />
         </div>
 
+        {/* ── AI Pipeline ── */}
+        <motion.section
+          className="py-20"
+          style={{ background: "#0D0D0D" }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7, ease: EASE_DEFAULT }}
+          suppressHydrationWarning
+        >
+          <div className="px-6 md:px-12 max-w-6xl mx-auto">
+            <div className="mb-12">
+              <span className="text-xs font-mono uppercase tracking-widest mb-3 block" style={{ color: "rgba(255,255,255,0.35)" }}>— 03</span>
+              <h2 className="font-black leading-none" style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", letterSpacing: "-0.04em", color: "#fff" }}>
+                AI Pipeline
+              </h2>
+              <p className="mt-3 text-base" style={{ color: "rgba(255,255,255,0.5)", maxWidth: 520 }}>
+                Управляемая генерация с сохранением 100% айдентики бренда.
+                Логотип и фургон — жёсткие референсы, нейросеть не фантазирует.
+              </p>
+            </div>
+
+            {/* Схема воркфлоу */}
+            <motion.div
+              className="rounded-2xl overflow-hidden mb-8 cursor-zoom-in"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: EASE_DEFAULT }}
+              suppressHydrationWarning
+            >
+              <Image
+                src="/works/gump/pipeline.png"
+                alt="AI Pipeline — схема воркфлоу Gump Donuts"
+                width={2303}
+                height={2207}
+                className="w-full h-auto"
+                quality={92}
+              />
+            </motion.div>
+
+            {/* Видео воркфлоу */}
+            <motion.div
+              className="rounded-2xl overflow-hidden"
+              style={{ background: "#000" }}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1, ease: EASE_DEFAULT }}
+              suppressHydrationWarning
+            >
+              <video
+                src="/works/gump/pipeline.mp4"
+                className="w-full h-auto"
+                style={{ display: "block", maxHeight: "80vh" }}
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+            </motion.div>
+
+            {/* 3 тезиса */}
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8"
+              variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              suppressHydrationWarning
+            >
+              {[
+                {
+                  title: "100% сохранение айдентики",
+                  text: "Нейросеть не фантазирует. Логотип и фургон используются как жёсткие референсы — бренд узнаваем в любой сцене.",
+                },
+                {
+                  title: "Инженерный промптинг",
+                  text: "Каждая сцена строится через точную настройку физики света, ракурсов камеры и взаимодействия объектов.",
+                },
+                {
+                  title: "Альтернатива 3D-продакшену",
+                  text: "Качество CGI-уровня без студии и месяцев работы. Предсказуемый результат, готовый к запуску в рекламе.",
+                },
+              ].map(({ title, text }) => (
+                <motion.div
+                  key={title}
+                  variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE_DEFAULT } } }}
+                  className="p-6 rounded-2xl"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}
+                  suppressHydrationWarning
+                >
+                  <h3 className="font-black mb-3 text-sm uppercase tracking-wide" style={{ color: "#F472B6" }}>{title}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>{text}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </motion.section>
+
+        <div className="px-6 md:px-12 max-w-6xl mx-auto">
+          <div style={{ height: 1, background: "rgba(0,0,0,0.07)" }} />
+        </div>
+
         {/* ── Промо-видео ── */}
         <FadeSection className="px-6 md:px-12 max-w-6xl mx-auto py-20">
           <div className="mb-12">
-            <span className="text-xs font-mono uppercase tracking-widest mb-3 block" style={{ color: "var(--muted)" }}>— 03</span>
+            <span className="text-xs font-mono uppercase tracking-widest mb-3 block" style={{ color: "var(--muted)" }}>— 04</span>
             <h2 className="font-black leading-none" style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", letterSpacing: "-0.04em", color: "var(--text)" }}>
               В движении
             </h2>
