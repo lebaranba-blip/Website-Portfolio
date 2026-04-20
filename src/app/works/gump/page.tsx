@@ -305,6 +305,7 @@ const GALLERY = [
   { src: "/works/gump/shopper.png",     alt: "Шоппер" },
   { src: "/works/gump/lifestyle.png",   alt: "Лайфстайл" },
   { src: "/works/gump/banner.png",      alt: "Рекламный баннер" },
+  { src: "/works/gump/space1.png",      alt: "Постер — Gump в космосе" },
 ]
 
 type LightboxSet = { images: { src: string; alt: string }[]; index: number }
@@ -721,8 +722,9 @@ export default function GumpDonutsPage() {
               {/* Row 4: square shopper (5 cols) + wide billboard (7 cols 16:9) */}
               <GCell src="/works/gump/shopper.png"    alt="Шоппер"                label="Шоппер · Мерч"      col="1/6"  row={4} ratio="1"     i={7} onClick={() => openGallery(7)} />
               <GCell src="/works/gump/billboard.png"  alt="Билборд"               label="Наружная реклама"   col="6/13" row={4} ratio="16/9"  i={8} onClick={() => openGallery(5)} />
-              {/* Row 5: banner full-width */}
-              <GCell src="/works/gump/banner.png"     alt="Рекламный баннер"      label="Баннер · OOH"       col="1/13" row={5} ratio="21/9"  i={9} onClick={() => openGallery(9)} />
+              {/* Row 5: space poster (7 cols 16:9) + banner (5 cols 16:9) */}
+              <GCell src="/works/gump/space1.png"     alt="Постер — Gump в космосе" label="Постер · Космос"  col="1/8"  row={5} ratio="16/9"  i={9} onClick={() => openGallery(10)} />
+              <GCell src="/works/gump/banner.png"     alt="Рекламный баннер"        label="Баннер · OOH"     col="8/13" row={5} ratio="16/9"  i={10} onClick={() => openGallery(9)} />
             </div>
             {/* Gallery grid — mobile 2-col */}
             <div className="grid md:hidden" style={{ gridTemplateColumns: "1fr 1fr", gap: 8 }}>
@@ -735,6 +737,8 @@ export default function GumpDonutsPage() {
                 { src: "/works/gump/lifestyle.png",  alt: "Лайфстайл",             label: "Лайфстайл", ratio: "16/9",  gi: 8 },
                 { src: "/works/gump/shopper.png",    alt: "Шоппер",                label: "Шоппер",    ratio: "1",     gi: 7 },
                 { src: "/works/gump/billboard.png",  alt: "Билборд",               label: "Наружка",   ratio: "16/9",  gi: 5 },
+                { src: "/works/gump/space1.png",     alt: "Постер в космосе",       label: "Постер",    ratio: "16/9",  gi: 10 },
+                { src: "/works/gump/banner.png",     alt: "Рекламный баннер",       label: "Баннер",    ratio: "21/9",  gi: 9 },
               ].map(({ src, alt, label, ratio, gi }, i) => (
                 <GCell key={src} src={src} alt={alt} label={label} col="auto" row={0} ratio={ratio} i={i} onClick={() => openGallery(gi)} />
               ))}
