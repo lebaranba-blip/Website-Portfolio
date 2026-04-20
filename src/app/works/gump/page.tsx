@@ -790,13 +790,13 @@ export default function GumpDonutsPage() {
             {/* Space grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
               <FadeIn>
-                <div className="rounded-2xl overflow-hidden">
-                  <Image src="/works/gump/space1.png" alt="Астронавт за рулём фургона" width={1280} height={853} className="w-full h-full object-cover rounded-2xl" quality={92} />
+                <div className="rounded-2xl overflow-hidden" style={{ maxHeight: 360 }}>
+                  <Image src="/works/gump/poster-cafe.png" alt="Постер Gump Donuts в кофейне" width={1280} height={853} className="w-full h-full object-cover rounded-2xl" style={{ maxHeight: 360 }} quality={92} />
                 </div>
               </FadeIn>
               <FadeIn delay={0.08}>
-                <div className="rounded-2xl overflow-hidden" style={{ background: "#000", minHeight: 220 }}>
-                  <video src="/api/video?path=/works/gump/space-video.mp4" className="w-full h-full object-cover" style={{ display: "block", minHeight: 220 }} autoPlay muted loop playsInline />
+                <div className="rounded-2xl overflow-hidden" style={{ background: "#000", maxHeight: 360 }}>
+                  <video src="/api/video?path=/works/gump/space-video.mp4" className="w-full h-full object-cover" style={{ display: "block", maxHeight: 360 }} autoPlay muted loop playsInline />
                 </div>
               </FadeIn>
             </div>
