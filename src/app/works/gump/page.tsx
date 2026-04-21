@@ -783,7 +783,7 @@ export default function GumpDonutsPage() {
             {/* Pipeline video */}
             <FadeIn delay={0.08}>
               <div className="rounded-2xl overflow-hidden mb-6" style={{ background: "#000" }}>
-                <video src="/api/video?path=/works/gump/pipeline.mp4" className="w-full h-auto" style={{ display: "block", maxHeight: "80vh" }} autoPlay muted loop playsInline />
+                <video src="/works/gump/pipeline.mp4" className="w-full h-auto" style={{ display: "block", maxHeight: "80vh" }} autoPlay muted loop playsInline />
               </div>
             </FadeIn>
 
@@ -796,7 +796,7 @@ export default function GumpDonutsPage() {
               </FadeIn>
               <FadeIn delay={0.08}>
                 <div className="rounded-2xl overflow-hidden" style={{ background: "#000", maxHeight: 360 }}>
-                  <video src="/api/video?path=/works/gump/space-video.mp4" className="w-full h-full object-cover" style={{ display: "block", maxHeight: 360 }} autoPlay muted loop playsInline />
+                  <video src="/works/gump/space-video.mp4" className="w-full h-full object-cover" style={{ display: "block", maxHeight: 360 }} autoPlay muted loop playsInline />
                 </div>
               </FadeIn>
             </div>
@@ -874,7 +874,7 @@ export default function GumpDonutsPage() {
             </FadeIn>
 
             <FadeIn delay={0.2}>
-              <VideoPlayer src="/api/video?path=/works/gump/ad.mp4" ratio="48%" />
+              <VideoPlayer src="/works/gump/ad.mp4" ratio="48%" />
             </FadeIn>
           </div>
         </section>
