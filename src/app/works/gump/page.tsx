@@ -695,54 +695,62 @@ export default function GumpDonutsPage() {
               ].map(({ color, name, hex, role }) => (
                 <motion.div key={color} variants={staggerItem}
                   className="rounded-2xl overflow-hidden flex-1 min-w-[130px]"
-                  style={{ border: "1px solid var(--border)" }}
-                  whileHover={{ y: -5 }} suppressHydrationWarning
+                  style={{ boxShadow: "0 2px 14px rgba(0,0,0,0.07), 0 0 0 1px rgba(0,0,0,0.05)" }}
+                  whileHover={{ y: -6, boxShadow: "0 8px 28px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.06)" }}
+                  suppressHydrationWarning
                 >
-                  <div style={{ height: 120, background: color, borderBottom: color === "#FFFFFF" ? "1px solid rgba(0,0,0,0.08)" : undefined }} />
-                  <div className="p-3" style={{ background: "var(--bg)" }}>
+                  <div style={{ height: 140, background: color, borderBottom: color === "#FFFFFF" ? "1px solid rgba(0,0,0,0.06)" : undefined }} />
+                  <div className="px-4 py-3" style={{ background: "var(--bg)" }}>
                     <div className="font-bold text-sm mb-0.5" style={{ color: "var(--text)" }}>{name}</div>
-                    <div className="font-mono text-xs mb-0.5" style={{ color: "var(--muted)" }}>{hex}</div>
-                    <div className="font-mono" style={{ fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted)" }}>{role}</div>
+                    <div className="font-mono text-xs mb-1" style={{ color: "var(--muted)" }}>{hex}</div>
+                    <div className="font-mono" style={{ fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(0,0,0,0.28)", background: "rgba(0,0,0,0.04)", display: "inline-block", padding: "2px 7px", borderRadius: 4 }}>{role}</div>
                   </div>
                 </motion.div>
               ))}
             </motion.div>
 
-            {/* Gallery grid — desktop */}
-            <div className="hidden md:grid" style={{ gridTemplateColumns: "repeat(12, 1fr)", gap: 12 }}>
-              {/* Row 1: wide truck (7 cols 16:10) + tall apron (5 cols 4:5) */}
-              <GCell src="/works/gump/truck.png"      alt="Брендированный фургон" label="Брендинг фургона"   col="1/8"  row={1} ratio="16/10" i={0} onClick={() => openGallery(2)} />
-              <GCell src="/works/gump/apron.png"      alt="Фирменный фартук"      label="Фартук · Мерч"      col="8/13" row={1} ratio="4/5"   i={1} onClick={() => openGallery(4)} />
-              {/* Row 2: square logo-photo (4 cols 1:1) + square boxes (4 cols 1:1) + tall tshirt (4 cols 4:5) */}
-              <GCell src="/works/gump/logo-photo.png" alt="Логотип"               label="Логотип"            col="1/5"  row={2} ratio="1"     i={2} onClick={() => openGallery(0)} />
-              <GCell src="/works/gump/boxes.png"      alt="Упаковка"              label="Упаковка · Коробки" col="5/9"  row={2} ratio="1"     i={3} onClick={() => openGallery(6)} />
-              <GCell src="/works/gump/tshirt.png"     alt="Футболка"              label="Футболка · Мерч"    col="9/13" row={2} ratio="4/5"   i={4} onClick={() => openGallery(3)} />
-              {/* Row 3: square tshirt2 (5 cols) + wide shopper (7 cols 16:9) */}
-              <GCell src="/works/gump/tshirt2.png"    alt="Футболки мерч"         label="Мерч · Линейка"     col="1/6"  row={3} ratio="1"     i={5} onClick={() => openGallery(1)} />
-              <GCell src="/works/gump/lifestyle.png"  alt="Лайфстайл"             label="Продуктовый кадр"   col="6/13" row={3} ratio="16/9"  i={6} onClick={() => openGallery(8)} />
-              {/* Row 4: square shopper (5 cols) + wide billboard (7 cols 16:9) */}
-              <GCell src="/works/gump/shopper.png"    alt="Шоппер"                label="Шоппер · Мерч"      col="1/6"  row={4} ratio="1"     i={7} onClick={() => openGallery(7)} />
-              <GCell src="/works/gump/billboard.png"  alt="Билборд"               label="Наружная реклама"   col="6/13" row={4} ratio="16/9"  i={8} onClick={() => openGallery(5)} />
-              {/* Row 5: banner (7 cols) + cafe poster (5 cols) */}
-              <GCell src="/works/gump/banner.png"      alt="Рекламный баннер"        label="Баннер · OOH"       col="1/8"  row={5} ratio="16/9"  i={9}  onClick={() => openGallery(9)} />
-              <GCell src="/works/gump/poster-cafe.png" alt="Постер в кофейне"        label="Постер · Мокап"     col="8/13" row={5} ratio="16/9"  i={10} onClick={() => openGallery(10)} />
+            {/* Gallery grid — desktop
+                4 rows × 280px, все 11 карточек внутри одной сетки.
+                Портретные (apron, tshirt2, poster-cafe) занимают 2 ряда → span 2.
+                Row heights: 280 280 280 280 = 1120px total + gaps
+            */}
+            <div className="hidden md:grid" style={{
+              gridTemplateColumns: "repeat(12, 1fr)",
+              gridTemplateRows: "repeat(4, 280px)",
+              gap: 12,
+            }}>
+              {/* R1–R2: apron portrait spans rows 1–2 (4 cols right) */}
+              <GCell src="/works/gump/apron.png"       alt="Фирменный фартук"      label="Фартук · Мерч"      col="9/13"  row={1} ratio="auto" i={0}  onClick={() => openGallery(4)}  rowSpan={2} />
+              {/* R1: truck wide (8 cols) */}
+              <GCell src="/works/gump/truck.png"       alt="Брендированный фургон" label="Фургон · Брендинг"  col="1/9"   row={1} ratio="auto" i={1}  onClick={() => openGallery(2)} />
+              {/* R2: logo-photo (5 cols) + boxes (4 cols) */}
+              <GCell src="/works/gump/logo-photo.png"  alt="Логотип"               label="Логотип"            col="1/6"   row={2} ratio="auto" i={2}  onClick={() => openGallery(0)} />
+              <GCell src="/works/gump/boxes.png"       alt="Упаковка"              label="Упаковка · Коробки" col="6/9"   row={2} ratio="auto" i={3}  onClick={() => openGallery(6)} />
+              {/* R3–R4: tshirt2 portrait spans rows 3–4 (3 cols left) */}
+              <GCell src="/works/gump/tshirt2.png"     alt="Футболки мерч"         label="Мерч · Линейка"     col="1/4"   row={3} ratio="auto" i={4}  onClick={() => openGallery(1)}  rowSpan={2} />
+              {/* R3–R4: poster-cafe portrait spans rows 3–4 (3 cols right) */}
+              <GCell src="/works/gump/poster-cafe.png" alt="Постер в кофейне"      label="Постер · Мокап"     col="10/13" row={3} ratio="auto" i={5}  onClick={() => openGallery(10)} rowSpan={2} />
+              {/* R3: lifestyle (4 cols mid) + shopper (3 cols mid-right) */}
+              <GCell src="/works/gump/lifestyle.png"   alt="Лайфстайл"             label="Продуктовый кадр"   col="4/8"   row={3} ratio="auto" i={6}  onClick={() => openGallery(8)} />
+              <GCell src="/works/gump/shopper.png"     alt="Шоппер"                label="Шоппер · Мерч"      col="8/10"  row={3} ratio="auto" i={7}  onClick={() => openGallery(7)} />
+              {/* R4: tshirt (3 cols) + billboard (4 cols) + banner (3 cols) */}
+              <GCell src="/works/gump/tshirt.png"      alt="Футболка"              label="Футболка · Мерч"    col="4/7"   row={4} ratio="auto" i={8}  onClick={() => openGallery(3)} />
+              <GCell src="/works/gump/billboard.png"   alt="Билборд"               label="Наружная реклама"   col="7/10"  row={4} ratio="auto" i={9}  onClick={() => openGallery(5)} />
+              <GCell src="/works/gump/banner.png"      alt="Рекламный баннер"      label="Баннер · OOH"       col="1/4"   row={4} ratio="auto" i={10} onClick={() => openGallery(9)} />
             </div>
             {/* Gallery grid — mobile 2-col */}
-            <div className="grid md:hidden" style={{ gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-              {[
-                { src: "/works/gump/truck.png",      alt: "Брендированный фургон", label: "Фургон",    ratio: "16/10", gi: 2 },
-                { src: "/works/gump/apron.png",      alt: "Фирменный фартук",      label: "Фартук",    ratio: "4/5",   gi: 4 },
-                { src: "/works/gump/logo-photo.png", alt: "Логотип",               label: "Логотип",   ratio: "1",     gi: 0 },
-                { src: "/works/gump/boxes.png",      alt: "Упаковка",              label: "Упаковка",  ratio: "1",     gi: 6 },
-                { src: "/works/gump/tshirt2.png",    alt: "Футболки",              label: "Мерч",      ratio: "1",     gi: 1 },
-                { src: "/works/gump/lifestyle.png",  alt: "Лайфстайл",             label: "Лайфстайл", ratio: "16/9",  gi: 8 },
-                { src: "/works/gump/shopper.png",    alt: "Шоппер",                label: "Шоппер",    ratio: "1",     gi: 7 },
-                { src: "/works/gump/billboard.png",  alt: "Билборд",               label: "Наружка",   ratio: "16/9",  gi: 5 },
-                { src: "/works/gump/banner.png",      alt: "Рекламный баннер",  label: "Баннер",         ratio: "16/9", gi: 9  },
-                { src: "/works/gump/poster-cafe.png", alt: "Постер в кофейне",  label: "Постер · Мокап", ratio: "16/9", gi: 10 },
-              ].map(({ src, alt, label, ratio, gi }, i) => (
-                <GCell key={src} src={src} alt={alt} label={label} col="auto" row={0} ratio={ratio} i={i} onClick={() => openGallery(gi)} />
-              ))}
+            <div className="grid md:hidden" style={{ gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              <GCell src="/works/gump/truck.png"       alt="Брендированный фургон" label="Фургон"    col="1/3"  row={0} ratio="3/2"  i={0}  onClick={() => openGallery(2)} />
+              <GCell src="/works/gump/apron.png"       alt="Фирменный фартук"      label="Фартук"    col="auto" row={0} ratio="3/4"  i={1}  onClick={() => openGallery(4)} />
+              <GCell src="/works/gump/tshirt2.png"     alt="Футболки мерч"         label="Мерч"      col="auto" row={0} ratio="3/4"  i={2}  onClick={() => openGallery(1)} />
+              <GCell src="/works/gump/logo-photo.png"  alt="Логотип"               label="Логотип"   col="1/3"  row={0} ratio="3/2"  i={3}  onClick={() => openGallery(0)} />
+              <GCell src="/works/gump/boxes.png"       alt="Упаковка"              label="Упаковка"  col="auto" row={0} ratio="3/2"  i={4}  onClick={() => openGallery(6)} />
+              <GCell src="/works/gump/tshirt.png"      alt="Футболка"              label="Мерч"      col="auto" row={0} ratio="3/4"  i={5}  onClick={() => openGallery(3)} />
+              <GCell src="/works/gump/lifestyle.png"   alt="Лайфстайл"             label="Лайфстайл" col="1/3"  row={0} ratio="3/2"  i={6}  onClick={() => openGallery(8)} />
+              <GCell src="/works/gump/shopper.png"     alt="Шоппер"                label="Шоппер"    col="auto" row={0} ratio="3/2"  i={7}  onClick={() => openGallery(7)} />
+              <GCell src="/works/gump/billboard.png"   alt="Билборд"               label="Наружка"   col="auto" row={0} ratio="3/2"  i={8}  onClick={() => openGallery(5)} />
+              <GCell src="/works/gump/banner.png"      alt="Баннер"                label="Баннер"    col="1/3"  row={0} ratio="16/9" i={9}  onClick={() => openGallery(9)} />
+              <GCell src="/works/gump/poster-cafe.png" alt="Постер в кофейне"      label="Постер"    col="auto" row={0} ratio="3/4"  i={10} onClick={() => openGallery(10)} />
             </div>
           </div>
         </section>
@@ -1021,38 +1029,50 @@ export default function GumpDonutsPage() {
 }
 
 // ─── GCell — gallery cell helper ──────────────────────────────────────────────
-function GCell({ src, alt, label, col, row, ratio, i, onClick }: {
+function GCell({ src, alt, label, col, row, ratio, i, onClick, rowSpan }: {
   src: string; alt: string; label?: string; col: string; row: number
-  ratio: string; i: number; onClick: () => void
+  ratio: string; i: number; onClick: () => void; rowSpan?: number
 }) {
   return (
     <motion.button type="button"
-      className="rounded-xl overflow-hidden cursor-zoom-in relative group"
-      style={{ gridColumn: col !== "auto" ? col : undefined, gridRow: row || undefined, aspectRatio: ratio, border: "1px solid var(--border)" }}
+      className="overflow-hidden cursor-zoom-in relative group"
+      style={{
+        gridColumn: col !== "auto" ? col : undefined,
+        gridRow: row && rowSpan ? `${row} / span ${rowSpan}` : row || undefined,
+        aspectRatio: ratio !== "auto" ? ratio : undefined,
+        height: ratio === "auto" ? "100%" : undefined,
+        borderRadius: 16,
+        boxShadow: "0 2px 12px rgba(0,0,0,0.07), 0 0 0 1px rgba(0,0,0,0.04)",
+      }}
       onClick={onClick}
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.5, delay: i * 0.06, ease: EASE_DEFAULT }}
-      whileHover={{ scale: 1.01 }}
+      transition={{ duration: 0.55, delay: i * 0.055, ease: EASE_DEFAULT }}
       suppressHydrationWarning
     >
-      <Image src={src} alt={alt} fill className="object-cover transition-transform duration-700 group-hover:scale-[1.04]" quality={85} />
+      <Image
+        src={src} alt={alt} fill
+        className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+        quality={85}
+      />
+      {/* Gradient overlay — appears on hover */}
+      <div className="absolute inset-0 pointer-events-none transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+        style={{ background: "linear-gradient(to top, rgba(10,10,10,0.62) 0%, rgba(10,10,10,0.18) 45%, transparent 70%)" }}
+      />
       {label && (
-        <span className="absolute bottom-3 left-3 z-10 pointer-events-none"
-          style={{
-            background: "rgba(10,10,10,0.72)",
-            backdropFilter: "blur(8px)",
-            border: "1px solid rgba(255,255,255,0.1)",
-            color: "rgba(255,255,255,0.82)",
-            fontSize: 9,
+        <div className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none px-4 pb-3 pt-8 flex items-end justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <span style={{
+            color: "rgba(255,255,255,0.92)",
+            fontSize: 10,
             fontWeight: 700,
-            letterSpacing: "0.18em",
+            letterSpacing: "0.14em",
             textTransform: "uppercase",
-            padding: "5px 10px",
-            borderRadius: 7,
-          }}
-        >{label}</span>
+          }}>{label}</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ opacity: 0.6 }}>
+            <path d="M4 12L12 4M12 4H6M12 4V10" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
       )}
     </motion.button>
   )
