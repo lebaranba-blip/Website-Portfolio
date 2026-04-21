@@ -306,7 +306,6 @@ const GALLERY = [
   { src: "/works/gump/shopper.png",     alt: "Шоппер" },
   { src: "/works/gump/lifestyle.png",   alt: "Лайфстайл" },
   { src: "/works/gump/banner.png",      alt: "Рекламный баннер" },
-  { src: "/works/gump/space1.png",      alt: "Постер — Gump в космосе" },
   { src: "/works/gump/poster-cafe.png", alt: "Постер в кофейне" },
 ]
 
@@ -724,11 +723,9 @@ export default function GumpDonutsPage() {
               {/* Row 4: square shopper (5 cols) + wide billboard (7 cols 16:9) */}
               <GCell src="/works/gump/shopper.png"    alt="Шоппер"                label="Шоппер · Мерч"      col="1/6"  row={4} ratio="1"     i={7} onClick={() => openGallery(7)} />
               <GCell src="/works/gump/billboard.png"  alt="Билборд"               label="Наружная реклама"   col="6/13" row={4} ratio="16/9"  i={8} onClick={() => openGallery(5)} />
-              {/* Row 5: space poster (7 cols) + banner (5 cols) */}
-              <GCell src="/works/gump/space1.png"      alt="Постер — Gump в космосе" label="Постер · Космос"    col="1/8"  row={5} ratio="16/9"  i={9}  onClick={() => openGallery(10)} />
-              <GCell src="/works/gump/banner.png"      alt="Рекламный баннер"        label="Баннер · OOH"       col="8/13" row={5} ratio="16/9"  i={10} onClick={() => openGallery(9)} />
-              {/* Row 6: cafe poster full-width */}
-              <GCell src="/works/gump/poster-cafe.png" alt="Постер в кофейне"        label="Постер · Мокап"     col="1/13" row={6} ratio="16/9"  i={11} onClick={() => openGallery(11)} />
+              {/* Row 5: banner (7 cols) + cafe poster (5 cols) */}
+              <GCell src="/works/gump/banner.png"      alt="Рекламный баннер"        label="Баннер · OOH"       col="1/8"  row={5} ratio="16/9"  i={9}  onClick={() => openGallery(9)} />
+              <GCell src="/works/gump/poster-cafe.png" alt="Постер в кофейне"        label="Постер · Мокап"     col="8/13" row={5} ratio="16/9"  i={10} onClick={() => openGallery(10)} />
             </div>
             {/* Gallery grid — mobile 2-col */}
             <div className="grid md:hidden" style={{ gridTemplateColumns: "1fr 1fr", gap: 8 }}>
@@ -741,9 +738,8 @@ export default function GumpDonutsPage() {
                 { src: "/works/gump/lifestyle.png",  alt: "Лайфстайл",             label: "Лайфстайл", ratio: "16/9",  gi: 8 },
                 { src: "/works/gump/shopper.png",    alt: "Шоппер",                label: "Шоппер",    ratio: "1",     gi: 7 },
                 { src: "/works/gump/billboard.png",  alt: "Билборд",               label: "Наружка",   ratio: "16/9",  gi: 5 },
-                { src: "/works/gump/space1.png",      alt: "Постер в космосе",  label: "Постер · Космос", ratio: "16/9", gi: 10 },
-                { src: "/works/gump/banner.png",      alt: "Рекламный баннер",  label: "Баннер",          ratio: "16/9", gi: 9  },
-                { src: "/works/gump/poster-cafe.png", alt: "Постер в кофейне",  label: "Постер · Мокап",  ratio: "16/9", gi: 11 },
+                { src: "/works/gump/banner.png",      alt: "Рекламный баннер",  label: "Баннер",         ratio: "16/9", gi: 9  },
+                { src: "/works/gump/poster-cafe.png", alt: "Постер в кофейне",  label: "Постер · Мокап", ratio: "16/9", gi: 10 },
               ].map(({ src, alt, label, ratio, gi }, i) => (
                 <GCell key={src} src={src} alt={alt} label={label} col="auto" row={0} ratio={ratio} i={i} onClick={() => openGallery(gi)} />
               ))}
@@ -791,7 +787,7 @@ export default function GumpDonutsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
               <FadeIn>
                 <div className="rounded-2xl overflow-hidden" style={{ maxHeight: 360 }}>
-                  <Image src="/works/gump/poster-cafe.png" alt="Постер Gump Donuts в кофейне" width={1280} height={853} className="w-full h-full object-cover rounded-2xl" style={{ maxHeight: 360 }} quality={92} />
+                  <Image src="/works/gump/space1.png" alt="Астронавт за рулём фургона в космосе" width={1280} height={853} className="w-full h-full object-cover rounded-2xl" style={{ maxHeight: 360 }} quality={92} />
                 </div>
               </FadeIn>
               <FadeIn delay={0.08}>
