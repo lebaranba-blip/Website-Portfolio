@@ -710,33 +710,27 @@ export default function GumpDonutsPage() {
             </motion.div>
 
             {/* Gallery grid — desktop
-                4 rows × 280px, все 11 карточек внутри одной сетки.
-                Портретные (apron, tshirt2, poster-cafe) занимают 2 ряда → span 2.
-                Row heights: 280 280 280 280 = 1120px total + gaps
+                R1:  truck[1/9]               apron[9/13]↓span2
+                R2:  logo[1/5]  boxes[5/9]    apron cont.
+                R3:  tsh2[1/4]↓span2  life[4/8]  shop[8/10]  cafe[10/13]↓span2
+                R4:  tsh2 cont.  bill[4/8]    ban[8/10]   cafe cont.
+                = 10 cells, zero conflicts
             */}
             <div className="hidden md:grid" style={{
               gridTemplateColumns: "repeat(12, 1fr)",
               gridTemplateRows: "repeat(4, 280px)",
               gap: 12,
             }}>
-              {/* R1–R2: apron portrait spans rows 1–2 (4 cols right) */}
-              <GCell src="/works/gump/apron.png"       alt="Фирменный фартук"      label="Фартук · Мерч"      col="9/13"  row={1} ratio="auto" i={0}  onClick={() => openGallery(4)}  rowSpan={2} />
-              {/* R1: truck wide (8 cols) */}
-              <GCell src="/works/gump/truck.png"       alt="Брендированный фургон" label="Фургон · Брендинг"  col="1/9"   row={1} ratio="auto" i={1}  onClick={() => openGallery(2)} />
-              {/* R2: logo-photo (5 cols) + boxes (4 cols) */}
-              <GCell src="/works/gump/logo-photo.png"  alt="Логотип"               label="Логотип"            col="1/6"   row={2} ratio="auto" i={2}  onClick={() => openGallery(0)} />
-              <GCell src="/works/gump/boxes.png"       alt="Упаковка"              label="Упаковка · Коробки" col="6/9"   row={2} ratio="auto" i={3}  onClick={() => openGallery(6)} />
-              {/* R3–R4: tshirt2 portrait spans rows 3–4 (3 cols left) */}
+              <GCell src="/works/gump/truck.png"       alt="Брендированный фургон" label="Фургон · Брендинг"  col="1/9"   row={1} ratio="auto" i={0}  onClick={() => openGallery(2)} />
+              <GCell src="/works/gump/apron.png"       alt="Фирменный фартук"      label="Фартук · Мерч"      col="9/13"  row={1} ratio="auto" i={1}  onClick={() => openGallery(4)}  rowSpan={2} />
+              <GCell src="/works/gump/logo-photo.png"  alt="Логотип"               label="Логотип"            col="1/5"   row={2} ratio="auto" i={2}  onClick={() => openGallery(0)} />
+              <GCell src="/works/gump/boxes.png"       alt="Упаковка"              label="Упаковка · Коробки" col="5/9"   row={2} ratio="auto" i={3}  onClick={() => openGallery(6)} />
               <GCell src="/works/gump/tshirt2.png"     alt="Футболки мерч"         label="Мерч · Линейка"     col="1/4"   row={3} ratio="auto" i={4}  onClick={() => openGallery(1)}  rowSpan={2} />
-              {/* R3–R4: poster-cafe portrait spans rows 3–4 (3 cols right) */}
-              <GCell src="/works/gump/poster-cafe.png" alt="Постер в кофейне"      label="Постер · Мокап"     col="10/13" row={3} ratio="auto" i={5}  onClick={() => openGallery(10)} rowSpan={2} />
-              {/* R3: lifestyle (4 cols mid) + shopper (3 cols mid-right) */}
-              <GCell src="/works/gump/lifestyle.png"   alt="Лайфстайл"             label="Продуктовый кадр"   col="4/8"   row={3} ratio="auto" i={6}  onClick={() => openGallery(8)} />
-              <GCell src="/works/gump/shopper.png"     alt="Шоппер"                label="Шоппер · Мерч"      col="8/10"  row={3} ratio="auto" i={7}  onClick={() => openGallery(7)} />
-              {/* R4: tshirt (3 cols) + billboard (4 cols) + banner (3 cols) */}
-              <GCell src="/works/gump/tshirt.png"      alt="Футболка"              label="Футболка · Мерч"    col="4/7"   row={4} ratio="auto" i={8}  onClick={() => openGallery(3)} />
-              <GCell src="/works/gump/billboard.png"   alt="Билборд"               label="Наружная реклама"   col="7/10"  row={4} ratio="auto" i={9}  onClick={() => openGallery(5)} />
-              <GCell src="/works/gump/banner.png"      alt="Рекламный баннер"      label="Баннер · OOH"       col="1/4"   row={4} ratio="auto" i={10} onClick={() => openGallery(9)} />
+              <GCell src="/works/gump/lifestyle.png"   alt="Лайфстайл"             label="Продуктовый кадр"   col="4/8"   row={3} ratio="auto" i={5}  onClick={() => openGallery(8)} />
+              <GCell src="/works/gump/shopper.png"     alt="Шоппер"                label="Шоппер · Мерч"      col="8/10"  row={3} ratio="auto" i={6}  onClick={() => openGallery(7)} />
+              <GCell src="/works/gump/poster-cafe.png" alt="Постер в кофейне"      label="Постер · Мокап"     col="10/13" row={3} ratio="auto" i={7}  onClick={() => openGallery(10)} rowSpan={2} />
+              <GCell src="/works/gump/billboard.png"   alt="Билборд"               label="Наружная реклама"   col="4/8"   row={4} ratio="auto" i={8}  onClick={() => openGallery(5)} />
+              <GCell src="/works/gump/banner.png"      alt="Рекламный баннер"      label="Баннер · OOH"       col="8/10"  row={4} ratio="auto" i={9}  onClick={() => openGallery(9)} />
             </div>
             {/* Gallery grid — mobile 2-col */}
             <div className="grid md:hidden" style={{ gridTemplateColumns: "1fr 1fr", gap: 10 }}>
