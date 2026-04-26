@@ -4,6 +4,13 @@ export interface GalleryItem {
   aspect: "landscape" | "portrait" | "square"
 }
 
+export interface CarouselSet {
+  num: string
+  label: string
+  tone: string
+  slides: { src: string; alt: string }[]
+}
+
 export interface Work {
   id: string
   title: string
@@ -18,6 +25,7 @@ export interface Work {
   gallery?: GalleryItem[]
   fullVideo?: string
   workflow?: string
+  carouselSets?: CarouselSet[]
 }
 
 export const works: Work[] = [
@@ -50,12 +58,47 @@ export const works: Work[] = [
     id: "ai-carousel",
     title: "AI Карусели",
     category: "AI Visual",
-    image: "/works/carousel/cover.png",
-    alt: "AI-карусели для Instagram и Threads — ChatGPT Images",
+    image: "/works/carousel/s2-banner.png",
+    alt: "AI-карусели для Instagram и Threads — ChatGPT Images 2.0",
     year: 2026,
-    desc: "Карусели для Instagram и Threads. Консистентный стиль, брендинг, текст — всё через ChatGPT Images.",
-    featured: false,
+    desc: "3 серии каруселей в разных визуальных системах. Без Figma, без студии — ChatGPT Images 2.0.",
+    featured: true,
     href: "/works/carousel",
+    carouselSets: [
+      {
+        num: "01",
+        label: "ИИ — уже сейчас",
+        tone: "Фиолетовый · 3D-персонажи",
+        slides: [
+          { src: "/works/carousel/s1-1.png", alt: "ИИ выдаёт всё на одном полотне" },
+          { src: "/works/carousel/s1-2.png", alt: "Генерить по одному кадру?" },
+          { src: "/works/carousel/s1-3.png", alt: "Сгорают дневные лимиты" },
+          { src: "/works/carousel/s1-4.png", alt: "Это касается каждого" },
+        ],
+      },
+      {
+        num: "02",
+        label: "Боль каруселей в ChatGPT",
+        tone: "Чёрный + жёлтый · 3D-объекты",
+        slides: [
+          { src: "/works/carousel/s2-1.jpg", alt: "Главная боль генерации" },
+          { src: "/works/carousel/s2-2.jpg", alt: "ИИ выдаёт одно полотно" },
+          { src: "/works/carousel/s2-3.jpg", alt: "Генерить по кадру — жечь лимит" },
+          { src: "/works/carousel/s2-4.jpg", alt: "Решение: Nano Banana 2" },
+        ],
+      },
+      {
+        num: "03",
+        label: "Figma жрала мои выходные",
+        tone: "Glitch · Terminal · Claude",
+        slides: [
+          { src: "/works/carousel/s3-1.jpg", alt: "Figma жрала мои выходные" },
+          { src: "/works/carousel/s3-2.jpg", alt: "Что я делал по 8 часов" },
+          { src: "/works/carousel/s3-3.jpg", alt: "Два инструмента без Figma" },
+          { src: "/works/carousel/s3-4.jpg", alt: "Claude собирает бриф" },
+        ],
+      },
+    ],
   },
   {
     id: "ai-avatar",

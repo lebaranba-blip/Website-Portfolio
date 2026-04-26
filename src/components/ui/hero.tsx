@@ -247,10 +247,10 @@ export default function HeroSection() {
                 transition={{ duration: 0.5, delay: 0.8 + i * 0.07, ease: EASE_DEFAULT }}
                 suppressHydrationWarning
               >
-                <span className="font-black text-2xl md:text-xl leading-none" style={{ color: "var(--text)" }}>
+                <span className="font-mono font-black text-2xl md:text-2xl leading-none" style={{ color: "var(--text)", letterSpacing: "-0.03em" }}>
                   <CountUp num={s.num} suffix={s.suffix} active={preloaderDone} delay={900 + i * 150} />
                 </span>
-                <span className="text-xs font-mono mt-1 opacity-40 tracking-wide">{s.label}</span>
+                <span className="text-xs font-mono mt-1 tracking-wide" style={{ color: "rgba(0,0,0,0.4)" }}>{s.label}</span>
               </motion.div>
             ))}
           </motion.div>

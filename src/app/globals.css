@@ -237,6 +237,24 @@ html, body {
   50%       { opacity: 0.7; transform: scale(2.0); }
 }
 
+/* Hero animations */
+@keyframes heroZoom {
+  from { transform: scale(1.06); }
+  to   { transform: scale(1.0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes lineDown {
+  0%   { transform: scaleY(0); opacity: 0; }
+  40%  { transform: scaleY(1); opacity: 1; }
+  80%  { transform: scaleY(1); opacity: 0.6; }
+  100% { transform: scaleY(0); opacity: 0; }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *:not(.marquee-track):not(.tg-btn-border):not(.tg-btn), *:not(.marquee-track):not(.tg-btn-border):not(.tg-btn)::before, *:not(.marquee-track):not(.tg-btn-border):not(.tg-btn)::after {
