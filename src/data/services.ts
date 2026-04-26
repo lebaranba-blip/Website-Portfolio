@@ -14,6 +14,6 @@ export const services: Service[] = [
 
 export const skills = [
   "Midjourney", "Runway", "Figma", "n8n",
-  "CapCut", "Stable Diffusion", "ChatGPT",
+  "CapCut", "Stable Diffusion", "ChatGPT Images",
   "Claude", "Adobe CC", "Freepik Spaces", "Nano banana 2", "Seedance 2.0",
 ]
