@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from "framer-motion"
 import { TELEGRAM_URL, EASE_DEFAULT } from "@/lib/constants"
+import { useIsTouch } from "@/lib/use-is-touch"
 
 // ── Data ───────────────────────────────────────────────────────────────────
 const SETS = [
@@ -95,8 +96,10 @@ function ParallaxImage({ src, alt, onClick }: { src: string; alt: string; onClic
   const ref = useRef<HTMLDivElement>(null)
   const [mounted, setMounted] = useState(false)
   const shouldReduce = useReducedMotion()
+  const isTouch = useIsTouch()
+  const parallaxOff = shouldReduce || isTouch || !mounted
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] })
-  const y = useTransform(scrollYProgress, [0, 1], shouldReduce || !mounted ? [0, 0] : [-28, 28])
+  const y = useTransform(scrollYProgress, [0, 1], parallaxOff ? [0, 0] : [-28, 28])
 
   useEffect(() => { setMounted(true) }, [])
 
@@ -106,16 +109,18 @@ function ParallaxImage({ src, alt, onClick }: { src: string; alt: string; onClic
         onClick={onClick}
         className="w-full group relative overflow-hidden block"
         style={{ borderRadius: 20, border: "none", padding: 0, background: "none", cursor: "zoom-in" }}
-        whileHover={{ scale: 1.01 }}
+        whileHover={isTouch ? undefined : { scale: 1.01 }}
         transition={{ duration: 0.4, ease: EASE_DEFAULT }}
         suppressHydrationWarning
       >
         <motion.div style={{ y }} suppressHydrationWarning>
           <Image src={src} alt={alt}
-            width={1200} height={600} className="w-full h-auto"
-            quality={88} style={{ display: "block", borderRadius: 20, boxShadow: "0 2px 24px rgba(0,0,0,0.1)" }} />
+            width={1200} height={600}
+            sizes="(max-width: 768px) 100vw, 1024px"
+            className="w-full h-auto"
+            quality={82} style={{ display: "block", borderRadius: 20, boxShadow: "0 2px 24px rgba(0,0,0,0.1)" }} />
         </motion.div>
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:flex items-center justify-center"
           style={{ background: "rgba(0,0,0,0.3)", borderRadius: 20 }}>
           <span className="font-mono text-white text-sm px-5 py-2.5" style={{ background: "rgba(0,0,0,0.6)", borderRadius: 100, backdropFilter: "blur(8px)" }}>
             Открыть систему ↗
@@ -157,7 +162,7 @@ function Lightbox({ images, index: initIndex, onClose }: {
               exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.22 }}
               suppressHydrationWarning
             >
-              <Image src={images[idx].src} alt={images[idx].alt} fill className="object-cover" quality={90} />
+              <Image src={images[idx].src} alt={images[idx].alt} fill sizes="(max-width: 640px) 92vw, 520px" className="object-cover" quality={82} />
             </motion.div>
           </AnimatePresence>
           {/* Counter badge */}
@@ -195,16 +200,18 @@ function Lightbox({ images, index: initIndex, onClose }: {
 }
 
 // ── SlideThumb — with pointer-tilt 3D effect ──────────────────────────────
-function SlideThumb({ src, alt, onClick }: { src: string; alt: string; onClick: () => void }) {
+function SlideThumb({ src, alt, onClick, eager = false }: { src: string; alt: string; onClick: () => void; eager?: boolean }) {
   const ref = useRef<HTMLButtonElement>(null)
   const shouldReduce = useReducedMotion()
+  const isTouch = useIsTouch()
 
   useEffect(() => {
     const el = ref.current
-    if (!el || shouldReduce) return
+    if (!el || shouldReduce || isTouch) return
     const onMove = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return
       const r = el.getBoundingClientRect()
-      const x = (e.clientX - r.left) / r.width  - 0.5   // -0.5 … 0.5
+      const x = (e.clientX - r.left) / r.width  - 0.5
       const y = (e.clientY - r.top)  / r.height - 0.5
       el.style.transform = `perspective(600px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg) scale(1.03)`
     }
@@ -212,7 +219,7 @@ function SlideThumb({ src, alt, onClick }: { src: string; alt: string; onClick: 
     el.addEventListener("pointermove", onMove)
     el.addEventListener("pointerleave", onLeave)
     return () => { el.removeEventListener("pointermove", onMove); el.removeEventListener("pointerleave", onLeave) }
-  }, [shouldReduce])
+  }, [shouldReduce, isTouch])
 
   return (
     <motion.button ref={ref} type="button" onClick={onClick}
@@ -220,19 +227,26 @@ function SlideThumb({ src, alt, onClick }: { src: string; alt: string; onClick: 
       style={{
         aspectRatio: "1/1", borderRadius: 14,
         boxShadow: "0 2px 16px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.06)",
-        transition: "box-shadow 0.28s ease",
       }}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, ease: EASE_DEFAULT }}
+      initial={shouldReduce ? false : { opacity: 0, y: 18 }}
+      whileInView={shouldReduce ? undefined : { opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-30px" }}
+      transition={{ duration: 0.4, ease: EASE_DEFAULT }}
       suppressHydrationWarning
     >
-      <Image src={src} alt={alt} fill className="object-cover transition-transform duration-500 group-hover:scale-[1.06]" quality={82} />
-      {/* Hover overlay */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 200px"
+        className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+        quality={75}
+        loading={eager ? "eager" : "lazy"}
+      />
+      {/* Hover overlay — desktop only */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none hidden md:block"
         style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%)" }} />
-      <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex items-end justify-between">
+      <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none hidden md:flex items-end justify-between">
         <span style={{ color: "rgba(255,255,255,0.85)", fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", lineHeight: 1.3 }}>{alt}</span>
         <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginLeft: 4 }}>
           <path d="M4 12L12 4M12 4H6M12 4V10" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -268,8 +282,8 @@ export default function CarouselCasePage() {
       {/* ── Header ─────────────────────────────────────────────────────────── */}
       <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4"
         style={{ background: "rgba(237,234,228,0.88)", backdropFilter: "blur(14px)" }}>
-        <Link href="/#works" className="flex items-center gap-2 font-mono text-sm" style={{ color: "var(--muted)" }}>
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 4L6 8L10 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+        <Link href="/#works" className="flex items-center gap-2 font-mono text-sm px-2 -ml-2" style={{ color: "var(--muted)", minHeight: 44 }}>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 4L6 8L10 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
           Все работы
         </Link>
         <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" className="btn-primary text-sm px-5 py-2">
@@ -307,7 +321,9 @@ export default function CarouselCasePage() {
         <FadeIn hero>
           <div style={{ borderRadius: 24, overflow: "hidden", position: "relative", background: "#0a0a0a", boxShadow: "0 6px 48px rgba(0,0,0,0.14)" }}>
             <Image src="/works/carousel/cover.png" alt="Визуальная система — Карусель 3"
-              width={1200} height={700} className="w-full h-auto" quality={90}
+              width={1200} height={700}
+              sizes="(max-width: 768px) 100vw, 1024px"
+              className="w-full h-auto" quality={82}
               priority style={{ display: "block" }} />
           </div>
           <p className="font-mono text-xs mt-3 text-center" style={{ color: "var(--muted)" }}>
@@ -364,16 +380,16 @@ export default function CarouselCasePage() {
             </div>
           </div>
 
-          {/* Slides grid — 2 rows on desktop, scrollable on mobile */}
+          {/* Slides grid — 5×2 on desktop, 3×N on tablet, 2×N on mobile */}
           <div className="px-6 md:px-12 max-w-5xl mx-auto">
             <motion.div
               className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4"
               variants={staggerContainer} initial="hidden" whileInView="show"
-              viewport={{ once: true, margin: "-60px" }}
+              viewport={{ once: true, margin: "-30px" }}
             >
               {set.slides.map((slide, i) => (
                 <motion.div key={slide.src} variants={staggerItem} suppressHydrationWarning>
-                  <SlideThumb src={slide.src} alt={slide.alt} onClick={() => openLightbox(set.slides, i)} />
+                  <SlideThumb src={slide.src} alt={slide.alt} onClick={() => openLightbox(set.slides, i)} eager={si === 0 && i < 5} />
                 </motion.div>
               ))}
             </motion.div>
@@ -492,7 +508,8 @@ export default function CarouselCasePage() {
               onClick={e => e.stopPropagation()} suppressHydrationWarning
             >
               <Image src={systemOpen} alt="Визуальная система" width={1100} height={600}
-                className="w-full h-auto" quality={92} style={{ borderRadius: 18, display: "block" }} />
+                sizes="(max-width: 768px) 95vw, 1100px"
+                className="w-full h-auto" quality={88} style={{ borderRadius: 18, display: "block" }} />
               <button onClick={() => setSystemOpen(null)} aria-label="Закрыть"
                 className="absolute -top-10 right-0 font-mono text-xs"
                 style={{ color: "rgba(255,255,255,0.35)", cursor: "pointer" }}>ESC ✕</button>

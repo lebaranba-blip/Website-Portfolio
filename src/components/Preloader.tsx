@@ -3,10 +3,14 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
 export default function Preloader({ onComplete }: { onComplete: () => void }) {
-  const [count, setCount] = useState(0)
   const [visible, setVisible] = useState(true)
   // guard — onComplete вызывается строго один раз
   const completedRef = useRef(false)
+  const bgNumRef = useRef<HTMLDivElement>(null)
+  const fgNumRef = useRef<HTMLSpanElement>(null)
+  const barRef = useRef<HTMLDivElement>(null)
+  const labelRef = useRef<HTMLSpanElement>(null)
+  const liveRef = useRef<HTMLDivElement>(null)
 
   const safeComplete = useCallback(() => {
     if (completedRef.current) return
@@ -23,28 +27,40 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
     }
 
     const duration = 2000
-    const interval = 16
-    const steps = duration / interval
-    let current = 0
+    const start = performance.now()
+    let raf = 0
+    let lastDisplayed = -1
 
-    const timer = setInterval(() => {
-      current += 1
-      const progress = current / steps
-      const eased = 1 - Math.pow(1 - progress, 3)
-      setCount(Math.min(Math.round(eased * 100), 100))
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / duration)
+      const eased = 1 - Math.pow(1 - t, 3)
+      const value = Math.min(Math.round(eased * 100), 100)
 
-      if (current >= steps) {
-        clearInterval(timer)
+      if (value !== lastDisplayed) {
+        lastDisplayed = value
+        const text = String(value).padStart(3, "0")
+        if (bgNumRef.current) bgNumRef.current.textContent = text
+        if (fgNumRef.current) fgNumRef.current.textContent = text
+        if (labelRef.current) labelRef.current.textContent = `${value}%`
+        if (liveRef.current) liveRef.current.setAttribute("aria-label", `Загрузка ${value}%`)
+        if (barRef.current) barRef.current.style.width = `${value}%`
+      }
+
+      if (t < 1) {
+        raf = requestAnimationFrame(tick)
+      } else {
         sessionStorage.setItem("preloader-done", "1")
         setTimeout(() => setVisible(false), 400)
       }
-    }, interval)
+    }
+
+    raf = requestAnimationFrame(tick)
 
     // hard fallback — если AnimatePresence не вызовет onExitComplete
     const hardFallback = setTimeout(() => safeComplete(), 4000)
 
     return () => {
-      clearInterval(timer)
+      cancelAnimationFrame(raf)
       clearTimeout(hardFallback)
     }
   }, [safeComplete])
@@ -84,38 +100,24 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
 
           {/* center: counter */}
           <div className="flex-1 flex items-center justify-center">
-            <div className="relative" aria-live="polite" aria-label={`Загрузка ${count}%`}>
-              {/* background giant number */}
-              <div
-                className="text-[13vw] font-black leading-none select-none"
+            <div ref={liveRef} className="relative" aria-live="polite" aria-label="Загрузка 0%">
+              {/* foreground counter — single layer, lighter */}
+              <span
+                ref={fgNumRef}
+                className="text-[11vw] font-black leading-none tabular-nums select-none"
                 style={{
                   fontFamily: "var(--font-space-grotesk)",
-                  background: "linear-gradient(135deg, #0891B2 0%, #EA580C 50%, #1D4ED8 100%)",
+                  background: "linear-gradient(135deg, #0891B2 0%, #EA580C 60%, #1D4ED8 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
-                  opacity: 0.15,
+                  display: "inline-block",
                 }}
-                aria-hidden="true"
               >
-                {String(count).padStart(3, "0")}
-              </div>
-
-              {/* foreground counter */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span
-                  className="text-[11vw] font-black leading-none tabular-nums"
-                  style={{
-                    fontFamily: "var(--font-space-grotesk)",
-                    background: "linear-gradient(135deg, #0891B2 0%, #EA580C 60%, #1D4ED8 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
-                  {String(count).padStart(3, "0")}
-                </span>
-              </div>
+                000
+              </span>
+              {/* hidden ref for back-compat — not rendered */}
+              <div ref={bgNumRef} aria-hidden="true" style={{ display: "none" }} />
             </div>
           </div>
 
@@ -123,13 +125,14 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
           <div className="px-8 pb-10 flex flex-col gap-4">
             {/* progress bar */}
             <div className="h-px w-full bg-white/10 overflow-hidden rounded-full">
-              <motion.div
+              <div
+                ref={barRef}
                 className="h-full rounded-full"
                 style={{
                   background: "linear-gradient(90deg, #0891B2, #EA580C)",
-                  width: `${count}%`,
+                  width: "0%",
+                  willChange: "width",
                 }}
-                transition={{ ease: "linear" }}
               />
             </div>
 
@@ -144,10 +147,11 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
                 Загрузка
               </motion.span>
               <span
+                ref={labelRef}
                 className="text-xs tabular-nums text-white/30"
                 style={{ fontFamily: "var(--font-jetbrains-mono)" }}
               >
-                {count}%
+                0%
               </span>
             </div>
           </div>

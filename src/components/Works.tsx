@@ -2,7 +2,6 @@
 import { motion, useReducedMotion } from "framer-motion"
 import WorkCard from "@/components/WorkCard"
 import FeaturedWorkCard from "@/components/FeaturedWorkCard"
-import CarouselWorkCard from "@/components/CarouselWorkCard"
 import { works } from "@/data/works"
 import { EASE_DEFAULT } from "@/lib/constants"
 import TextReveal from "@/components/ui/TextReveal"
