@@ -9,11 +9,10 @@ export const services: Service[] = [
   { num: "02", label: "Photo & Video", desc: "Фото, видео, монтаж" },
   { num: "03", label: "Branding",      desc: "Логотипы, айдентика, brand kit" },
   { num: "04", label: "Automation",    desc: "Автоматизирую рутину — от лидов до контента" },
-  { num: "05", label: "Consulting",    desc: "Стратегия, промпт-инжиниринг, AI-стек" },
 ]
 
 export const skills = [
-  "Midjourney", "Runway", "Figma", "n8n",
+  "Midjourney", "Runway", "Figma",
   "CapCut", "Stable Diffusion", "ChatGPT Images",
   "Claude", "Adobe CC", "Freepik Spaces", "Nano banana 2", "Seedance 2.0",
 ]
