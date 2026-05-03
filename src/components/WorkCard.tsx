@@ -18,23 +18,21 @@ export default function WorkCard({ work, index }: WorkCardProps) {
     const card = cardRef.current
     if (!card) return
 
-    const onMove = (e: PointerEvent) => {
-      const rect = card.getBoundingClientRect()
-      const x = e.clientX - rect.left
-      const y = e.clientY - rect.top
-      card.style.backgroundImage = `radial-gradient(
-        240px 240px at ${x}px ${y}px,
-        hsl(${hue} 70% 65% / 0.13), transparent
-      )`
-    }
+    let cachedRect = card.getBoundingClientRect()
+    const ro = new ResizeObserver(() => { cachedRect = card.getBoundingClientRect() })
+    ro.observe(card)
 
-    const onLeave = () => {
-      card.style.backgroundImage = "none"
+    const onMove = (e: PointerEvent) => {
+      const x = e.clientX - cachedRect.left
+      const y = e.clientY - cachedRect.top
+      card.style.backgroundImage = `radial-gradient(240px 240px at ${x}px ${y}px, hsl(${hue} 70% 65% / 0.13), transparent)`
     }
+    const onLeave = () => { card.style.backgroundImage = "none" }
 
     card.addEventListener("pointermove", onMove)
     card.addEventListener("pointerleave", onLeave)
     return () => {
+      ro.disconnect()
       card.removeEventListener("pointermove", onMove)
       card.removeEventListener("pointerleave", onLeave)
     }

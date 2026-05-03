@@ -1,15 +1,27 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import * as THREE from "three"
+import {
+  Scene,
+  WebGLRenderer,
+  OrthographicCamera,
+  BufferGeometry,
+  BufferAttribute,
+  RawShaderMaterial,
+  Mesh,
+  Vector2,
+  DoubleSide,
+  NormalBlending,
+  Material,
+} from "three"
 
 export default function WebGLShader() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const sceneRef = useRef<{
-    scene: THREE.Scene | null
-    camera: THREE.OrthographicCamera | null
-    renderer: THREE.WebGLRenderer | null
-    mesh: THREE.Mesh | null
+    scene: Scene | null
+    camera: OrthographicCamera | null
+    renderer: WebGLRenderer | null
+    mesh: Mesh | null
     uniforms: any
     animationId: number | null
   }>({
@@ -66,15 +78,15 @@ export default function WebGLShader() {
     `
 
     const initScene = () => {
-      refs.scene = new THREE.Scene()
-      refs.renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true })
-      refs.renderer.setPixelRatio(1) // always 1 — reduces GPU load significantly
+      refs.scene = new Scene()
+      refs.renderer = new WebGLRenderer({ canvas, antialias: false, alpha: true })
+      refs.renderer.setPixelRatio(1)
       refs.renderer.setClearColor(0x000000, 0)
 
-      refs.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, -1)
+      refs.camera = new OrthographicCamera(-1, 1, 1, -1, 0, -1)
 
       refs.uniforms = {
-        resolution: { value: new THREE.Vector2(canvas.clientWidth, canvas.clientHeight) },
+        resolution: { value: new Vector2(canvas.clientWidth, canvas.clientHeight) },
         time: { value: 0.0 },
         xScale: { value: 2.0 },
         yScale: { value: 0.12 },
@@ -90,21 +102,21 @@ export default function WebGLShader() {
          1.0,  1.0, 0.0,
       ]
 
-      const positions = new THREE.BufferAttribute(new Float32Array(position), 3)
-      const geometry = new THREE.BufferGeometry()
+      const positions = new BufferAttribute(new Float32Array(position), 3)
+      const geometry = new BufferGeometry()
       geometry.setAttribute("position", positions)
 
-      const material = new THREE.RawShaderMaterial({
+      const material = new RawShaderMaterial({
         vertexShader,
         fragmentShader,
         uniforms: refs.uniforms,
-        side: THREE.DoubleSide,
+        side: DoubleSide,
         transparent: true,
-        blending: THREE.NormalBlending,
+        blending: NormalBlending,
         depthWrite: false,
       })
 
-      refs.mesh = new THREE.Mesh(geometry, material)
+      refs.mesh = new Mesh(geometry, material)
       refs.scene.add(refs.mesh)
 
       handleResize()
@@ -153,7 +165,7 @@ export default function WebGLShader() {
       if (refs.mesh) {
         refs.scene?.remove(refs.mesh)
         refs.mesh.geometry.dispose()
-        if (refs.mesh.material instanceof THREE.Material) {
+        if (refs.mesh.material instanceof Material) {
           refs.mesh.material.dispose()
         }
       }

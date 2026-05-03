@@ -13,37 +13,37 @@ export default function StickyNav() {
   const prefersReduced = useReducedMotion()
   const lenis = useLenis()
 
-  // Show/hide nav + active section — synced with Lenis
+  // Show/hide nav based on scroll position
   useEffect(() => {
     const threshold = window.innerHeight * 0.85
-
-    const onScroll = ({ scroll }: { scroll: number }) => {
-      setVisible(scroll > threshold)
-
-      // Closest section to viewport center
-      const center = window.innerHeight / 2
-      let closest: string | undefined
-      let minDist = Infinity
-      NAV_ITEMS.forEach((item) => {
-        const el = document.getElementById(item.sectionId)
-        if (!el) return
-        const rect = el.getBoundingClientRect()
-        const dist = Math.abs(rect.top + rect.height / 2 - center)
-        if (dist < minDist) { minDist = dist; closest = item.label }
-      })
-      if (closest) setActiveItem(closest)
-    }
+    const onScroll = (scroll: number) => setVisible(scroll > threshold)
 
     if (lenis) {
-      lenis.on("scroll", onScroll)
-      return () => lenis.off("scroll", onScroll)
+      const handler = ({ scroll }: { scroll: number }) => onScroll(scroll)
+      lenis.on("scroll", handler)
+      return () => lenis.off("scroll", handler)
     }
 
-    // Fallback — touch devices
-    const onNativeScroll = () => onScroll({ scroll: window.scrollY })
-    window.addEventListener("scroll", onNativeScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onNativeScroll)
+    const nativeHandler = () => onScroll(window.scrollY)
+    window.addEventListener("scroll", nativeHandler, { passive: true })
+    return () => window.removeEventListener("scroll", nativeHandler)
   }, [lenis])
+
+  // Active section — IntersectionObserver (no reflow)
+  useEffect(() => {
+    const observers: IntersectionObserver[] = []
+    NAV_ITEMS.forEach((item) => {
+      const el = document.getElementById(item.sectionId)
+      if (!el) return
+      const obs = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setActiveItem(item.label) },
+        { threshold: 0.35, rootMargin: "-10% 0px -55% 0px" }
+      )
+      obs.observe(el)
+      observers.push(obs)
+    })
+    return () => observers.forEach((o) => o.disconnect())
+  }, [])
 
   // Scroll lock при открытом мобильном меню
   useEffect(() => {
