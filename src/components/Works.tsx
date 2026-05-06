@@ -10,18 +10,9 @@ export default function Works() {
   const prefersReduced = useReducedMotion()
 
   return (
-    <motion.section
+    <section
       id="works"
       className="pt-28 pb-24 md:py-32 px-6 md:px-10 max-w-7xl mx-auto"
-      variants={{
-        hidden: { opacity: 0, y: 24 },
-        visible: { opacity: 1, y: 0 },
-      }}
-      initial={prefersReduced ? false : "hidden"}
-      whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.7, ease: EASE_DEFAULT }}
-      suppressHydrationWarning
     >
 
       {/* Section header */}
@@ -85,15 +76,15 @@ export default function Works() {
       >
         {works.map((work, i) =>
           work.gallery ? (
-            <FeaturedWorkCard key={work.id} work={work} />
+            <FeaturedWorkCard key={work.id} work={work} priority={i === 0} />
           ) : work.carouselSets ? (
-            <FeaturedWorkCard key={work.id} work={work} />
+            <FeaturedWorkCard key={work.id} work={work} priority={i === 0} />
           ) : (
             <WorkCard key={work.id} work={work} index={i} />
           )
         )}
       </motion.div>
 
-    </motion.section>
+    </section>
   )
 }

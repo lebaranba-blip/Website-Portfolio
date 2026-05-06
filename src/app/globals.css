@@ -255,6 +255,18 @@ html, body {
   100% { transform: scaleY(0); opacity: 0; }
 }
 
+/* GPU layers for animated elements */
+.work-card {
+  will-change: transform;
+  contain: layout style;
+}
+
+/* Off-screen sections: skip render until visible */
+#works, #about {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 800px;
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *:not(.marquee-track):not(.tg-btn-border):not(.tg-btn), *:not(.marquee-track):not(.tg-btn-border):not(.tg-btn)::before, *:not(.marquee-track):not(.tg-btn-border):not(.tg-btn)::after {

@@ -1,29 +1,19 @@
 "use client"
 import Image from "next/image"
-import { motion, useReducedMotion } from "framer-motion"
+import { motion } from "framer-motion"
 import { EASE_DEFAULT } from "@/lib/constants"
 import { useLenis } from "@/lib/lenis-context"
 import TextReveal from "@/components/ui/TextReveal"
 import { services, skills } from "@/data/services"
 
 export default function About() {
-  const prefersReduced = useReducedMotion()
   const lenis = useLenis()
 
   return (
-    <motion.section
+    <section
       id="about"
       aria-label="Обо мне"
       className="py-24 md:py-32 px-6 md:px-10 max-w-7xl mx-auto relative"
-      variants={{
-        hidden: { opacity: 0, y: 24 },
-        visible: { opacity: 1, y: 0 },
-      }}
-      initial={prefersReduced ? false : "hidden"}
-      whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.7, ease: EASE_DEFAULT }}
-      suppressHydrationWarning
     >
       {/* Depth-1 atmosphere */}
       <div
@@ -78,8 +68,8 @@ export default function About() {
                 alt="Дмитрий"
                 width={720}
                 height={960}
-                priority
-                quality={92}
+                loading="lazy"
+                quality={82}
                 sizes="(max-width: 768px) 42vw, 360px"
                 style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 10%", display: "block" }}
               />
@@ -267,6 +257,6 @@ export default function About() {
           ))}
         </motion.div>
       </div>
-    </motion.section>
+    </section>
   )
 }

@@ -67,7 +67,7 @@ export default function WorkCard({ work, index }: WorkCardProps) {
             height={600}
             loading={index === 0 ? "eager" : "lazy"}
             priority={index === 0}
-            quality={92}
+            quality={80}
             sizes="(max-width: 640px) calc(100vw - 24px), (max-width: 1024px) calc(50vw - 16px), calc(33.33vw - 18px)"
             className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           />

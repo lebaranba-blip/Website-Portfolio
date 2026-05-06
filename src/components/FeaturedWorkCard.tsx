@@ -9,6 +9,7 @@ import { EASE_DEFAULT } from "@/lib/constants"
 
 interface Props {
   work: Work
+  priority?: boolean
 }
 
 const galleryVariants = {
@@ -21,7 +22,7 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
 }
 
-export default function FeaturedWorkCard({ work }: Props) {
+export default function FeaturedWorkCard({ work, priority = false }: Props) {
   const [expanded, setExpanded] = useState(false)
   const [muted, setMuted] = useState(true)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
@@ -112,8 +113,9 @@ export default function FeaturedWorkCard({ work }: Props) {
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1280px"
             className="object-cover object-top"
-            priority
-            quality={92}
+            priority={priority}
+            loading={priority ? "eager" : "lazy"}
+            quality={82}
           />
 
           {/* Gradient overlay */}
@@ -249,7 +251,7 @@ export default function FeaturedWorkCard({ work }: Props) {
                         height={item.aspect === "portrait" ? 800 : item.aspect === "square" ? 600 : 450}
                         className="w-full h-auto object-cover hover:scale-[1.03] transition-transform duration-500"
                         loading="lazy"
-                        quality={92}
+                        quality={78}
                       />
                     </motion.button>
                   ))}
