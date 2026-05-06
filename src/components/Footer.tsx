@@ -46,11 +46,11 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           className="mb-10"
-          variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}
+          variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: EASE_DEFAULT }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.6, ease: EASE_DEFAULT }}
           suppressHydrationWarning
         >
           {/* Bleed typography */}
@@ -135,11 +135,11 @@ export default function Footer() {
         {/* CTA — только Telegram */}
         <motion.div
           className="flex flex-wrap gap-4 mb-20"
-          variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+          variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.15, ease: EASE_DEFAULT }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.5, delay: 0.1, ease: EASE_DEFAULT }}
           suppressHydrationWarning
         >
           <TelegramButton size="md" />
