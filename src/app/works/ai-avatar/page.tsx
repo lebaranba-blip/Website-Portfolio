@@ -158,6 +158,8 @@ function Lightbox({ images, index, onClose, onNav }: {
 
 // ── Section fade-in wrapper ────────────────────────────────────────────────
 function FadeSection({ children, className, style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
+  const isTouch = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
+  if (isTouch) return <section className={className} style={style}>{children}</section>
   return (
     <motion.section
       className={className}
@@ -178,6 +180,7 @@ export default function AiAvatarPage() {
   const [lightbox, setLightbox] = useState<number | null>(null)
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
+  const isTouch = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
 
   const openLightbox = useCallback((i: number) => setLightbox(i), [])
   const closeLightbox = useCallback(() => setLightbox(null), [])
@@ -307,23 +310,13 @@ export default function AiAvatarPage() {
           </div>
 
           {/* Три карточки */}
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4"
-            variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-            suppressHydrationWarning
-          >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             {[
               { src: "/works/ai-avatar/clothes.png",     alt: "Лукбук — Miu Miu Academic",  galleryIdx: 0 },
               { src: "/works/ai-avatar/outfit-full.png", alt: "AI Avatar — Miu Miu Academic", galleryIdx: 1 },
               { src: "/works/ai-avatar/4k.png",          alt: "AI Avatar — полный рост",       galleryIdx: 2 },
             ].map((item) => (
-              <motion.div
-                key={item.src}
-                variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_DEFAULT } } }}
-              >
+              <div key={item.src}>
                 <GlowCard
                   className="rounded-2xl overflow-hidden cursor-pointer"
                   style={{ background: "var(--surface)", aspectRatio: "3/4" }}
@@ -338,18 +331,12 @@ export default function AiAvatarPage() {
                     quality={92}
                   />
                 </GlowCard>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
 
           {/* Сплит */}
-          <motion.div
-            className="flex justify-center mt-4"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.6, ease: EASE_DEFAULT }}
-          >
+          <div className="flex justify-center mt-4">
             <GlowCard
               className="rounded-2xl overflow-hidden cursor-pointer"
               style={{ background: "var(--surface)", maxWidth: 700 }}
@@ -364,7 +351,7 @@ export default function AiAvatarPage() {
                 quality={92}
               />
             </GlowCard>
-          </motion.div>
+          </div>
         </FadeSection>
 
         <div className="px-6 md:px-12 max-w-6xl mx-auto">
@@ -408,62 +395,30 @@ export default function AiAvatarPage() {
             </p>
           </div>
 
-          {/* Десктоп: 3 колонки асимметрично. Мобиль: 2 колонки */}
-          <motion.div
+          {/* Десктоп: 3 колонки асимметрично */}
+          <div
             className="hidden md:grid gap-3"
             style={{ gridTemplateColumns: "1.2fr 1fr 1fr", gridTemplateRows: "1fr 1fr", height: 700 }}
-            variants={{ visible: { transition: { staggerChildren: 0.07 } } }}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
           >
-            {/* Колонка 1 — один большой на всю высоту */}
-            <motion.div
-              variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_DEFAULT } } }}
-              className="rounded-2xl overflow-hidden"
-              style={{ gridRow: "1 / 3", background: "var(--surface)" }}
-            >
+            <div className="rounded-2xl overflow-hidden" style={{ gridRow: "1 / 3", background: "var(--surface)" }}>
               <video src="/works/ai-avatar/ugc/freepik_closeup-portrait-of-woman_2781037723.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover" />
-            </motion.div>
-            <motion.div
-              variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_DEFAULT } } }}
-              className="rounded-2xl overflow-hidden"
-              style={{ background: "var(--surface)" }}
-            >
+            </div>
+            <div className="rounded-2xl overflow-hidden" style={{ background: "var(--surface)" }}>
               <video src="/works/ai-avatar/ugc/freepik_young-woman-with-curly-bl_2781040377.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover" />
-            </motion.div>
-            <motion.div
-              variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_DEFAULT } } }}
-              className="rounded-2xl overflow-hidden"
-              style={{ background: "var(--surface)" }}
-            >
+            </div>
+            <div className="rounded-2xl overflow-hidden" style={{ background: "var(--surface)" }}>
               <video src="/works/ai-avatar/ugc/freepik_extreme-macro-of-lips-lip_2781032383.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover" />
-            </motion.div>
-            <motion.div
-              variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_DEFAULT } } }}
-              className="rounded-2xl overflow-hidden"
-              style={{ background: "var(--surface)" }}
-            >
+            </div>
+            <div className="rounded-2xl overflow-hidden" style={{ background: "var(--surface)" }}>
               <video src="/works/ai-avatar/ugc/freepik_young-woman-with-curly-bl_2781042514.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover" />
-            </motion.div>
-            <motion.div
-              variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_DEFAULT } } }}
-              className="rounded-2xl overflow-hidden"
-              style={{ background: "var(--surface)" }}
-            >
+            </div>
+            <div className="rounded-2xl overflow-hidden" style={{ background: "var(--surface)" }}>
               <video src="/works/ai-avatar/ugc/freepik_young-woman-with-curly-bl_2781057141.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover" />
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
           {/* Мобиль: 2 колонки */}
-          <motion.div
-            className="grid md:hidden gap-3"
-            style={{ gridTemplateColumns: "1fr 1fr" }}
-            variants={{ visible: { transition: { staggerChildren: 0.07 } } }}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-          >
+          <div className="grid md:hidden gap-3" style={{ gridTemplateColumns: "1fr 1fr" }}>
             {[
               "/works/ai-avatar/ugc/freepik_closeup-portrait-of-woman_2781037723.mp4",
               "/works/ai-avatar/ugc/freepik_young-woman-with-curly-bl_2781040377.mp4",
@@ -471,16 +426,11 @@ export default function AiAvatarPage() {
               "/works/ai-avatar/ugc/freepik_young-woman-with-curly-bl_2781042514.mp4",
               "/works/ai-avatar/ugc/freepik_young-woman-with-curly-bl_2781057141.mp4",
             ].map((src) => (
-              <motion.div
-                key={src}
-                variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE_DEFAULT } } }}
-                className="rounded-xl overflow-hidden"
-                style={{ aspectRatio: "9/16", background: "var(--surface)" }}
-              >
+              <div key={src} className="rounded-xl overflow-hidden" style={{ aspectRatio: "9/16", background: "var(--surface)" }}>
                 <video src={src} autoPlay muted loop playsInline className="w-full h-full object-cover" />
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         </FadeSection>
 
         <div className="px-6 md:px-12 max-w-6xl mx-auto">

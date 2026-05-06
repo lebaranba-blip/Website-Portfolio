@@ -18,6 +18,8 @@ function TextReveal({
   children: React.ReactNode; delay?: number
   className?: string; style?: React.CSSProperties
 }) {
+  const isTouch = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
+  if (isTouch) return <div className={className} style={style}>{children}</div>
   return (
     <div style={{ overflow: "hidden", display: "block" }}>
       <motion.div
@@ -73,12 +75,13 @@ function XPCounter() {
 // ─── FeatureRow ───────────────────────────────────────────────────────────────
 function FeatureRow({ label, desc, index }: { label: string; desc: string; index: number }) {
   const [hovered, setHovered] = useState(false)
+  const isTouch = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
   return (
     <motion.div
       className="flex items-center gap-4 py-3 cursor-default relative"
       style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}
-      initial={{ opacity: 0, x: -16 }}
-      whileInView={{ opacity: 1, x: 0 }}
+      initial={isTouch ? false : { opacity: 0, x: -16 }}
+      whileInView={isTouch ? undefined : { opacity: 1, x: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.45, delay: 0.1 + index * 0.08, ease: [0.16,1,0.3,1] }}
       onHoverStart={() => setHovered(true)}
@@ -130,6 +133,8 @@ function FadeIn({
   children: React.ReactNode; delay?: number; y?: number
   className?: string; style?: React.CSSProperties
 }) {
+  const isTouch = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
+  if (isTouch) return <div className={className} style={style}>{children}</div>
   return (
     <motion.div
       className={className} style={style}
@@ -153,6 +158,9 @@ const staggerItem: Variants = {
   hidden: { opacity: 0, y: 18 },
   show:   { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
 }
+// Touch-safe: no initial hidden state
+const staggerContainerTouch: Variants = { show: {} }
+const staggerItemTouch: Variants = { show: {} }
 
 // ─── NavBackButton ────────────────────────────────────────────────────────────
 function NavBackButton({ href }: { href: string }) {
@@ -317,6 +325,9 @@ export default function GumpDonutsPage() {
   const [mounted,  setMounted]  = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const prefersReduced = useReducedMotion()
+  const isTouch = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
+  const sc = isTouch ? staggerContainerTouch : staggerContainer
+  const si = isTouch ? staggerItemTouch : staggerItem
 
   useEffect(() => { setMounted(true) }, [])
   useEffect(() => {
@@ -460,15 +471,15 @@ export default function GumpDonutsPage() {
 
             {/* Brand story — full width, 2-col text */}
             <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-5 mb-14"
-              variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-40px" }}
+              variants={sc} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-40px" }}
             >
-              <motion.p variants={staggerItem} className="text-lg leading-relaxed" style={{ color: "var(--muted)", maxWidth: "65ch" }}>
+              <motion.p variants={si} className="text-lg leading-relaxed" style={{ color: "var(--muted)", maxWidth: "65ch" }}>
                 <strong style={{ color: "var(--text)" }}>Форрест Гамп бежал просто потому что бежал.</strong> Без диеты, без подсчёта калорий, без сторис о «читмиле». Добежал до финиша — и съел что хотел. Это честно.
               </motion.p>
-              <motion.p variants={staggerItem} className="text-lg leading-relaxed" style={{ color: "var(--muted)", maxWidth: "65ch" }}>
+              <motion.p variants={si} className="text-lg leading-relaxed" style={{ color: "var(--muted)", maxWidth: "65ch" }}>
                 Gump Donuts — ответ фитнес-маркетингу, который стыдит тебя за сахар. Тезис простой: <strong style={{ color: "var(--text)" }}>отработай и заслужи пончик.</strong> Без вины, без оправданий.
               </motion.p>
-              <motion.p variants={staggerItem} className="text-lg leading-relaxed md:col-span-2" style={{ color: "var(--muted)", maxWidth: "65ch" }}>
+              <motion.p variants={si} className="text-lg leading-relaxed md:col-span-2" style={{ color: "var(--muted)", maxWidth: "65ch" }}>
                 Ирония над «осознанным потреблением» — добрая, не едкая. Объединяет тех, кто бегает утром и ест пончики вечером. Бородатый бегун с пончиком в руке стал голосом этого бренда.
               </motion.p>
             </motion.div>
@@ -633,21 +644,21 @@ export default function GumpDonutsPage() {
 
               {/* Right — gamification content */}
               <motion.div className="flex flex-col gap-8"
-                variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-60px" }}
+                variants={sc} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-60px" }}
               >
-                <motion.div variants={staggerItem}>
+                <motion.div variants={si}>
                   <div className="font-black leading-none mb-3" style={{ fontSize: "clamp(1.8rem,3.5vw,3rem)", letterSpacing: "-0.03em" }}>
                     <span style={{ color: "var(--text)" }}>ГЕЙМИФИКАЦИЯ </span><br />
                     <span style={{ color: "#1B3FD8" }}>КАК МЕХАНИКА</span>
                   </div>
                 </motion.div>
 
-                <motion.p variants={staggerItem} className="text-lg leading-relaxed" style={{ color: "var(--muted)" }}>
+                <motion.p variants={si} className="text-lg leading-relaxed" style={{ color: "var(--muted)" }}>
                   Бренд строится на принципе <strong style={{ color: "var(--text)" }}>reward loop</strong> — отработал активность, заработал XP, получил пончик. Приложение отслеживает каждый километр и открывает награды.
                 </motion.p>
 
                 {/* Feature list with hover micro-interactions */}
-                <motion.div variants={staggerItem} className="flex flex-col">
+                <motion.div variants={si} className="flex flex-col">
                   {[
                     { label: "XP система",       desc: "каждый километр = очки" },
                     { label: "Reward loop",       desc: "достиг цели — получи пончик" },
@@ -659,7 +670,7 @@ export default function GumpDonutsPage() {
                 </motion.div>
 
                 {/* Quote */}
-                <motion.div variants={staggerItem}>
+                <motion.div variants={si}>
                   <div className="font-black leading-tight" style={{ fontSize: "clamp(1.5rem,2.8vw,2.2rem)", letterSpacing: "-0.025em" }}>
                     <span style={{ color: "var(--text)" }}>«Беги. </span><span style={{ color: "#F472B6" }}>Зарабатывай. </span><span style={{ color: "var(--text)" }}>Съешь.»</span>
                   </div>
@@ -686,14 +697,14 @@ export default function GumpDonutsPage() {
             </div>
 
             {/* Swatches */}
-            <motion.div className="flex gap-3 mb-10 flex-wrap" variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-40px" }}>
+            <motion.div className="flex gap-3 mb-10 flex-wrap" variants={sc} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-40px" }}>
               {[
                 { color: "#1B3FD8", name: "Gump Blue",   hex: "#1B3FD8", role: "Основной" },
                 { color: "#F472B6", name: "Donut Pink",  hex: "#F472B6", role: "Акцент" },
                 { color: "#FFFFFF", name: "Glaze White", hex: "#FFFFFF", role: "Нейтральный" },
                 { color: "#0A0A0A", name: "Deep Dark",   hex: "#0A0A0A", role: "Фон" },
               ].map(({ color, name, hex, role }) => (
-                <motion.div key={color} variants={staggerItem}
+                <motion.div key={color} variants={si}
                   className="rounded-2xl overflow-hidden flex-1 min-w-[130px]"
                   style={{ boxShadow: "0 2px 14px rgba(0,0,0,0.07), 0 0 0 1px rgba(0,0,0,0.05)" }}
                   whileHover={{ y: -6, boxShadow: "0 8px 28px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.06)" }}
@@ -721,30 +732,30 @@ export default function GumpDonutsPage() {
               gridTemplateRows: "repeat(4, 280px)",
               gap: 12,
             }}>
-              <GCell src="/works/gump/truck.png"       alt="Брендированный фургон" label="Фургон · Брендинг"  col="1/9"   row={1} ratio="auto" i={0}  onClick={() => openGallery(2)} />
-              <GCell src="/works/gump/apron.png"       alt="Фирменный фартук"      label="Фартук · Мерч"      col="9/13"  row={1} ratio="auto" i={1}  onClick={() => openGallery(4)}  rowSpan={2} />
-              <GCell src="/works/gump/logo-photo.png"  alt="Логотип"               label="Логотип"            col="1/5"   row={2} ratio="auto" i={2}  onClick={() => openGallery(0)} />
-              <GCell src="/works/gump/boxes.png"       alt="Упаковка"              label="Упаковка · Коробки" col="5/9"   row={2} ratio="auto" i={3}  onClick={() => openGallery(6)} />
-              <GCell src="/works/gump/tshirt2.png"     alt="Футболки мерч"         label="Мерч · Линейка"     col="1/4"   row={3} ratio="auto" i={4}  onClick={() => openGallery(1)}  rowSpan={2} />
-              <GCell src="/works/gump/lifestyle.png"   alt="Лайфстайл"             label="Продуктовый кадр"   col="4/8"   row={3} ratio="auto" i={5}  onClick={() => openGallery(8)} />
-              <GCell src="/works/gump/shopper.png"     alt="Шоппер"                label="Шоппер · Мерч"      col="8/10"  row={3} ratio="auto" i={6}  onClick={() => openGallery(7)} />
-              <GCell src="/works/gump/poster-cafe.png" alt="Постер в кофейне"      label="Постер · Мокап"     col="10/13" row={3} ratio="auto" i={7}  onClick={() => openGallery(10)} rowSpan={2} />
-              <GCell src="/works/gump/billboard.png"   alt="Билборд"               label="Наружная реклама"   col="4/8"   row={4} ratio="auto" i={8}  onClick={() => openGallery(5)} />
-              <GCell src="/works/gump/banner.png"      alt="Рекламный баннер"      label="Баннер · OOH"       col="8/10"  row={4} ratio="auto" i={9}  onClick={() => openGallery(9)} />
+              <GCell src="/works/gump/truck.png"       alt="Брендированный фургон" label="Фургон · Брендинг"  col="1/9"   row={1} ratio="auto" i={0}  isTouch={isTouch} onClick={() => openGallery(2)} />
+              <GCell src="/works/gump/apron.png"       alt="Фирменный фартук"      label="Фартук · Мерч"      col="9/13"  row={1} ratio="auto" i={1}  isTouch={isTouch} onClick={() => openGallery(4)}  rowSpan={2} />
+              <GCell src="/works/gump/logo-photo.png"  alt="Логотип"               label="Логотип"            col="1/5"   row={2} ratio="auto" i={2}  isTouch={isTouch} onClick={() => openGallery(0)} />
+              <GCell src="/works/gump/boxes.png"       alt="Упаковка"              label="Упаковка · Коробки" col="5/9"   row={2} ratio="auto" i={3}  isTouch={isTouch} onClick={() => openGallery(6)} />
+              <GCell src="/works/gump/tshirt2.png"     alt="Футболки мерч"         label="Мерч · Линейка"     col="1/4"   row={3} ratio="auto" i={4}  isTouch={isTouch} onClick={() => openGallery(1)}  rowSpan={2} />
+              <GCell src="/works/gump/lifestyle.png"   alt="Лайфстайл"             label="Продуктовый кадр"   col="4/8"   row={3} ratio="auto" i={5}  isTouch={isTouch} onClick={() => openGallery(8)} />
+              <GCell src="/works/gump/shopper.png"     alt="Шоппер"                label="Шоппер · Мерч"      col="8/10"  row={3} ratio="auto" i={6}  isTouch={isTouch} onClick={() => openGallery(7)} />
+              <GCell src="/works/gump/poster-cafe.png" alt="Постер в кофейне"      label="Постер · Мокап"     col="10/13" row={3} ratio="auto" i={7}  isTouch={isTouch} onClick={() => openGallery(10)} rowSpan={2} />
+              <GCell src="/works/gump/billboard.png"   alt="Билборд"               label="Наружная реклама"   col="4/8"   row={4} ratio="auto" i={8}  isTouch={isTouch} onClick={() => openGallery(5)} />
+              <GCell src="/works/gump/banner.png"      alt="Рекламный баннер"      label="Баннер · OOH"       col="8/10"  row={4} ratio="auto" i={9}  isTouch={isTouch} onClick={() => openGallery(9)} />
             </div>
             {/* Gallery grid — mobile 2-col */}
             <div className="grid md:hidden" style={{ gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-              <GCell src="/works/gump/truck.png"       alt="Брендированный фургон" label="Фургон"    col="1/3"  row={0} ratio="3/2"  i={0}  onClick={() => openGallery(2)} />
-              <GCell src="/works/gump/apron.png"       alt="Фирменный фартук"      label="Фартук"    col="auto" row={0} ratio="3/4"  i={1}  onClick={() => openGallery(4)} />
-              <GCell src="/works/gump/tshirt2.png"     alt="Футболки мерч"         label="Мерч"      col="auto" row={0} ratio="3/4"  i={2}  onClick={() => openGallery(1)} />
-              <GCell src="/works/gump/logo-photo.png"  alt="Логотип"               label="Логотип"   col="1/3"  row={0} ratio="3/2"  i={3}  onClick={() => openGallery(0)} />
-              <GCell src="/works/gump/boxes.png"       alt="Упаковка"              label="Упаковка"  col="auto" row={0} ratio="3/2"  i={4}  onClick={() => openGallery(6)} />
-              <GCell src="/works/gump/tshirt.png"      alt="Футболка"              label="Мерч"      col="auto" row={0} ratio="3/4"  i={5}  onClick={() => openGallery(3)} />
-              <GCell src="/works/gump/lifestyle.png"   alt="Лайфстайл"             label="Лайфстайл" col="1/3"  row={0} ratio="3/2"  i={6}  onClick={() => openGallery(8)} />
-              <GCell src="/works/gump/shopper.png"     alt="Шоппер"                label="Шоппер"    col="auto" row={0} ratio="3/2"  i={7}  onClick={() => openGallery(7)} />
-              <GCell src="/works/gump/billboard.png"   alt="Билборд"               label="Наружка"   col="auto" row={0} ratio="3/2"  i={8}  onClick={() => openGallery(5)} />
-              <GCell src="/works/gump/banner.png"      alt="Баннер"                label="Баннер"    col="1/3"  row={0} ratio="16/9" i={9}  onClick={() => openGallery(9)} />
-              <GCell src="/works/gump/poster-cafe.png" alt="Постер в кофейне"      label="Постер"    col="auto" row={0} ratio="3/4"  i={10} onClick={() => openGallery(10)} />
+              <GCell src="/works/gump/truck.png"       alt="Брендированный фургон" label="Фургон"    col="1/3"  row={0} ratio="3/2"  i={0}  isTouch={isTouch} onClick={() => openGallery(2)} />
+              <GCell src="/works/gump/apron.png"       alt="Фирменный фартук"      label="Фартук"    col="auto" row={0} ratio="3/4"  i={1}  isTouch={isTouch} onClick={() => openGallery(4)} />
+              <GCell src="/works/gump/tshirt2.png"     alt="Футболки мерч"         label="Мерч"      col="auto" row={0} ratio="3/4"  i={2}  isTouch={isTouch} onClick={() => openGallery(1)} />
+              <GCell src="/works/gump/logo-photo.png"  alt="Логотип"               label="Логотип"   col="1/3"  row={0} ratio="3/2"  i={3}  isTouch={isTouch} onClick={() => openGallery(0)} />
+              <GCell src="/works/gump/boxes.png"       alt="Упаковка"              label="Упаковка"  col="auto" row={0} ratio="3/2"  i={4}  isTouch={isTouch} onClick={() => openGallery(6)} />
+              <GCell src="/works/gump/tshirt.png"      alt="Футболка"              label="Мерч"      col="auto" row={0} ratio="3/4"  i={5}  isTouch={isTouch} onClick={() => openGallery(3)} />
+              <GCell src="/works/gump/lifestyle.png"   alt="Лайфстайл"             label="Лайфстайл" col="1/3"  row={0} ratio="3/2"  i={6}  isTouch={isTouch} onClick={() => openGallery(8)} />
+              <GCell src="/works/gump/shopper.png"     alt="Шоппер"                label="Шоппер"    col="auto" row={0} ratio="3/2"  i={7}  isTouch={isTouch} onClick={() => openGallery(7)} />
+              <GCell src="/works/gump/billboard.png"   alt="Билборд"               label="Наружка"   col="auto" row={0} ratio="3/2"  i={8}  isTouch={isTouch} onClick={() => openGallery(5)} />
+              <GCell src="/works/gump/banner.png"      alt="Баннер"                label="Баннер"    col="1/3"  row={0} ratio="16/9" i={9}  isTouch={isTouch} onClick={() => openGallery(9)} />
+              <GCell src="/works/gump/poster-cafe.png" alt="Постер в кофейне"      label="Постер"    col="auto" row={0} ratio="3/4"  i={10} isTouch={isTouch} onClick={() => openGallery(10)} />
             </div>
           </div>
         </section>
@@ -800,13 +811,13 @@ export default function GumpDonutsPage() {
             </div>
 
             {/* Tool cards */}
-            <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4" variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true }}>
+            <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4" variants={sc} initial="hidden" whileInView="show" viewport={{ once: true }}>
               {[
                 { num: "Инструмент 01", name: "Kling 3.0",   desc: "Фотореалистичные сцены без студии: фургон в городе, пончики в невесомости, lifestyle-кадры. Всё что обычно стоит недели съёмок — из Kling за часы.", tag: "AI Image Gen" },
                 { num: "Инструмент 02", name: "Figma",        desc: "Системная айдентика: компонентная библиотека, автолейауты, сетки для упаковки, digital и outdoor. Все мокапы и носители собраны здесь.", tag: "Design System" },
                 { num: "Инструмент 03", name: "Photoshop",    desc: "AI-кадры вживляются в реальные среды: билборды, фургон, одежда. Тени, светокоррекция, перспектива — то что делает генерацию неотличимой от съёмки.", tag: "Compositing" },
               ].map(({ num, name, desc, tag }) => (
-                <motion.div key={name} variants={staggerItem}
+                <motion.div key={name} variants={si}
                   className="rounded-2xl p-8"
                   style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
                   whileHover={{ y: -4 }} suppressHydrationWarning
@@ -893,10 +904,10 @@ export default function GumpDonutsPage() {
             </div>
 
             {/* Top row: wide task card + metrics column */}
-            <motion.div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-4 mb-4" variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true }}>
+            <motion.div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-4 mb-4" variants={sc} initial="hidden" whileInView="show" viewport={{ once: true }}>
 
               {/* Задача — wide */}
-              <motion.div variants={staggerItem} className="p-8 rounded-2xl flex flex-col justify-between" style={{ background: "var(--surface)", border: "1px solid var(--border)", minHeight: 220 }} suppressHydrationWarning>
+              <motion.div variants={si} className="p-8 rounded-2xl flex flex-col justify-between" style={{ background: "var(--surface)", border: "1px solid var(--border)", minHeight: 220 }} suppressHydrationWarning>
                 <div>
                   <div className="flex items-center gap-2 mb-6">
                     <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#1B3FD8", display: "inline-block" }} />
@@ -914,7 +925,7 @@ export default function GumpDonutsPage() {
               </motion.div>
 
               {/* Метрики — стопка */}
-              <motion.div variants={staggerItem} className="flex flex-col gap-4 md:w-56" suppressHydrationWarning>
+              <motion.div variants={si} className="flex flex-col gap-4 md:w-56" suppressHydrationWarning>
                 {[
                   { num: "3", unit: "дня", desc: "полный цикл" },
                   { num: "360°", unit: "охват", desc: "от лого до видео" },
@@ -930,10 +941,10 @@ export default function GumpDonutsPage() {
             </motion.div>
 
             {/* Bottom row: deliverables + tools */}
-            <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-4" variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true }}>
+            <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-4" variants={sc} initial="hidden" whileInView="show" viewport={{ once: true }}>
 
               {/* Что сделано */}
-              <motion.div variants={staggerItem} className="p-8 rounded-2xl" style={{ background: "var(--surface)", border: "1px solid var(--border)" }} suppressHydrationWarning>
+              <motion.div variants={si} className="p-8 rounded-2xl" style={{ background: "var(--surface)", border: "1px solid var(--border)" }} suppressHydrationWarning>
                 <div className="flex items-center gap-2 mb-6">
                   <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#EA580C", display: "inline-block" }} />
                   <span className="font-mono text-xs uppercase tracking-widest" style={{ color: "var(--muted)" }}>Что сделано</span>
@@ -956,7 +967,7 @@ export default function GumpDonutsPage() {
               </motion.div>
 
               {/* Инструменты */}
-              <motion.div variants={staggerItem} className="p-8 rounded-2xl" style={{ background: "var(--surface)", border: "1px solid var(--border)" }} suppressHydrationWarning>
+              <motion.div variants={si} className="p-8 rounded-2xl" style={{ background: "var(--surface)", border: "1px solid var(--border)" }} suppressHydrationWarning>
                 <div className="flex items-center gap-2 mb-6">
                   <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#F472B6", display: "inline-block" }} />
                   <span className="font-mono text-xs uppercase tracking-widest" style={{ color: "var(--muted)" }}>Инструменты</span>
@@ -1023,9 +1034,9 @@ export default function GumpDonutsPage() {
 }
 
 // ─── GCell — gallery cell helper ──────────────────────────────────────────────
-function GCell({ src, alt, label, col, row, ratio, i, onClick, rowSpan }: {
+function GCell({ src, alt, label, col, row, ratio, i, onClick, rowSpan, isTouch }: {
   src: string; alt: string; label?: string; col: string; row: number
-  ratio: string; i: number; onClick: () => void; rowSpan?: number
+  ratio: string; i: number; onClick: () => void; rowSpan?: number; isTouch?: boolean
 }) {
   return (
     <motion.button type="button"
@@ -1039,8 +1050,8 @@ function GCell({ src, alt, label, col, row, ratio, i, onClick, rowSpan }: {
         boxShadow: "0 2px 12px rgba(0,0,0,0.07), 0 0 0 1px rgba(0,0,0,0.04)",
       }}
       onClick={onClick}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={isTouch ? false : { opacity: 0, y: 20 }}
+      whileInView={isTouch ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.55, delay: i * 0.055, ease: EASE_DEFAULT }}
       suppressHydrationWarning
