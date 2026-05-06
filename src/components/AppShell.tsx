@@ -7,7 +7,11 @@ import ScrollProgress from "@/components/ScrollProgress"
 import { PreloaderContext } from "@/lib/preloader-context"
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
-  const [preloaderDone, setPreloaderDone] = useState(false)
+  // Init as true immediately if preloader was already shown this session —
+  // avoids a flash where Hero renders with opacity:0 before setState fires
+  const [preloaderDone, setPreloaderDone] = useState(() =>
+    typeof window !== "undefined" && !!sessionStorage.getItem("preloader-done")
+  )
 
   const handleComplete = useCallback(() => {
     setPreloaderDone(true)

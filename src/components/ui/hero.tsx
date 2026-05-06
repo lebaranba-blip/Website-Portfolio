@@ -51,6 +51,8 @@ export default function HeroSection() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const preloaderDone = usePreloaderDone()
   const lenis = useLenis()
+  // If preloader was already done before this component mounted, skip intro animation
+  const skipIntro = preloaderDone && typeof window !== "undefined" && !!sessionStorage.getItem("preloader-done")
 
   const scrollY = useMotionValue(0)
   const contentY = useTransform(scrollY, [0, 600], [0, prefersReduced ? 0 : -60])
@@ -162,7 +164,7 @@ export default function HeroSection() {
           <motion.div
             className="flex items-center gap-2 mb-8"
             variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
-            initial="hidden"
+            initial={skipIntro ? false : "hidden"}
             animate={preloaderDone ? "visible" : "hidden"}
             transition={{ duration: 0.6, delay: 0.15, ease: EASE_DEFAULT }}
             suppressHydrationWarning
@@ -191,7 +193,7 @@ export default function HeroSection() {
               className="block font-black text-[clamp(4rem,12vw,11rem)] gradient-text"
               style={{ fontFamily: "var(--font-display), sans-serif" }}
               variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}
-              initial="hidden"
+              initial={skipIntro ? false : "hidden"}
               animate={preloaderDone ? "visible" : "hidden"}
               transition={{ duration: 1.1, delay: 0.25, ease: EASE_DEFAULT }}
               suppressHydrationWarning
@@ -205,7 +207,7 @@ export default function HeroSection() {
             className="text-[15px] md:text-lg font-mono max-w-md mb-10 leading-[1.6]"
             style={{ color: "var(--text)", opacity: 0.9 }}
             variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 0.9, y: 0 } }}
-            initial="hidden"
+            initial={skipIntro ? false : "hidden"}
             animate={preloaderDone ? "visible" : "hidden"}
             transition={{ duration: 0.7, delay: 0.45, ease: EASE_DEFAULT }}
             suppressHydrationWarning
@@ -217,7 +219,7 @@ export default function HeroSection() {
           <motion.div
             className="flex items-center justify-center mb-12"
             variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
-            initial="hidden"
+            initial={skipIntro ? false : "hidden"}
             animate={preloaderDone ? "visible" : "hidden"}
             transition={{ duration: 0.7, delay: 0.6, ease: EASE_DEFAULT }}
             suppressHydrationWarning
@@ -231,7 +233,7 @@ export default function HeroSection() {
             role="list"
             aria-label="Статистика"
             variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-            initial="hidden"
+            initial={skipIntro ? false : "hidden"}
             animate={preloaderDone ? "visible" : "hidden"}
             transition={{ duration: 0.7, delay: 0.75, ease: EASE_DEFAULT }}
             suppressHydrationWarning
@@ -242,7 +244,7 @@ export default function HeroSection() {
                 className="flex flex-col items-center"
                 role="listitem"
                 variants={{ hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0 } }}
-                initial="hidden"
+                initial={skipIntro ? false : "hidden"}
                 animate={preloaderDone ? "visible" : "hidden"}
                 transition={{ duration: 0.5, delay: 0.8 + i * 0.07, ease: EASE_DEFAULT }}
                 suppressHydrationWarning
