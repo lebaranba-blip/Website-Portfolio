@@ -107,8 +107,45 @@ export default function FeaturedWorkCard({ work, priority = false }: Props) {
       >
         {/* Preview area */}
         <div className="relative w-full overflow-hidden" style={{ height: "480px" }}>
-          {work.previewGrid && work.previewGrid.length >= 4 ? (
-            /* Mosaic grid: large main image left + 2×2 grid right */
+          {work.previewGrid && work.previewLayout === "grid-3T-2B" ? (
+            /* 3 сверху + 2 снизу, верхние 60%, нижние 40% */
+            <div className="absolute inset-0 flex flex-col gap-1">
+              {/* Top row — 3 equal columns, 60% height */}
+              <div className="flex gap-1" style={{ flex: "3" }}>
+                {[0, 1, 2].map((i) => (
+                  <div key={i} className="relative flex-1 overflow-hidden">
+                    <Image
+                      src={work.previewGrid![i]}
+                      alt=""
+                      fill
+                      sizes="33vw"
+                      className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]"
+                      priority={priority && i === 0}
+                      loading={priority && i === 0 ? "eager" : "lazy"}
+                      quality={80}
+                    />
+                  </div>
+                ))}
+              </div>
+              {/* Bottom row — 2 equal columns, 40% height */}
+              <div className="flex gap-1" style={{ flex: "2" }}>
+                {[3, 4].map((i) => (
+                  <div key={i} className="relative flex-1 overflow-hidden">
+                    <Image
+                      src={work.previewGrid![i] ?? work.previewGrid![0]}
+                      alt=""
+                      fill
+                      sizes="50vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                      loading="lazy"
+                      quality={78}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : work.previewGrid && work.previewGrid.length >= 4 ? (
+            /* Default mosaic: large main image left + 2×2 grid right */
             <div className="absolute inset-0 flex gap-1">
               {/* Left — main tall image */}
               <div className="relative flex-[3] overflow-hidden">
