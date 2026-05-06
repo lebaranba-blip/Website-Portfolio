@@ -2,12 +2,15 @@
 import { motion } from "framer-motion"
 import { TELEGRAM_URL, EASE_DEFAULT } from "@/lib/constants"
 import TelegramButton from "@/components/ui/telegram-button"
+import { useIsTouch } from "@/lib/use-is-touch"
 
 const MARQUEE_ITEMS = ["AI Visual", "Брендинг", "Автоматизация", "Photo & Video", "Промо", "AI Workflow", "Brand Kit", "Концепты"]
 const DOTS = ["var(--cyan)", "var(--orange)", "var(--blue)"]
 
 export default function Footer() {
   const year = new Date().getFullYear()
+  const isTouch = useIsTouch()
+  const noAnim = isTouch
 
   return (
     <footer id="contact" className="relative pt-24 pb-10 px-6 md:px-10 overflow-x-hidden" style={{ boxShadow: "-1px 0 0 0 var(--border), 0 -1px 0 0 var(--border)" }}>
@@ -47,8 +50,8 @@ export default function Footer() {
         <motion.div
           className="mb-10"
           variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
-          initial="hidden"
-          whileInView="visible"
+          initial={noAnim ? false : "hidden"}
+          whileInView={noAnim ? undefined : "visible"}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.6, ease: EASE_DEFAULT }}
           suppressHydrationWarning
@@ -136,8 +139,8 @@ export default function Footer() {
         <motion.div
           className="flex flex-wrap gap-4 mb-20"
           variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
-          initial="hidden"
-          whileInView="visible"
+          initial={noAnim ? false : "hidden"}
+          whileInView={noAnim ? undefined : "visible"}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.5, delay: 0.1, ease: EASE_DEFAULT }}
           suppressHydrationWarning

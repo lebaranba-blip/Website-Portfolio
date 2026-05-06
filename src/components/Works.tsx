@@ -5,9 +5,13 @@ import FeaturedWorkCard from "@/components/FeaturedWorkCard"
 import { works } from "@/data/works"
 import { EASE_DEFAULT } from "@/lib/constants"
 import TextReveal from "@/components/ui/TextReveal"
+import { useIsTouch } from "@/lib/use-is-touch"
 
 export default function Works() {
   const prefersReduced = useReducedMotion()
+  const isTouch = useIsTouch()
+  // On mobile/touch: skip all scroll-triggered opacity animations to prevent flicker
+  const noAnim = isTouch || !!prefersReduced
 
   return (
     <section
@@ -33,12 +37,12 @@ export default function Works() {
           </TextReveal>
         </div>
 
-        {/* Count badge */}
+        {/* Count badge — desktop only, animation safe */}
         <motion.div
           className="hidden md:flex flex-col items-end flex-shrink-0 pb-2"
           variants={{ hidden: { opacity: 0, x: 20 }, visible: { opacity: 1, x: 0 } }}
-          initial="hidden"
-          whileInView="visible"
+          initial={noAnim ? false : "hidden"}
+          whileInView={noAnim ? undefined : "visible"}
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.1, ease: EASE_DEFAULT }}
           suppressHydrationWarning
@@ -54,26 +58,16 @@ export default function Works() {
       <motion.div
         className="w-full h-px mb-12"
         variants={{ hidden: { scaleX: 0 }, visible: { scaleX: 1 } }}
-        initial="hidden"
-        whileInView="visible"
+        initial={noAnim ? false : "hidden"}
+        whileInView={noAnim ? undefined : "visible"}
         viewport={{ once: true }}
         transition={{ duration: 0.8, ease: EASE_DEFAULT }}
         style={{ background: "var(--border)", transformOrigin: "left" }}
         suppressHydrationWarning
       />
 
-      {/* Grid — stagger per card */}
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 lg:gap-8 mb-20"
-        variants={{
-          hidden: {},
-          visible: { transition: { staggerChildren: prefersReduced ? 0 : 0.08 } },
-        }}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-60px" }}
-        suppressHydrationWarning
-      >
+      {/* Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 lg:gap-8 mb-20">
         {works.map((work, i) =>
           work.gallery ? (
             <FeaturedWorkCard key={work.id} work={work} priority={i === 0} />
@@ -83,7 +77,7 @@ export default function Works() {
             <WorkCard key={work.id} work={work} index={i} />
           )
         )}
-      </motion.div>
+      </div>
 
     </section>
   )

@@ -1,10 +1,10 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
+// Initialised synchronously — no re-render flash
 export function useIsTouch() {
-  const [isTouch, setIsTouch] = useState(false)
-  useEffect(() => {
-    setIsTouch(window.matchMedia("(pointer: coarse)").matches)
-  }, [])
+  const [isTouch] = useState(() =>
+    typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
+  )
   return isTouch
 }

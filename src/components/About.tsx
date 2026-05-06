@@ -5,9 +5,12 @@ import { EASE_DEFAULT } from "@/lib/constants"
 import { useLenis } from "@/lib/lenis-context"
 import TextReveal from "@/components/ui/TextReveal"
 import { services, skills } from "@/data/services"
+import { useIsTouch } from "@/lib/use-is-touch"
 
 export default function About() {
   const lenis = useLenis()
+  const isTouch = useIsTouch()
+  const noAnim = isTouch
 
   return (
     <section
@@ -40,8 +43,8 @@ export default function About() {
         className="w-full h-px mb-16"
         style={{ background: "var(--border)", transformOrigin: "left" }}
         variants={{ hidden: { scaleX: 0 }, visible: { scaleX: 1 } }}
-        initial="hidden"
-        whileInView="visible"
+        initial={noAnim ? false : "hidden"}
+        whileInView={noAnim ? undefined : "visible"}
         viewport={{ once: true }}
         transition={{ duration: 0.8, ease: EASE_DEFAULT }}
         suppressHydrationWarning
@@ -54,8 +57,8 @@ export default function About() {
         <motion.div
           className="flex-shrink-0"
           variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}
-          initial="hidden"
-          whileInView="visible"
+          initial={noAnim ? false : "hidden"}
+          whileInView={noAnim ? undefined : "visible"}
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.05, ease: EASE_DEFAULT }}
           suppressHydrationWarning
@@ -96,8 +99,8 @@ export default function About() {
           <motion.div
             className="hidden md:block"
             variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-            initial="hidden"
-            whileInView="visible"
+            initial={noAnim ? false : "hidden"}
+            whileInView={noAnim ? undefined : "visible"}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.15, ease: EASE_DEFAULT }}
             suppressHydrationWarning
@@ -118,8 +121,8 @@ export default function About() {
             className="flex flex-col text-[clamp(14px,1.5vw,16px)]"
             style={{ color: "rgba(0,0,0,0.72)", gap: "1.2em", lineHeight: "1.85", fontFamily: "var(--font-space-grotesk), sans-serif" }}
             variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
-            initial="hidden"
-            whileInView="visible"
+            initial={noAnim ? false : "hidden"}
+            whileInView={noAnim ? undefined : "visible"}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.22, ease: EASE_DEFAULT }}
             suppressHydrationWarning
@@ -134,8 +137,8 @@ export default function About() {
           {/* CTA — anchor scroll to contact */}
           <motion.div
             variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
-            initial="hidden"
-            whileInView="visible"
+            initial={noAnim ? false : "hidden"}
+            whileInView={noAnim ? undefined : "visible"}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.35, ease: EASE_DEFAULT }}
             suppressHydrationWarning
@@ -157,22 +160,14 @@ export default function About() {
         </div>
 
         {/* Right — services list */}
-        <motion.div
-          className="flex flex-col justify-between h-full"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.07 } } }}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          suppressHydrationWarning
-        >
+        <div className="flex flex-col justify-between h-full">
           {services.map((s) => (
             <motion.div
               key={s.num}
               className="flex items-center gap-5 py-3.5 md:py-5 group cursor-default relative overflow-hidden"
               style={{ boxShadow: "0 1px 0 0 var(--border)" }}
-              variants={{ hidden: { opacity: 0, x: 24 }, visible: { opacity: 1, x: 0 } }}
-              transition={{ duration: 0.55, ease: EASE_DEFAULT }}
               whileHover={{ x: 5 }}
+              transition={{ duration: 0.55, ease: EASE_DEFAULT }}
               suppressHydrationWarning
             >
               <motion.div
@@ -195,7 +190,6 @@ export default function About() {
                 >
                   {s.label}
                 </p>
-                {/* Описания темнее (пункт 2) */}
                 <p className="text-sm mt-0.5 leading-relaxed" style={{ color: "rgba(0,0,0,0.55)" }}>
                   {s.desc}
                 </p>
@@ -209,7 +203,7 @@ export default function About() {
               </motion.span>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
 
       {/* Skills section */}
@@ -223,15 +217,8 @@ export default function About() {
           </h3>
         </TextReveal>
 
-        <motion.div
-          className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.07 } } }}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          suppressHydrationWarning
-        >
-          {skills.map((skill, i) => (
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
+          {skills.map((skill) => (
             <motion.div
               key={skill}
               className="px-4 py-3 rounded-lg text-center group cursor-default relative overflow-hidden"
@@ -240,9 +227,8 @@ export default function About() {
                 border: "1px solid rgba(0,0,0,0.06)",
                 color: "var(--text)",
               }}
-              variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
-              transition={{ duration: 0.5 }}
               whileHover={{ scale: 1.04, background: "rgba(8,145,178,0.08)", borderColor: "rgba(8,145,178,0.3)" }}
+              transition={{ duration: 0.2 }}
               suppressHydrationWarning
             >
               <motion.div
@@ -255,7 +241,7 @@ export default function About() {
               <p className="text-xs md:text-sm font-mono leading-tight relative z-10">{skill}</p>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   )

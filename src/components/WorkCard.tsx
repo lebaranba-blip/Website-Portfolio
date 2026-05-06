@@ -50,11 +50,6 @@ export default function WorkCard({ work, index }: WorkCardProps) {
         borderRadius: "12px",
         outline: "none",
       }}
-      variants={{
-        hidden: { opacity: 0 },
-        visible: { opacity: 1 },
-      }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
       suppressHydrationWarning
     >
       {/* Image */}
