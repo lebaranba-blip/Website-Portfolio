@@ -107,7 +107,40 @@ export default function FeaturedWorkCard({ work, priority = false }: Props) {
       >
         {/* Preview area */}
         <div className="relative w-full overflow-hidden" style={{ height: "480px" }}>
-          {work.previewGrid && work.previewLayout === "grid-3T-2B" ? (
+          {work.previewGrid && work.previewLayout === "mosaic-1L-3R" ? (
+            /* Большой портрет слева (60%) + 3 равных строки справа (40%) */
+            <div className="absolute inset-0 flex gap-1">
+              {/* Left — hero portrait */}
+              <div className="relative overflow-hidden" style={{ flex: "3" }}>
+                <Image
+                  src={work.previewGrid[0]}
+                  alt={work.alt}
+                  fill
+                  sizes="(max-width: 640px) 60vw, 50vw"
+                  className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
+                  priority={priority}
+                  loading={priority ? "eager" : "lazy"}
+                  quality={82}
+                />
+              </div>
+              {/* Right — 3 stacked rows */}
+              <div className="flex flex-col gap-1" style={{ flex: "2" }}>
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="relative flex-1 overflow-hidden">
+                    <Image
+                      src={work.previewGrid![i] ?? work.previewGrid![0]}
+                      alt=""
+                      fill
+                      sizes="30vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                      loading="lazy"
+                      quality={78}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : work.previewGrid && work.previewLayout === "grid-3T-2B" ? (
             /* 3 сверху + 2 снизу, верхние 60%, нижние 40% */
             <div className="absolute inset-0 flex flex-col gap-1">
               {/* Top row — 3 equal columns, 60% height */}
