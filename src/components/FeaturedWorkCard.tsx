@@ -107,7 +107,25 @@ export default function FeaturedWorkCard({ work, priority = false }: Props) {
       >
         {/* Preview area */}
         <div className="relative w-full overflow-hidden" style={{ height: "480px" }}>
-          {work.previewGrid && work.previewLayout === "mosaic-1L-3R" ? (
+          {work.previewGrid && work.previewLayout === "two-equal" ? (
+            /* Два фото 50/50, contain — без обрезки */
+            <div className="absolute inset-0 flex gap-1" style={{ background: "var(--surface-2)" }}>
+              {[0, 1].map((i) => (
+                <div key={i} className="relative flex-1 overflow-hidden flex items-center justify-center">
+                  <Image
+                    src={work.previewGrid![i]}
+                    alt={i === 0 ? work.alt : ""}
+                    fill
+                    sizes="50vw"
+                    className="object-contain transition-transform duration-700 group-hover:scale-[1.03]"
+                    priority={priority && i === 0}
+                    loading={priority && i === 0 ? "eager" : "lazy"}
+                    quality={82}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : work.previewGrid && work.previewLayout === "mosaic-1L-3R" ? (
             /* Большой портрет слева (60%) + 3 равных строки справа (40%) */
             <div className="absolute inset-0 flex gap-1">
               {/* Left — hero portrait */}

@@ -27,7 +27,7 @@ export interface Work {
   workflow?: string
   carouselSets?: CarouselSet[]
   previewGrid?: string[]
-  previewLayout?: "mosaic-1L-4R" | "grid-3T-2B" | "mosaic-1L-3R"
+  previewLayout?: "mosaic-1L-4R" | "grid-3T-2B" | "mosaic-1L-3R" | "two-equal"
 }
 
 export const works: Work[] = [
@@ -122,11 +122,9 @@ export const works: Work[] = [
     href: "/works/ai-avatar",
     previewGrid: [
       "/works/ai-avatar/4k.png",
-      "/works/ai-avatar/360-2.png",
-      "/works/ai-avatar/outfit-full.png",
-      "/works/ai-avatar/clothes.png",
+      "/works/ai-avatar/outfit-split.png",
     ],
-    previewLayout: "mosaic-1L-3R",
+    previewLayout: "two-equal",
     fullVideo: "/works/ai-avatar/video.mp4",
     gallery: [
       { src: "/works/ai-avatar/360-1.png", alt: "Фронт", aspect: "portrait" },
