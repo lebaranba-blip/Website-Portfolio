@@ -16,6 +16,13 @@ const ROTATOR_IMAGES = [
 ]
 
 const GALLERY = [
+  // 360° ракурсы — индексы 0–4
+  { src: "/works/ai-avatar/360-1.png", alt: "360° — Фронт" },
+  { src: "/works/ai-avatar/360-2.png", alt: "360° — 3/4 влево" },
+  { src: "/works/ai-avatar/360-3.png", alt: "360° — Профиль" },
+  { src: "/works/ai-avatar/360-4.png", alt: "360° — 3/4 вправо" },
+  { src: "/works/ai-avatar/360-5.png", alt: "360° — Спина" },
+  // образы — индексы 5–8
   { src: "/works/ai-avatar/clothes.png",      alt: "Лукбук — Miu Miu Academic" },
   { src: "/works/ai-avatar/outfit-full.png",  alt: "AI Avatar — Miu Miu Academic" },
   { src: "/works/ai-avatar/4k.png",           alt: "AI Avatar — полный рост" },
@@ -225,7 +232,7 @@ export default function AiAvatarPage() {
             <GlowCard
               className="w-full rounded-2xl overflow-hidden flex-shrink-0 cursor-pointer"
               style={{ aspectRatio: "3/4", background: "var(--surface)", maxWidth: 400 }}
-              onClick={() => openLightbox(1)}
+              onClick={() => openLightbox(6)}
             >
               <Image
                 src="/works/ai-avatar/outfit-full.png"
@@ -289,7 +296,7 @@ export default function AiAvatarPage() {
               Один и тот же персонаж с разных ракурсов — основа консистентности. Перетащи влево или вправо.
             </p>
           </div>
-          <AvatarRotator images={ROTATOR_IMAGES} />
+          <AvatarRotator images={ROTATOR_IMAGES} onOpenLightbox={openLightbox} />
         </FadeSection>
 
         <div className="px-6 md:px-12 max-w-6xl mx-auto">
@@ -320,7 +327,7 @@ export default function AiAvatarPage() {
                 <GlowCard
                   className="rounded-2xl overflow-hidden cursor-pointer"
                   style={{ background: "var(--surface)", aspectRatio: "3/4" }}
-                  onClick={() => openLightbox(item.galleryIdx)}
+                  onClick={() => openLightbox(item.galleryIdx + 5)}
                 >
                   <Image
                     src={item.src}
@@ -340,7 +347,7 @@ export default function AiAvatarPage() {
             <GlowCard
               className="rounded-2xl overflow-hidden cursor-pointer"
               style={{ background: "var(--surface)", maxWidth: 700 }}
-              onClick={() => openLightbox(3)}
+              onClick={() => openLightbox(8)}
             >
               <Image
                 src="/works/ai-avatar/outfit-split.png"
