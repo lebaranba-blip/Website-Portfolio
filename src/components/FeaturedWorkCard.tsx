@@ -105,23 +105,94 @@ export default function FeaturedWorkCard({ work, priority = false }: Props) {
         transition={{ duration: 0.4, ease: EASE_DEFAULT }}
         suppressHydrationWarning
       >
-        {/* Poster image */}
-        <div className="relative w-full" style={{ height: "480px" }}>
-          <Image
-            src={work.image}
-            alt={work.alt}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1280px"
-            className="object-cover object-top"
-            priority={priority}
-            loading={priority ? "eager" : "lazy"}
-            quality={82}
-          />
+        {/* Preview area */}
+        <div className="relative w-full overflow-hidden" style={{ height: "480px" }}>
+          {work.previewGrid && work.previewGrid.length >= 4 ? (
+            /* Mosaic grid: large main image left + 2×2 grid right */
+            <div className="absolute inset-0 flex gap-1">
+              {/* Left — main tall image */}
+              <div className="relative flex-[3] overflow-hidden">
+                <Image
+                  src={work.previewGrid[0]}
+                  alt={work.alt}
+                  fill
+                  sizes="(max-width: 640px) 60vw, 40vw"
+                  className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
+                  priority={priority}
+                  loading={priority ? "eager" : "lazy"}
+                  quality={82}
+                />
+              </div>
+              {/* Right — 2×2 grid */}
+              <div className="flex-[2] grid grid-rows-2 gap-1">
+                <div className="grid grid-cols-2 gap-1">
+                  <div className="relative overflow-hidden">
+                    <Image
+                      src={work.previewGrid[1]}
+                      alt=""
+                      fill
+                      sizes="20vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                      loading="lazy"
+                      quality={78}
+                    />
+                  </div>
+                  <div className="relative overflow-hidden">
+                    <Image
+                      src={work.previewGrid[2]}
+                      alt=""
+                      fill
+                      sizes="20vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                      loading="lazy"
+                      quality={78}
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-1">
+                  <div className="relative overflow-hidden">
+                    <Image
+                      src={work.previewGrid[3]}
+                      alt=""
+                      fill
+                      sizes="20vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                      loading="lazy"
+                      quality={78}
+                    />
+                  </div>
+                  <div className="relative overflow-hidden">
+                    <Image
+                      src={work.previewGrid[4] ?? work.previewGrid[3]}
+                      alt=""
+                      fill
+                      sizes="20vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                      loading="lazy"
+                      quality={78}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            /* Fallback — single banner image */
+            <Image
+              src={work.image}
+              alt={work.alt}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1280px"
+              className="object-cover object-top"
+              priority={priority}
+              loading={priority ? "eager" : "lazy"}
+              quality={82}
+            />
+          )}
 
           {/* Gradient overlay */}
           <div
             className="absolute inset-0"
-            style={{ background: "linear-gradient(to top, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.45) 40%, transparent 75%)" }}
+            style={{ background: "linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.4) 35%, transparent 65%)" }}
           />
 
           {/* Info overlay */}

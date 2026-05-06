@@ -26,6 +26,7 @@ export interface Work {
   fullVideo?: string
   workflow?: string
   carouselSets?: CarouselSet[]
+  previewGrid?: string[]
 }
 
 export const works: Work[] = [
@@ -39,6 +40,14 @@ export const works: Work[] = [
     desc: "Полный брендинг для сети пончиков. Айдентика, упаковка, мерч, реклама.",
     featured: true,
     href: "/works/gump",
+    previewGrid: [
+      "/works/gump/truck.png",
+      "/works/gump/apron.png",
+      "/works/gump/tshirt2.png",
+      "/works/gump/lifestyle.png",
+      "/works/gump/boxes.png",
+      "/works/gump/billboard.png",
+    ],
     fullVideo: "/works/gump/ad.mp4",
     workflow: "/Workflow.png",
     gallery: [
@@ -110,6 +119,14 @@ export const works: Work[] = [
     desc: "Консистентный AI-персонаж: 360° view, примерка одежды, анимация.",
     featured: true,
     href: "/works/ai-avatar",
+    previewGrid: [
+      "/works/ai-avatar/360-1.png",
+      "/works/ai-avatar/360-2.png",
+      "/works/ai-avatar/360-3.png",
+      "/works/ai-avatar/outfit-full.png",
+      "/works/ai-avatar/4k.png",
+      "/works/ai-avatar/clothes.png",
+    ],
     fullVideo: "/works/ai-avatar/video.mp4",
     gallery: [
       { src: "/works/ai-avatar/360-1.png", alt: "Фронт", aspect: "portrait" },
