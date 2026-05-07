@@ -41,7 +41,7 @@ export default function WorkCard({ work, index }: WorkCardProps) {
   return (
     <motion.div
       ref={cardRef}
-      className="work-card group relative"
+      className="work-card group relative cursor-pointer"
       tabIndex={0}
       role="article"
       aria-label={work.title}
@@ -109,11 +109,11 @@ export default function WorkCard({ work, index }: WorkCardProps) {
             {work.title}
           </h3>
           <motion.span
-            className="text-base flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-            style={{ color: "var(--muted)" }}
+            className="text-base flex-shrink-0 transition-all duration-200"
+            style={{ color: "var(--muted)", opacity: 0.4 }}
+            animate={{ opacity: 0.4 }}
+            whileHover={{ opacity: 1, x: 3 }}
             aria-hidden="true"
-            initial={{ x: -4 }}
-            whileHover={{ x: 0 }}
             transition={{ duration: 0.2 }}
           >
             →

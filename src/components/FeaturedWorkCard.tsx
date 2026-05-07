@@ -317,23 +317,46 @@ export default function FeaturedWorkCard({ work, priority = false }: Props) {
               )}
             </div>
 
-            {/* Toggle button — only for non-href cards */}
-            {!work.href && (
+            {/* CTA badge */}
+            {work.href ? (
               <motion.div
                 className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium"
                 style={{
-                  background: "rgba(255,255,255,0.12)",
+                  background: "rgba(255,255,255,0.15)",
+                  backdropFilter: "blur(8px)",
+                  border: "1px solid rgba(255,255,255,0.3)",
+                  color: "#fff",
+                  opacity: 0.85,
+                }}
+                whileHover={{ opacity: 1, background: "rgba(255,255,255,0.25)", x: 2 }}
+                transition={{ duration: 0.2, ease: EASE_DEFAULT }}
+                suppressHydrationWarning
+              >
+                Смотреть кейс
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </motion.div>
+            ) : (
+              <motion.div
+                className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium"
+                style={{
+                  background: expanded ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.12)",
                   backdropFilter: "blur(8px)",
                   border: "1px solid rgba(255,255,255,0.2)",
                   color: "#fff",
+                  transition: "background 0.3s ease",
                 }}
-                animate={{ rotate: expanded ? 180 : 0 }}
-                transition={{ duration: 0.35, ease: EASE_DEFAULT }}
                 suppressHydrationWarning
               >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <motion.svg
+                  width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"
+                  animate={{ rotate: expanded ? 180 : 0 }}
+                  transition={{ duration: 0.35, ease: EASE_DEFAULT }}
+                >
                   <path d="M3 6l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                </motion.svg>
+                {expanded ? "Свернуть" : "Открыть"}
               </motion.div>
             )}
           </div>
