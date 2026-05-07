@@ -64,12 +64,14 @@ export const works: Work[] = [
     id: "ai-carousel",
     title: "AI Карусели",
     category: "AI Visual",
-    image: "/works/carousel/s2-banner.png",
+    image: "/works/carousel/banner.png",
     alt: "AI-карусели для Instagram и Threads — ChatGPT Images 2.0",
     year: 2026,
     desc: "2 серии каруселей в разных визуальных системах. Без Figma, без студии — ChatGPT Images 2.0.",
     featured: true,
     href: "/works/carousel",
+    previewGrid: ["/works/carousel/banner.png"],
+    previewLayout: "single-banner",
     carouselSets: [
       {
         num: "01",
