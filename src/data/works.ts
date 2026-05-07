@@ -42,13 +42,9 @@ export const works: Work[] = [
     featured: true,
     href: "/works/gump",
     previewGrid: [
-      "/works/gump/truck.png",
-      "/works/gump/apron.png",
-      "/works/gump/tshirt2.png",
-      "/works/gump/lifestyle.png",
-      "/works/gump/boxes.png",
-      "/works/gump/billboard.png",
+      "/works/gump/banner2.png",
     ],
+    previewLayout: "single-banner",
     fullVideo: "/works/gump/ad.mp4",
     workflow: "/Workflow.png",
     gallery: [
@@ -71,7 +67,7 @@ export const works: Work[] = [
     image: "/works/carousel/s2-banner.png",
     alt: "AI-карусели для Instagram и Threads — ChatGPT Images 2.0",
     year: 2026,
-    desc: "3 серии каруселей в разных визуальных системах. Без Figma, без студии — ChatGPT Images 2.0.",
+    desc: "2 серии каруселей в разных визуальных системах. Без Figma, без студии — ChatGPT Images 2.0.",
     featured: true,
     href: "/works/carousel",
     carouselSets: [

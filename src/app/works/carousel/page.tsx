@@ -311,7 +311,7 @@ export default function CarouselCasePage() {
         </h1>
         <FadeIn hero delay={0.28}>
           <p className="mt-8 max-w-2xl" style={{ color: "rgba(0,0,0,0.72)", lineHeight: 1.55, fontSize: 19, fontWeight: 500 }}>
-            Три серии каруселей для Instagram и Threads — каждая в отдельной визуальной системе. Промпт, система, слайды. Без дизайнера, без Figma, за один вечер.
+            Две серии каруселей для Instagram и Threads — каждая в отдельной визуальной системе. Промпт, система, слайды. Без дизайнера, без Figma, за один вечер.
           </p>
         </FadeIn>
       </section>
@@ -442,7 +442,7 @@ export default function CarouselCasePage() {
           {[
             { label: "Задача", value: "Показать, что карусели для соцсетей можно делать быстро, без Figma и дизайнерского бюджета" },
             { label: "Инструменты", value: "ChatGPT Images 2.0 — генерация слайдов и визуальной системы. Nano Banana 2 — раздельная генерация слайдов." },
-            { label: "Результат", value: "3 серии по 4–10 слайдов, каждая в своей визуальной системе. Готовы к публикации." },
+            { label: "Результат", value: "2 серии по 4–10 слайдов, каждая в своей визуальной системе. Готовы к публикации." },
           ].map(({ label, value }, i) => (
             <FadeIn key={label} delay={i * 0.08}>
               <div style={{ borderRadius: 18, padding: "24px 20px", background: "rgba(0,0,0,0.03)", border: "1px solid rgba(0,0,0,0.07)", height: "100%" }}>
