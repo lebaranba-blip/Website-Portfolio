@@ -1,6 +1,7 @@
 "use client"
 import { useRef, useEffect, useState, useCallback } from "react"
 import Link from "next/link"
+import { Metadata } from "next"
 import {
   motion, AnimatePresence,
   useMotionValue, useSpring,
@@ -8,6 +9,28 @@ import {
   type Variants,
 } from "framer-motion"
 import { TELEGRAM_URL, EASE_DEFAULT } from "@/lib/constants"
+
+export const metadata: Metadata = {
+  title: "Motion Teaser — Дмитрий",
+  description: "Motion design на коде. Remotion + TypeScript. Три видео от концепции до HQ рендера.",
+  openGraph: {
+    title: "Motion Teaser",
+    description: "Motion design на коде. Remotion + TypeScript.",
+    type: "website",
+    images: [
+      {
+        url: "https://website-portfolio-y48s.vercel.app/works/motion-teaser/banner-v2.png",
+        width: 1200,
+        height: 630,
+        alt: "Motion Teaser — Remotion demo reel",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["https://website-portfolio-y48s.vercel.app/works/motion-teaser/banner-v2.png"],
+  },
+}
 
 // ─── Stagger variants ─────────────────────────────────────────────────────────
 const sc: Variants = {
