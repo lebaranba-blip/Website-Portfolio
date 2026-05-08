@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     locale: "ru_RU",
     images: [
       {
-        url: "/opengraph-image",
+        url: "/works/gump/banner.png",
         width: 1200,
         height: 630,
         alt: "Дмитрий — AI & Design",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Дмитрий — AI & Design",
     description: "AI-визуал, автоматизация и брендинг для бизнеса.",
-    images: ["/opengraph-image"],
+    images: ["/works/gump/banner.png"],
   },
   robots: {
     index: true,
