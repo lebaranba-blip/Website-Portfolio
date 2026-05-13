@@ -26,7 +26,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Дмитрий — AI & Design",
-  description: "AI-визуал, автоматизация и брендинг для бизнеса. 50+ проектов, 3+ года опыта. Пишите в Telegram.",
+  description: "AI-визуал, автоматизация и брендинг для бизнеса. Пишите в Telegram.",
   keywords: ["AI визуал", "автоматизация", "брендинг", "дизайн", "портфолио", "Midjourney", "Kling", "нейросети"],
   authors: [{ name: "Дмитрий" }],
   creator: "Дмитрий",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Дмитрий — AI & Design",
-    description: "AI-визуал, автоматизация и брендинг для бизнеса. 50+ проектов, 3+ года опыта.",
+    description: "AI-визуал, автоматизация и брендинг для бизнеса.",
     url: "https://website-portfolio-y48s.vercel.app",
     siteName: "Дмитрий — AI & Design",
     type: "website",
