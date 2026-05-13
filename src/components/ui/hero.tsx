@@ -11,39 +11,6 @@ import { Menu, X } from "lucide-react"
 
 const WebGLShader = dynamic(() => import("@/components/ui/web-gl-shader"), { ssr: false })
 
-const STATS = [
-  { num: 5, suffix: "+", label: "проектов" },
-  { num: 2, suffix: "+", label: "года опыта" },
-  { num: 100, suffix: "%", label: "AI-подход" },
-]
-
-function CountUp({ num, suffix, active, delay = 0 }: { num: number; suffix: string; active: boolean; delay?: number }) {
-  const [display, setDisplay] = useState(0)
-  const started = useRef(false)
-  const rafId = useRef<number | null>(null)
-
-  useEffect(() => {
-    if (!active || started.current) return
-    started.current = true
-    const duration = 2200
-    const timer = setTimeout(() => {
-      const start = performance.now()
-      const tick = (now: number) => {
-        const progress = Math.min((now - start) / duration, 1)
-        const ease = 1 - Math.pow(1 - progress, 4)
-        setDisplay(Math.round(ease * num))
-        if (progress < 1) rafId.current = requestAnimationFrame(tick)
-      }
-      rafId.current = requestAnimationFrame(tick)
-    }, delay)
-    return () => {
-      clearTimeout(timer)
-      if (rafId.current !== null) cancelAnimationFrame(rafId.current)
-    }
-  }, [active, num, delay])
-
-  return <>{display}{suffix}</>
-}
 
 export default function HeroSection() {
   const prefersReduced = useReducedMotion()
@@ -227,35 +194,6 @@ export default function HeroSection() {
             <TelegramButton />
           </motion.div>
 
-          {/* Stats */}
-          <motion.div
-            className="flex items-center gap-8 md:gap-12"
-            role="list"
-            aria-label="Статистика"
-            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-            initial={skipIntro ? false : "hidden"}
-            animate={preloaderDone ? "visible" : "hidden"}
-            transition={{ duration: 0.7, delay: 0.75, ease: EASE_DEFAULT }}
-            suppressHydrationWarning
-          >
-            {STATS.map((s, i) => (
-              <motion.div
-                key={s.label}
-                className="flex flex-col items-center"
-                role="listitem"
-                variants={{ hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0 } }}
-                initial={skipIntro ? false : "hidden"}
-                animate={preloaderDone ? "visible" : "hidden"}
-                transition={{ duration: 0.5, delay: 0.8 + i * 0.07, ease: EASE_DEFAULT }}
-                suppressHydrationWarning
-              >
-                <span className="font-mono font-black text-2xl md:text-2xl leading-none" style={{ color: "var(--text)", letterSpacing: "-0.03em" }}>
-                  <CountUp num={s.num} suffix={s.suffix} active={preloaderDone} delay={900 + i * 150} />
-                </span>
-                <span className="text-xs font-mono mt-1 tracking-wide" style={{ color: "rgba(0,0,0,0.4)" }}>{s.label}</span>
-              </motion.div>
-            ))}
-          </motion.div>
         </motion.div>
       </div>
 
