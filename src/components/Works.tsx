@@ -115,6 +115,7 @@ function FeaturedCard({ p, i, mounted }: { p: typeof FEATURED[0]; i: number; mou
               backgroundImage: p.image ? `url(${p.image})` : undefined,
               backgroundSize: p.imageFit ?? "cover",
               backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
               transform: hovered ? "scale(1.04)" : "scale(1)",
               transition: "transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94)",
             }}
