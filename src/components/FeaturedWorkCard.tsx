@@ -1,6 +1,5 @@
 "use client"
 import { useState, useRef, useEffect } from "react"
-import { createPortal } from "react-dom"
 import Image from "next/image"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
@@ -10,6 +9,15 @@ import { EASE_DEFAULT } from "@/lib/constants"
 interface Props {
   work: Work
   priority?: boolean
+  cardHeight?: number
+}
+
+const CATEGORY_ACCENT: Record<string, string> = {
+  "AI Visual":     "var(--cyan)",
+  "Branding":      "var(--orange)",
+  "Photo & Video": "var(--blue)",
+  "Automation":    "var(--cyan)",
+  "Promo":         "var(--cyan)",
 }
 
 const galleryVariants = {
@@ -22,7 +30,8 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
 }
 
-export default function FeaturedWorkCard({ work, priority = false }: Props) {
+export default function FeaturedWorkCard({ work, priority = false, cardHeight = 480 }: Props) {
+  const categoryAccent = CATEGORY_ACCENT[work.category] ?? "rgba(255,255,255,0.4)"
   const [expanded, setExpanded] = useState(false)
   const [muted, setMuted] = useState(true)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
@@ -93,20 +102,12 @@ export default function FeaturedWorkCard({ work, priority = false }: Props) {
 
   const cardContent = (
       <motion.div
-        className="group relative cursor-pointer select-none"
-        style={{
-          border: "1px solid rgba(0,0,0,0.07)",
-          borderRadius: "16px",
-          overflow: "hidden",
-          background: "var(--surface)",
-        }}
+        className="cinematic-card group relative cursor-pointer select-none"
         onClick={work.href ? undefined : handleCardClick}
-        whileHover={{ scale: 1.01, boxShadow: "0 12px 40px rgba(0,0,0,0.1)" }}
-        transition={{ duration: 0.4, ease: EASE_DEFAULT }}
         suppressHydrationWarning
       >
         {/* Preview area */}
-        <div className="relative w-full overflow-hidden" style={{ height: "480px" }}>
+        <div className="relative w-full overflow-hidden" style={{ height: cardHeight }}>
           {work.previewGrid && work.previewLayout === "single-banner" ? (
             /* Один баннер на всю ширину */
             <Image
@@ -297,7 +298,7 @@ export default function FeaturedWorkCard({ work, priority = false }: Props) {
 
           {/* Info overlay */}
           <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex items-end justify-between gap-4">
-            <div>
+            <div style={{ borderLeft: `2px solid ${categoryAccent}`, paddingLeft: 14 }}>
               <span
                 className="text-xs font-mono uppercase tracking-widest mb-2 block"
                 style={{ color: "rgba(255,255,255,0.6)", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}
@@ -320,19 +321,19 @@ export default function FeaturedWorkCard({ work, priority = false }: Props) {
             {/* CTA badge */}
             {work.href ? (
               <motion.div
-                className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium"
+                className="flex-shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold"
                 style={{
-                  background: "rgba(255,255,255,0.15)",
-                  backdropFilter: "blur(8px)",
-                  border: "1px solid rgba(255,255,255,0.3)",
+                  background: "rgba(255,255,255,0.18)",
+                  backdropFilter: "blur(12px)",
+                  WebkitBackdropFilter: "blur(12px)",
+                  border: "1px solid rgba(255,255,255,0.35)",
                   color: "#fff",
-                  opacity: 0.85,
                 }}
-                whileHover={{ opacity: 1, background: "rgba(255,255,255,0.25)", x: 2 }}
+                whileHover={{ background: "rgba(255,255,255,0.30)", x: 3 }}
                 transition={{ duration: 0.2, ease: EASE_DEFAULT }}
                 suppressHydrationWarning
               >
-                Смотреть кейс
+                Кейс
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                   <path d="M2.5 7h9M7.5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>

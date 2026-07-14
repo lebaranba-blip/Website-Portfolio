@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <>
       <StickyNav />
-      <main className="relative z-10">
+      <main className="relative z-10 pb-16 md:pb-0">
         <HeroSection />
         <Works />
         <About />

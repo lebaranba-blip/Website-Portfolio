@@ -5,17 +5,19 @@ import SmoothScroll from "@/components/SmoothScroll"
 import CustomCursor from "@/components/CustomCursor"
 import ScrollProgress from "@/components/ScrollProgress"
 import { PreloaderContext } from "@/lib/preloader-context"
+import { LanguageProvider } from "@/lib/language-context"
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false)
-  // Always false on server — synced from sessionStorage after mount to avoid hydration mismatch
   const [preloaderDone, setPreloaderDone] = useState(false)
 
   useEffect(() => {
     setMounted(true)
-    if (sessionStorage.getItem("preloader-done")) {
-      setPreloaderDone(true)
-    }
+    try {
+      if (sessionStorage.getItem("preloader-done")) {
+        setPreloaderDone(true)
+      }
+    } catch {}
   }, [])
 
   const handleComplete = useCallback(() => {
@@ -23,17 +25,19 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }, [])
 
   return (
-    <PreloaderContext.Provider value={preloaderDone}>
-      <Preloader onComplete={handleComplete} />
-      <SmoothScroll>
-        {mounted && preloaderDone && (
-          <>
-            <ScrollProgress />
-            <CustomCursor />
-          </>
-        )}
-        {children}
-      </SmoothScroll>
-    </PreloaderContext.Provider>
+    <LanguageProvider>
+      <PreloaderContext.Provider value={preloaderDone}>
+        <Preloader onComplete={handleComplete} />
+        <SmoothScroll>
+          {mounted && preloaderDone && (
+            <>
+              <ScrollProgress />
+              <CustomCursor />
+            </>
+          )}
+          {children}
+        </SmoothScroll>
+      </PreloaderContext.Provider>
+    </LanguageProvider>
   )
 }

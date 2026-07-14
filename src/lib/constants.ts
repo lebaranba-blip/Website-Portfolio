@@ -34,30 +34,32 @@ export const CATEGORY_HUE: Record<string, number> = {
   "Automation":    215,
 }
 
-// Единый список nav-items (hero.tsx + StickyNav.tsx)
-export const NAV_ITEMS: NavItem[] = [
-  {
-    icon: Briefcase,
-    label: "Работы",
-    href: "#works",
-    sectionId: "works",
-    gradient: "radial-gradient(circle, rgba(139,92,246,0.25) 0%, rgba(109,40,217,0.1) 60%, transparent 80%)",
-    iconColor: "text-violet-500",
-  },
-  {
-    icon: User,
-    label: "Обо мне",
-    href: "#about",
-    sectionId: "about",
-    gradient: "radial-gradient(circle, rgba(6,182,212,0.25) 0%, rgba(8,145,178,0.1) 60%, transparent 80%)",
-    iconColor: "text-cyan-600",
-  },
-  {
-    icon: Mail,
-    label: "Контакт",
-    href: "#contact",
-    sectionId: "contact",
-    gradient: "radial-gradient(circle, rgba(59,130,246,0.25) 0%, rgba(29,78,216,0.1) 60%, transparent 80%)",
-    iconColor: "text-blue-600",
-  },
-]
+// Единый список nav-items (hero.tsx + StickyNav.tsx) — labels зависят от языка
+export function getNavItems(labels: { works: string; about: string; contact: string }): NavItem[] {
+  return [
+    {
+      icon: Briefcase,
+      label: labels.works,
+      href: "#works",
+      sectionId: "works",
+      gradient: "radial-gradient(circle, rgba(139,92,246,0.25) 0%, rgba(109,40,217,0.1) 60%, transparent 80%)",
+      iconColor: "text-violet-500",
+    },
+    {
+      icon: User,
+      label: labels.about,
+      href: "#about",
+      sectionId: "about",
+      gradient: "radial-gradient(circle, rgba(6,182,212,0.25) 0%, rgba(8,145,178,0.1) 60%, transparent 80%)",
+      iconColor: "text-cyan-600",
+    },
+    {
+      icon: Mail,
+      label: labels.contact,
+      href: "#contact",
+      sectionId: "contact",
+      gradient: "radial-gradient(circle, rgba(59,130,246,0.25) 0%, rgba(29,78,216,0.1) 60%, transparent 80%)",
+      iconColor: "text-blue-600",
+    },
+  ]
+}

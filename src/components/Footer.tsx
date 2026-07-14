@@ -3,14 +3,16 @@ import { motion } from "framer-motion"
 import { TELEGRAM_URL, EASE_DEFAULT } from "@/lib/constants"
 import TelegramButton from "@/components/ui/telegram-button"
 import { useIsTouch } from "@/lib/use-is-touch"
+import { useDict } from "@/lib/language-context"
+import { footerDict } from "@/dictionaries/footer"
 
-const MARQUEE_ITEMS = ["AI Visual", "Брендинг", "Автоматизация", "Photo & Video", "Промо", "AI Workflow", "Brand Kit", "Концепты"]
 const DOTS = ["var(--cyan)", "var(--orange)", "var(--blue)"]
 
 export default function Footer() {
   const year = new Date().getFullYear()
   const isTouch = useIsTouch()
   const noAnim = isTouch
+  const t = useDict(footerDict)
 
   return (
     <footer id="contact" className="relative pt-24 pb-10 px-6 md:px-10 overflow-x-hidden" style={{ boxShadow: "-1px 0 0 0 var(--border), 0 -1px 0 0 var(--border)" }}>
@@ -42,7 +44,7 @@ export default function Footer() {
             whiteSpace: "nowrap",
           }}
         >
-          AI&amp;Design
+          AI Production
         </span>
       </div>
 
@@ -67,9 +69,10 @@ export default function Footer() {
               width: "100vw",
               marginLeft: "calc(-1 * (50vw - 50%))",
               paddingLeft: "calc(50vw - 50% + 1.5rem)",
+              fontFamily: "var(--font-display), sans-serif",
             }}
           >
-            Есть проект?
+            {t.heading}
           </h2>
           <p
             className="font-mono mt-4 opacity-50"
@@ -79,7 +82,7 @@ export default function Footer() {
               color: "var(--text)",
             }}
           >
-            Напишите — обсудим.
+            {t.subline}
           </p>
         </motion.div>
 
@@ -99,7 +102,7 @@ export default function Footer() {
           >
             {[...Array(3)].map((_, ri) => (
               <div key={ri} style={{ display: "flex" }}>
-                {MARQUEE_ITEMS.map((item, i) => (
+                {t.marqueeItems.map((item, i) => (
                   <span
                     key={i}
                     style={{
@@ -149,7 +152,7 @@ export default function Footer() {
         </motion.div>
 
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-6" style={{ boxShadow: "0 -1px 0 0 var(--border)" }}>
-          <p className="text-xs font-mono opacity-65">© {year} Дмитрий — AI & Design</p>
+          <p className="text-xs font-mono opacity-65">© {year} {t.copyrightName}</p>
           <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="text-xs font-mono opacity-85 hover:opacity-100 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]" style={{ color: "inherit" }}>TG</a>
         </div>
       </div>

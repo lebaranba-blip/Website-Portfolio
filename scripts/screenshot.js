@@ -45,6 +45,11 @@ async function screenshot(target = "full") {
     const page = await browser.newPage();
     await page.setViewport({ width: viewport.width, height: viewport.height, deviceScaleFactor: 1 });
 
+    // Skip the preloader — same sessionStorage flag the site itself checks
+    await page.evaluateOnNewDocument(() => {
+      sessionStorage.setItem("preloader-done", "1");
+    });
+
     // Disable animations for stable screenshots
     await page.addStyleTag({
       content: `*, *::before, *::after {
@@ -54,11 +59,30 @@ async function screenshot(target = "full") {
       }`,
     });
 
+    // Scroll through the full page to trigger whileInView reveal animations,
+    // then settle back to the top before any section-specific navigation.
+    const triggerInViewAnimations = async () => {
+      await page.evaluate(async () => {
+        const step = Math.max(window.innerHeight, 400);
+        let y = 0;
+        const max = document.body.scrollHeight;
+        while (y < max) {
+          window.scrollTo(0, y);
+          await new Promise(r => setTimeout(r, 120));
+          y += step;
+        }
+        window.scrollTo(0, max);
+        await new Promise(r => setTimeout(r, 200));
+      });
+    };
+
     if (target === "all") {
       // Screenshot each section separately
       for (const [key, section] of Object.entries(SECTIONS)) {
         await page.goto(`${BASE_URL}${section.url}`, { waitUntil: "networkidle2", timeout: 15000 });
         await page.waitForSelector(section.selector, { timeout: 5000 }).catch(() => {});
+        await triggerInViewAnimations();
+        await page.evaluate((sel) => document.querySelector(sel)?.scrollIntoView(), section.selector);
         await new Promise(r => setTimeout(r, 600));
 
         const el = await page.$(section.selector);
@@ -82,6 +106,8 @@ async function screenshot(target = "full") {
       const section = SECTIONS[target];
       await page.goto(`${BASE_URL}${section.url}`, { waitUntil: "networkidle2", timeout: 15000 });
       await page.waitForSelector(section.selector, { timeout: 5000 }).catch(() => {});
+      await triggerInViewAnimations();
+      await page.evaluate((sel) => document.querySelector(sel)?.scrollIntoView(), section.selector);
       await new Promise(r => setTimeout(r, 600));
 
       const el = await page.$(section.selector);

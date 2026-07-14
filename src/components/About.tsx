@@ -6,11 +6,27 @@ import { useLenis } from "@/lib/lenis-context"
 import TextReveal from "@/components/ui/TextReveal"
 import { services, skills } from "@/data/services"
 import { useIsTouch } from "@/lib/use-is-touch"
+import { useDict } from "@/lib/language-context"
+import { aboutDict } from "@/dictionaries/about"
+
+interface CompanionPhoto {
+  src: string
+  cls: "float-card" | "float-card-alt"
+  objectPosition: string
+  scale?: number
+  pos: React.CSSProperties
+}
+
+const COMPANION_PHOTOS: CompanionPhoto[] = [
+  { src: "/about-7.png", cls: "float-card", objectPosition: "center 15%", pos: { bottom: -30, left: -34, width: "44%" } },
+  { src: "/about-candid.png", cls: "float-card-alt", objectPosition: "center 15%", pos: { bottom: -46, right: -34, width: "48%" } },
+]
 
 export default function About() {
   const lenis = useLenis()
   const isTouch = useIsTouch()
   const noAnim = isTouch
+  const t = useDict(aboutDict)
 
   return (
     <section
@@ -23,7 +39,7 @@ export default function About() {
         aria-hidden="true"
         className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full pointer-events-none"
         style={{
-          background: "radial-gradient(circle, rgba(8,145,178,0.08) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(34,211,238,0.1) 0%, transparent 70%)",
           filter: "blur(80px)",
           transform: "translate(35%, -30%)",
         }}
@@ -32,8 +48,8 @@ export default function About() {
       {/* Section label */}
       <div className="mb-12">
         <TextReveal>
-          <span className="font-mono text-xs tracking-[0.22em] uppercase block mb-3" style={{ color: "rgba(0,0,0,0.5)" }}>
-            — 02&nbsp;&nbsp;Обо мне
+          <span className="font-mono text-xs tracking-[0.22em] uppercase block mb-3" style={{ color: "rgba(242,239,233,0.5)" }}>
+            — 03&nbsp;&nbsp;{t.eyebrowLabel}
           </span>
         </TextReveal>
       </div>
@@ -51,7 +67,7 @@ export default function About() {
       />
 
       {/* layout: на мобиле — стек, на планшете — 2 кол, на десктопе — 3 кол */}
-      <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] lg:grid-cols-[360px_1fr_1fr] gap-10 lg:gap-14 relative z-10 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] lg:grid-cols-[420px_1fr_1fr] gap-10 lg:gap-14 relative z-10 items-start">
 
         {/* Col 1 — фото */}
         <motion.div
@@ -65,28 +81,57 @@ export default function About() {
         >
           {/* Мобиль: фото 160px + имя рядом */}
           <div className="flex items-center gap-5 md:block">
-            <div style={{ borderRadius: 20, overflow: "hidden", boxShadow: "0 16px 48px rgba(0,0,0,0.14)", aspectRatio: "3/4", width: "clamp(140px, 42vw, 360px)", flexShrink: 0, position: "relative" }}>
-              <Image
-                src="/about2.png"
-                alt="Дмитрий"
-                width={720}
-                height={960}
-                loading="lazy"
-                quality={82}
-                sizes="(max-width: 768px) 42vw, 360px"
-                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 10%", display: "block" }}
-              />
+            <div style={{ position: "relative", flexShrink: 0 }}>
+              <div style={{ borderRadius: 20, overflow: "hidden", boxShadow: "0 16px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06)", aspectRatio: "3/4", width: "clamp(140px, 46vw, 420px)", position: "relative" }}>
+                <Image
+                  src="/about-main.jpg"
+                  alt={t.name}
+                  width={720}
+                  height={960}
+                  loading="lazy"
+                  quality={82}
+                  sizes="(max-width: 768px) 46vw, 420px"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 15%", display: "block" }}
+                />
+              </div>
+              {/* Фото-компаньоны — разлетаются по углам, только на десктопе */}
+              {COMPANION_PHOTOS.map((c) => (
+                <div
+                  key={c.src}
+                  className={`${c.cls} hidden md:block`}
+                  style={{
+                    position: "absolute",
+                    ...c.pos,
+                    aspectRatio: "3/4",
+                    borderRadius: 14,
+                    overflow: "hidden",
+                    boxShadow: "0 12px 32px rgba(0,0,0,0.55), 0 0 0 4px var(--bg)",
+                    zIndex: 2,
+                  }}
+                >
+                  <Image
+                    src={c.src}
+                    alt={t.name}
+                    width={480}
+                    height={640}
+                    loading="lazy"
+                    quality={78}
+                    sizes="160px"
+                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: c.objectPosition, display: "block", transform: c.scale ? `scale(${c.scale})` : undefined }}
+                  />
+                </div>
+              ))}
             </div>
             {/* Имя — только на мобиле (рядом с фото) */}
             <div className="md:hidden pb-2">
               <h2
                 className="font-black"
-                style={{ fontSize: "clamp(2rem,8vw,3rem)", lineHeight: "0.92", letterSpacing: "-0.04em", color: "var(--text)" }}
+                style={{ fontSize: "clamp(2rem,8vw,3rem)", lineHeight: "0.92", letterSpacing: "-0.04em", color: "var(--text)", fontFamily: "var(--font-display), sans-serif" }}
               >
-                Дмитрий
+                {t.name}
               </h2>
-              <p className="font-mono text-[10px] tracking-[0.18em] uppercase mt-2" style={{ color: "rgba(0,0,0,0.6)" }}>
-                AI&nbsp;Visual · Design
+              <p className="font-mono text-[10px] tracking-[0.18em] uppercase mt-2" style={{ color: "rgba(242,239,233,0.6)" }}>
+                {t.role}
               </p>
             </div>
           </div>
@@ -107,19 +152,19 @@ export default function About() {
           >
             <h2
               className="font-black"
-              style={{ fontSize: "clamp(2.6rem,3.5vw,4rem)", lineHeight: "0.92", letterSpacing: "-0.04em", color: "var(--text)" }}
+              style={{ fontSize: "clamp(2.6rem,3.5vw,4rem)", lineHeight: "0.92", letterSpacing: "-0.04em", color: "var(--text)", fontFamily: "var(--font-display), sans-serif" }}
             >
-              Дмитрий
+              {t.name}
             </h2>
-            <p className="font-mono text-[11px] tracking-[0.2em] uppercase mt-3" style={{ color: "rgba(0,0,0,0.42)" }}>
-              AI&nbsp;Visual · Design · Automation
+            <p className="font-mono text-[11px] tracking-[0.2em] uppercase mt-3" style={{ color: "rgba(242,239,233,0.42)" }}>
+              {t.role}
             </p>
           </motion.div>
 
           {/* Bio text */}
           <motion.div
             className="flex flex-col text-[clamp(14px,1.5vw,16px)]"
-            style={{ color: "rgba(0,0,0,0.72)", gap: "1.2em", lineHeight: "1.85", fontFamily: "var(--font-space-grotesk), sans-serif" }}
+            style={{ color: "rgba(242,239,233,0.72)", gap: "1.2em", lineHeight: "1.85", fontFamily: "var(--font-space-grotesk), sans-serif" }}
             variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
             initial={noAnim ? false : "hidden"}
             whileInView={noAnim ? undefined : "visible"}
@@ -127,11 +172,16 @@ export default function About() {
             transition={{ duration: 0.7, delay: 0.22, ease: EASE_DEFAULT }}
             suppressHydrationWarning
           >
-            <p>AI-дизайнер. Делаю бренд-айдентику и&nbsp;продуктовые концепты: логотипы, маскоты, мокапы, визуал.</p>
-            <p>Параллельно строю пайплайны автоматизации на&nbsp;Claude Code и&nbsp;Figma MCP. То, что раньше я&nbsp;собирал руками часами, теперь делает скрипт за&nbsp;минуты.</p>
-            <p>Визуал: Midjourney, Nano Banana, GPT Image 2.0, Photoshop.<br />Видео: Kling, Seedance, Veo.<br />Озвучка: ElevenLabs. Музыка: Suno.<br />Сайт-портфолио собрал сам, на&nbsp;Next.js и&nbsp;Tailwind, через Claude Code от&nbsp;концепта до&nbsp;деплоя.</p>
-            <p>AI у&nbsp;меня в&nbsp;каждом этапе. Не&nbsp;учусь, делаю.</p>
-            <p>Не&nbsp;жду брифа. Задаю вопросы, разбираюсь как&nbsp;работает бизнес, предлагаю то, до&nbsp;чего бриф не&nbsp;дотянулся.</p>
+            {t.bio.map((para, i) => (
+              <p key={i}>
+                {para.split("\n").map((line, j, arr) => (
+                  <span key={j}>
+                    {line}
+                    {j < arr.length - 1 && <br />}
+                  </span>
+                ))}
+              </p>
+            ))}
           </motion.div>
 
           {/* CTA — anchor scroll to contact */}
@@ -154,7 +204,7 @@ export default function About() {
               }}
             >
               <span>↓</span>
-              <span>Перейти к контакту</span>
+              <span>{t.ctaContact}</span>
             </a>
           </motion.div>
         </div>
@@ -172,7 +222,7 @@ export default function About() {
             >
               <motion.div
                 className="absolute inset-0 pointer-events-none"
-                style={{ background: "rgba(0,0,0,0.025)" }}
+                style={{ background: "rgba(255,255,255,0.03)" }}
                 initial={{ opacity: 0 }}
                 whileHover={{ opacity: 1 }}
                 transition={{ duration: 0.2 }}
@@ -188,10 +238,10 @@ export default function About() {
                   className="font-semibold text-lg leading-tight transition-colors duration-200 group-hover:text-[var(--cyan)]"
                   style={{ color: "var(--text)" }}
                 >
-                  {s.label}
+                  {t.services[s.num]?.label ?? s.label}
                 </p>
-                <p className="text-sm mt-0.5 leading-relaxed" style={{ color: "rgba(0,0,0,0.55)" }}>
-                  {s.desc}
+                <p className="text-sm mt-0.5 leading-relaxed" style={{ color: "rgba(242,239,233,0.55)" }}>
+                  {t.services[s.num]?.desc ?? s.desc}
                 </p>
               </div>
               <motion.span
@@ -211,9 +261,9 @@ export default function About() {
         <TextReveal className="mb-8">
           <h3
             className="font-semibold text-sm tracking-[0.2em] uppercase"
-            style={{ color: "rgba(0,0,0,0.5)" }}
+            style={{ color: "rgba(242,239,233,0.5)" }}
           >
-            Инструменты
+            {t.toolsHeading}
           </h3>
         </TextReveal>
 
@@ -223,11 +273,11 @@ export default function About() {
               key={skill}
               className="px-4 py-3 rounded-lg text-center group cursor-default relative overflow-hidden"
               style={{
-                background: "rgba(0,0,0,0.03)",
-                border: "1px solid rgba(0,0,0,0.06)",
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.08)",
                 color: "var(--text)",
               }}
-              whileHover={{ scale: 1.04, background: "rgba(8,145,178,0.08)", borderColor: "rgba(8,145,178,0.3)" }}
+              whileHover={{ scale: 1.04, background: "rgba(34,211,238,0.1)", borderColor: "rgba(34,211,238,0.35)" }}
               transition={{ duration: 0.2 }}
               suppressHydrationWarning
             >

@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ECC skills bundle (local tooling, not part of the site)
+/.claude/skills/
+
+# local verification screenshots (scratch, not part of the site)
+/screenshots/
+/screenshot-*.png

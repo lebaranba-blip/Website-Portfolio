@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Дмитрий — AI & Design";
+export const alt = "Дмитрий Коломиец — AI Production";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -18,7 +18,7 @@ export default function OGImage() {
           justifyContent: "center",
           padding: "80px",
           fontFamily: "sans-serif",
-          background: "linear-gradient(135deg, #0891B2 0%, #EA580C 50%, #D97757 100%)",
+          background: "linear-gradient(135deg, #0B0B0D 0%, #17171A 45%, #22D3EE 100%)",
           position: "relative",
           overflow: "hidden",
         }}
@@ -84,7 +84,7 @@ export default function OGImage() {
               marginBottom: 16,
             }}
           >
-            Дмитрий
+            Дмитрий Коломиец
           </div>
           <div
             style={{
@@ -95,7 +95,7 @@ export default function OGImage() {
               letterSpacing: "-0.01em",
             }}
           >
-            AI & Design
+            AI Production
           </div>
           <div
             style={{
@@ -106,9 +106,9 @@ export default function OGImage() {
               fontWeight: 400,
             }}
           >
-            AI-визуал, автоматизация и брендинг для бизнеса.
+            Коммерческое AI-видео и визуал полного цикла.
             <br />
-            50+ проектов · 3+ года опыта
+            Сценарий → генерация → монтаж → цвет
           </div>
         </div>
       </div>

@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion"
 
 export default function Preloader({ onComplete }: { onComplete: () => void }) {
   const [visible, setVisible] = useState(true)
-  // guard — onComplete вызывается строго один раз
   const completedRef = useRef(false)
   const bgNumRef = useRef<HTMLDivElement>(null)
   const fgNumRef = useRef<HTMLSpanElement>(null)
@@ -19,8 +18,9 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
   }, [onComplete])
 
   useEffect(() => {
-    // Пропускаем прелоадер при повторных посещениях в той же сессии
-    if (sessionStorage.getItem("preloader-done")) {
+    let skip = false
+    try { skip = !!sessionStorage.getItem("preloader-done") } catch {}
+    if (skip) {
       setVisible(false)
       safeComplete()
       return
@@ -49,15 +49,16 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
       if (t < 1) {
         raf = requestAnimationFrame(tick)
       } else {
-        sessionStorage.setItem("preloader-done", "1")
+        try { sessionStorage.setItem("preloader-done", "1") } catch {}
         setTimeout(() => setVisible(false), 400)
       }
     }
 
     raf = requestAnimationFrame(tick)
-
-    // hard fallback — если AnimatePresence не вызовет onExitComplete
-    const hardFallback = setTimeout(() => safeComplete(), 4000)
+    const hardFallback = setTimeout(() => {
+      setVisible(false)
+      safeComplete()
+    }, 4500)
 
     return () => {
       cancelAnimationFrame(raf)
@@ -73,10 +74,8 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
           className="fixed inset-0 z-[9999] bg-[#0A0A0A] flex flex-col"
           exit={{ y: "-100%" }}
           transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+          onAnimationComplete={(def) => { if (def === "exit") safeComplete() }}
         >
-          {/* grain из globals.css body::before покрывает preloader автоматически */}
-
-          {/* top-left: wordmark */}
           <div className="flex items-center justify-between px-8 pt-8">
             <motion.span
               className="font-black text-lg tracking-tighter text-white/80"
@@ -94,20 +93,18 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              AI & Design
+              AI Production
             </motion.span>
           </div>
 
-          {/* center: counter */}
           <div className="flex-1 flex items-center justify-center">
             <div ref={liveRef} className="relative" aria-live="polite" aria-label="Загрузка 0%">
-              {/* foreground counter — single layer, lighter */}
               <span
                 ref={fgNumRef}
                 className="text-[11vw] font-black leading-none tabular-nums select-none"
                 style={{
                   fontFamily: "var(--font-space-grotesk)",
-                  background: "linear-gradient(135deg, #0891B2 0%, #EA580C 60%, #1D4ED8 100%)",
+                  background: "linear-gradient(135deg, #22D3EE 0%, #FB923C 60%, #60A5FA 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -116,26 +113,22 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
               >
                 000
               </span>
-              {/* hidden ref for back-compat — not rendered */}
               <div ref={bgNumRef} aria-hidden="true" style={{ display: "none" }} />
             </div>
           </div>
 
-          {/* bottom bar: progress line + label */}
           <div className="px-8 pb-10 flex flex-col gap-4">
-            {/* progress bar */}
             <div className="h-px w-full bg-white/10 overflow-hidden rounded-full">
               <div
                 ref={barRef}
                 className="h-full rounded-full"
                 style={{
-                  background: "linear-gradient(90deg, #0891B2, #EA580C)",
+                  background: "linear-gradient(90deg, #22D3EE, #FB923C)",
                   width: "0%",
                   willChange: "width",
                 }}
               />
             </div>
-
             <div className="flex items-center justify-between">
               <motion.span
                 className="text-xs tracking-widest uppercase text-white/30"

@@ -10,6 +10,10 @@ import {
   type Variants,
 } from "framer-motion"
 import { TELEGRAM_URL, EASE_DEFAULT } from "@/lib/constants"
+import LanguageToggle from "@/components/ui/language-toggle"
+import { useIsTouch } from "@/lib/use-is-touch"
+import { useDict } from "@/lib/language-context"
+import { gumpDict } from "@/dictionaries/gump"
 
 // ─── TextReveal ───────────────────────────────────────────────────────────────
 function TextReveal({
@@ -18,7 +22,7 @@ function TextReveal({
   children: React.ReactNode; delay?: number
   className?: string; style?: React.CSSProperties
 }) {
-  const isTouch = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
+  const isTouch = useIsTouch()
   if (isTouch) return <div className={className} style={style}>{children}</div>
   return (
     <div style={{ overflow: "hidden", display: "block" }}>
@@ -75,11 +79,11 @@ function XPCounter() {
 // ─── FeatureRow ───────────────────────────────────────────────────────────────
 function FeatureRow({ label, desc, index }: { label: string; desc: string; index: number }) {
   const [hovered, setHovered] = useState(false)
-  const isTouch = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
+  const isTouch = useIsTouch()
   return (
     <motion.div
       className="flex items-center gap-4 py-3 cursor-default relative"
-      style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}
+      style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}
       initial={isTouch ? false : { opacity: 0, x: -16 }}
       whileInView={isTouch ? undefined : { opacity: 1, x: 0 }}
       viewport={{ once: true }}
@@ -99,7 +103,7 @@ function FeatureRow({ label, desc, index }: { label: string; desc: string; index
       {/* Number */}
       <motion.span
         className="font-mono font-bold text-xs"
-        animate={{ color: hovered ? "#1B3FD8" : "rgba(0,0,0,0.2)" }}
+        animate={{ color: hovered ? "#1B3FD8" : "rgba(255,255,255,0.2)" }}
         transition={{ duration: 0.15 }}
         style={{ minWidth: 20 }}
         suppressHydrationWarning
@@ -133,7 +137,7 @@ function FadeIn({
   children: React.ReactNode; delay?: number; y?: number
   className?: string; style?: React.CSSProperties
 }) {
-  const isTouch = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
+  const isTouch = useIsTouch()
   if (isTouch) return <div className={className} style={style}>{children}</div>
   return (
     <motion.div
@@ -163,7 +167,7 @@ const staggerContainerTouch: Variants = { show: {} }
 const staggerItemTouch: Variants = { show: {} }
 
 // ─── NavBackButton ────────────────────────────────────────────────────────────
-function NavBackButton({ href }: { href: string }) {
+function NavBackButton({ href, label }: { href: string; label: string }) {
   return (
     <motion.div whileHover="hover" suppressHydrationWarning>
       <Link href={href} style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: "0.875rem", fontFamily: "var(--font-mono, monospace)", color: "var(--muted)", textDecoration: "none" }}>
@@ -171,7 +175,7 @@ function NavBackButton({ href }: { href: string }) {
           <polyline points="15 18 9 12 15 6" />
         </motion.svg>
         <motion.span variants={{ hover: { x: -2 } }} transition={{ type: "spring", stiffness: 400, damping: 20 }}>
-          Все работы
+          {label}
         </motion.span>
       </Link>
     </motion.div>
@@ -179,7 +183,7 @@ function NavBackButton({ href }: { href: string }) {
 }
 
 // ─── HeaderWriteButton ────────────────────────────────────────────────────────
-function HeaderWriteButton({ href }: { href: string }) {
+function HeaderWriteButton({ href, label }: { href: string; label: string }) {
   return (
     <motion.a href={href} target="_blank" rel="noopener noreferrer"
       style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 20px", minHeight: 36, borderRadius: 9999, background: "var(--text)", color: "var(--bg)", fontWeight: 700, fontSize: "0.75rem", letterSpacing: "0.02em", textDecoration: "none", cursor: "pointer" }}
@@ -187,7 +191,7 @@ function HeaderWriteButton({ href }: { href: string }) {
       transition={{ type: "spring", stiffness: 350, damping: 20 }}
       suppressHydrationWarning
     >
-      Написать
+      {label}
     </motion.a>
   )
 }
@@ -229,7 +233,7 @@ function GhostButton({ href, children }: { href: string; children: React.ReactNo
   const onLeave = () => { x.set(0); y.set(0) }
   return (
     <motion.a ref={ref} href={href}
-      style={{ x: sx, y: sy, display: "inline-flex", alignItems: "center", padding: "14px 32px", minHeight: 48, borderRadius: 9999, background: "transparent", color: "var(--text)", fontWeight: 600, fontSize: "0.9rem", border: "1.5px solid rgba(0,0,0,0.2)", textDecoration: "none", cursor: "pointer" }}
+      style={{ x: sx, y: sy, display: "inline-flex", alignItems: "center", padding: "14px 32px", minHeight: 48, borderRadius: 9999, background: "transparent", color: "var(--text)", fontWeight: 600, fontSize: "0.9rem", border: "1.5px solid rgba(255,255,255,0.2)", textDecoration: "none", cursor: "pointer" }}
       onMouseMove={onMove} onMouseLeave={onLeave}
       whileHover={{ scale: 1.04 }}
       whileTap={{ scale: 0.96 }}
@@ -240,9 +244,10 @@ function GhostButton({ href, children }: { href: string; children: React.ReactNo
 }
 
 // ─── Lightbox ─────────────────────────────────────────────────────────────────
-function Lightbox({ images, index, onClose, onNav }: {
+function Lightbox({ images, index, onClose, onNav, labels }: {
   images: { src: string; alt: string }[]
   index: number; onClose: () => void; onNav: (i: number) => void
+  labels: { close: string; prev: string; next: string }
 }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -261,11 +266,11 @@ function Lightbox({ images, index, onClose, onNav }: {
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       transition={{ duration: 0.25 }} onClick={onClose}
     >
-      <button className="absolute top-5 right-5 w-10 h-10 flex items-center justify-center rounded-full text-white" style={{ background: "rgba(255,255,255,0.1)" }} onClick={onClose} aria-label="Закрыть">
+      <button className="absolute top-5 right-5 w-10 h-10 flex items-center justify-center rounded-full text-white" style={{ background: "rgba(255,255,255,0.1)" }} onClick={onClose} aria-label={labels.close}>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
       {images.length > 1 && (
-        <button className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full text-white" style={{ background: "rgba(255,255,255,0.1)" }} onClick={e => { e.stopPropagation(); onNav((index - 1 + images.length) % images.length) }} aria-label="Предыдущее">
+        <button className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full text-white" style={{ background: "rgba(255,255,255,0.1)" }} onClick={e => { e.stopPropagation(); onNav((index - 1 + images.length) % images.length) }} aria-label={labels.prev}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
       )}
@@ -274,7 +279,7 @@ function Lightbox({ images, index, onClose, onNav }: {
         <p className="text-center text-sm mt-3" style={{ color: "rgba(255,255,255,0.5)" }}>{images[index].alt} · {index + 1} / {images.length}</p>
       </motion.div>
       {images.length > 1 && (
-        <button className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full text-white" style={{ background: "rgba(255,255,255,0.1)" }} onClick={e => { e.stopPropagation(); onNav((index + 1) % images.length) }} aria-label="Следующее">
+        <button className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full text-white" style={{ background: "rgba(255,255,255,0.1)" }} onClick={e => { e.stopPropagation(); onNav((index + 1) % images.length) }} aria-label={labels.next}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
       )}
@@ -284,15 +289,15 @@ function Lightbox({ images, index, onClose, onNav }: {
 }
 
 // ─── VideoPlayer ──────────────────────────────────────────────────────────────
-function VideoPlayer({ src, ratio = "56.25%" }: { src: string; ratio?: string }) {
+function VideoPlayer({ src, ratio = "56.25%", labels }: { src: string; ratio?: string; labels: { unmute: string; mute: string } }) {
   const ref = useRef<HTMLVideoElement>(null)
   const [muted, setMuted] = useState(true)
   useEffect(() => { ref.current?.play().catch(() => {}) }, [])
   const toggle = () => { if (!ref.current) return; ref.current.muted = !ref.current.muted; setMuted(ref.current.muted) }
   return (
     <div className="relative overflow-hidden w-full rounded-2xl" style={{ paddingBottom: ratio }}>
-      <video ref={ref} src={src} style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: "100%", height: ratio === "48%" ? "130%" : "100%", objectFit: "cover" }} muted loop playsInline controls={false} />
-      <button onClick={toggle} className="absolute bottom-4 right-4 w-10 h-10 flex items-center justify-center rounded-full text-white" style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(4px)" }} aria-label={muted ? "Включить звук" : "Выключить звук"}>
+      <video ref={ref} src={src} style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: "100%", height: ratio === "48%" ? "130%" : "100%", objectFit: "cover" }} muted={muted} loop playsInline controls={false} />
+      <button onClick={toggle} className="absolute bottom-4 right-4 w-10 h-10 flex items-center justify-center rounded-full text-white" style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(4px)" }} aria-label={muted ? labels.unmute : labels.mute}>
         {muted
           ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
           : <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
@@ -303,29 +308,34 @@ function VideoPlayer({ src, ratio = "56.25%" }: { src: string; ratio?: string })
 }
 
 // ─── Gallery images ───────────────────────────────────────────────────────────
-const GALLERY = [
-  { src: "/works/gump/logo-photo.png",  alt: "Логотип Gump Donuts" },
-  { src: "/works/gump/tshirt2.png",     alt: "Мерч — футболки" },
-  { src: "/works/gump/truck.png",       alt: "Брендированный фургон" },
-  { src: "/works/gump/tshirt.png",      alt: "Футболка" },
-  { src: "/works/gump/apron.png",       alt: "Фирменный фартук" },
-  { src: "/works/gump/billboard.png",   alt: "Билборд EAT OR REGRET" },
-  { src: "/works/gump/boxes.png",       alt: "Фирменная упаковка" },
-  { src: "/works/gump/shopper.png",     alt: "Шоппер" },
-  { src: "/works/gump/lifestyle.png",   alt: "Лайфстайл" },
-  { src: "/works/gump/banner.png",      alt: "Рекламный баннер" },
-  { src: "/works/gump/poster-cafe.png", alt: "Постер в кофейне" },
-]
+function getGallery(t: ReturnType<typeof useDict<typeof gumpDict>>) {
+  const g = t.identity.gallery
+  return [
+    { src: "/works/gump/logo-photo.png",  alt: g.logoBrand.alt },
+    { src: "/works/gump/tshirt2.png",     alt: g.tshirt2Lb.alt },
+    { src: "/works/gump/truck.png",       alt: g.truck.alt },
+    { src: "/works/gump/tshirt.png",      alt: g.tshirt.alt },
+    { src: "/works/gump/apron.png",       alt: g.apron.alt },
+    { src: "/works/gump/billboard.png",   alt: g.billboardLb.alt },
+    { src: "/works/gump/boxes.png",       alt: g.boxes.alt },
+    { src: "/works/gump/shopper.png",     alt: g.shopper.alt },
+    { src: "/works/gump/lifestyle.png",   alt: g.lifestyle.alt },
+    { src: "/works/gump/banner.png",      alt: g.banner.alt },
+    { src: "/works/gump/poster-cafe.png", alt: g.posterCafe.alt },
+  ]
+}
 
 type LightboxSet = { images: { src: string; alt: string }[]; index: number }
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function GumpDonutsPage() {
+  const t = useDict(gumpDict)
+  const GALLERY = getGallery(t)
   const [lightbox, setLightbox] = useState<LightboxSet | null>(null)
   const [mounted,  setMounted]  = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const prefersReduced = useReducedMotion()
-  const isTouch = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
+  const isTouch = useIsTouch()
   const sc = isTouch ? staggerContainerTouch : staggerContainer
   const si = isTouch ? staggerItemTouch : staggerItem
 
@@ -350,15 +360,18 @@ export default function GumpDonutsPage() {
       {/* ── Header ── */}
       <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-4"
         style={{
-          background:         scrolled ? "rgba(237,234,228,0.92)" : "transparent",
+          background:         scrolled ? "rgba(11,11,13,0.85)" : "transparent",
           backdropFilter:     scrolled ? "blur(16px)" : "none",
           WebkitBackdropFilter: scrolled ? "blur(16px)" : "none",
-          borderBottom:       scrolled ? "1px solid rgba(0,0,0,0.06)" : "none",
+          borderBottom:       scrolled ? "1px solid rgba(255,255,255,0.08)" : "none",
           transition: "background 0.4s ease, border-color 0.4s ease",
         }}
       >
-        <NavBackButton href="/#works" />
-        <HeaderWriteButton href={TELEGRAM_URL} />
+        <NavBackButton href="/#works" label={t.nav.allWorks} />
+        <div className="flex items-center gap-3">
+          <LanguageToggle />
+          <HeaderWriteButton href={TELEGRAM_URL} label={t.nav.write} />
+        </div>
       </header>
 
       <main style={{ background: "var(--bg)", minHeight: "100vh" }}>
@@ -396,7 +409,7 @@ export default function GumpDonutsPage() {
                 suppressHydrationWarning
               >
                 <div style={{ width: 28, height: 1, background: "rgba(255,255,255,0.25)" }} />
-                <span className="font-mono text-xs uppercase tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.4)" }}>Brand Identity · 2026</span>
+                <span className="font-mono text-xs uppercase tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.4)" }}>{t.hero.badge}</span>
               </motion.div>
 
               {/* H1 */}
@@ -406,7 +419,7 @@ export default function GumpDonutsPage() {
                 transition={{ delay: 0.4, duration: 1.0, ease: EASE_DEFAULT }}
                 suppressHydrationWarning
               >
-                EAT OR<br /><span style={{ color: "#F472B6" }}>REGRET.</span>
+                {t.hero.titleLine1}<br /><span style={{ color: "#F472B6" }}>{t.hero.titleLine2}</span>
               </motion.h1>
 
               {/* Desc */}
@@ -416,7 +429,7 @@ export default function GumpDonutsPage() {
                 transition={{ delay: 0.6, duration: 0.8, ease: EASE_DEFAULT }}
                 suppressHydrationWarning
               >
-                360° айдентика за 3 дня — маскот, упаковка, мерч, ролик. Без студии и фотографа.
+                {t.hero.desc}
               </motion.p>
 
               {/* Meta row */}
@@ -426,9 +439,9 @@ export default function GumpDonutsPage() {
                 suppressHydrationWarning
               >
                 {[
-                  { label: "Клиент", value: "Gump Donuts" },
-                  { label: "Стек",   value: "Kling · Figma · PS" },
-                  { label: "Охват",  value: "360° Identity" },
+                  { label: t.hero.metaClient, value: "Gump Donuts" },
+                  { label: t.hero.metaStack,  value: "Kling · Figma · PS" },
+                  { label: t.hero.metaReach,  value: "360° Identity" },
                 ].map(({ label, value }) => (
                   <div key={label} style={{ borderLeft: "1px solid rgba(255,255,255,0.12)", paddingLeft: 12 }}>
                     <div className="font-mono text-xs uppercase tracking-widest mb-1" style={{ color: "rgba(255,255,255,0.28)" }}>{label}</div>
@@ -459,14 +472,14 @@ export default function GumpDonutsPage() {
         <section className="px-6 md:px-12 py-16">
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <FadeIn>
-              <span className="font-mono text-xs uppercase tracking-widest flex items-center gap-3 mb-4" style={{ color: "rgba(0,0,0,0.55)" }}>
-                <span>—</span>01 — Идея
+              <span className="font-mono text-xs uppercase tracking-widest flex items-center gap-3 mb-4" style={{ color: "rgba(255,255,255,0.3)" }}>
+                <span>—</span>01 — {t.idea.eyebrow}
               </span>
             </FadeIn>
 
             <div className="mb-10">
-              <FadeIn><div style={{ color: "var(--text)", display: "block", fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em" }}>ОТКУДА ВЗЯЛСЯ</div></FadeIn>
-              <FadeIn delay={0.08}><div style={{ color: "#1B3FD8", display: "block", fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em" }}>GUMP?</div></FadeIn>
+              <FadeIn><div style={{ color: "var(--text)", display: "block", fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em" }}>{t.idea.heading1}</div></FadeIn>
+              <FadeIn delay={0.08}><div style={{ color: "#1B3FD8", display: "block", fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em" }}>{t.idea.heading2}</div></FadeIn>
             </div>
 
             {/* Brand story — full width, 2-col text */}
@@ -474,13 +487,13 @@ export default function GumpDonutsPage() {
               variants={sc} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-40px" }}
             >
               <motion.p variants={si} className="text-lg leading-relaxed" style={{ color: "var(--muted)", maxWidth: "65ch" }}>
-                <strong style={{ color: "var(--text)" }}>Форрест Гамп бежал просто потому что бежал.</strong> Без диеты, без подсчёта калорий, без сторис о «читмиле». Добежал до финиша — и съел что хотел. Это честно.
+                <strong style={{ color: "var(--text)" }}>{t.idea.p1intro}</strong>{t.idea.p1rest}
               </motion.p>
               <motion.p variants={si} className="text-lg leading-relaxed" style={{ color: "var(--muted)", maxWidth: "65ch" }}>
-                Gump Donuts — ответ фитнес-маркетингу, который стыдит тебя за сахар. Тезис простой: <strong style={{ color: "var(--text)" }}>отработай и заслужи пончик.</strong> Без вины, без оправданий.
+                {t.idea.p2intro}<strong style={{ color: "var(--text)" }}>{t.idea.p2bold}</strong>{t.idea.p2rest}
               </motion.p>
               <motion.p variants={si} className="text-lg leading-relaxed md:col-span-2" style={{ color: "var(--muted)", maxWidth: "65ch" }}>
-                Ирония над «осознанным потреблением» — добрая, не едкая. Объединяет тех, кто бегает утром и ест пончики вечером. Бородатый бегун с пончиком в руке стал голосом этого бренда.
+                {t.idea.p3}
               </motion.p>
             </motion.div>
 
@@ -532,8 +545,8 @@ export default function GumpDonutsPage() {
                           {/* App header */}
                           <div className="flex items-center justify-between mb-4">
                             <div>
-                              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: "var(--font-mono,monospace)" }}>Привет, Макс</div>
-                              <div style={{ fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.2 }}>Сегодня активный день</div>
+                              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: "var(--font-mono,monospace)" }}>{t.idea.phoneGreeting}</div>
+                              <div style={{ fontSize: 16, fontWeight: 800, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.2 }}>{t.idea.phoneStatus}</div>
                             </div>
                             <div style={{ width: 32, height: 32, borderRadius: "50%", background: "linear-gradient(135deg,#1B3FD8,#F472B6)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -560,7 +573,7 @@ export default function GumpDonutsPage() {
                               <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 800, color: "#fff" }}>80%</div>
                             </div>
                             <div>
-                              <div style={{ fontSize: 9, color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em", textTransform: "uppercase", fontFamily: "var(--font-mono,monospace)", marginBottom: 2 }}>XP до пончика</div>
+                              <div style={{ fontSize: 9, color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em", textTransform: "uppercase", fontFamily: "var(--font-mono,monospace)", marginBottom: 2 }}>{t.idea.xpToDonut}</div>
                               {/* Animated XP counter */}
                               <XPCounter />
                               <motion.div
@@ -568,17 +581,17 @@ export default function GumpDonutsPage() {
                                 animate={{ opacity: [1, 0.5, 1] }}
                                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                                 suppressHydrationWarning
-                              >+600 XP сегодня</motion.div>
+                              >{t.idea.xpToday}</motion.div>
                             </div>
                           </div>
 
                           {/* Activity cards */}
-                          <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: "var(--font-mono,monospace)", marginBottom: 8 }}>Активности</div>
+                          <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: "var(--font-mono,monospace)", marginBottom: 8 }}>{t.idea.activitiesLabel}</div>
                           <div className="flex flex-col gap-2 mb-3">
                             {[
-                              { label: "Пробежка", val: "5.2 км", xp: "+300 XP", done: true,  icon: "M13 2L3 14h9l-1 8 10-12h-9l1-8z",                                                      delay: 0.7 },
-                              { label: "Велосипед", val: "8 км",  xp: "+200 XP", done: true,  icon: "M5 17H3a2 2 0 01-2-2v-3a4 4 0 014-4h12a4 4 0 014 4v3a2 2 0 01-2 2h-2M12 17l-2 2 2 2M8 17H6m14 0h-2", delay: 0.85 },
-                              { label: "Пончик",   val: "задание", xp: "+500 XP", done: false, icon: "M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zM12 8v4l3 3", delay: 1.0 },
+                              { ...t.idea.activities[0], done: true,  icon: "M13 2L3 14h9l-1 8 10-12h-9l1-8z",                                                      delay: 0.7 },
+                              { ...t.idea.activities[1], done: true,  icon: "M5 17H3a2 2 0 01-2-2v-3a4 4 0 014-4h12a4 4 0 014 4v3a2 2 0 01-2 2h-2M12 17l-2 2 2 2M8 17H6m14 0h-2", delay: 0.85 },
+                              { ...t.idea.activities[2], done: false, icon: "M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zM12 8v4l3 3", delay: 1.0 },
                             ].map(({ label, val, xp, done, icon, delay }) => (
                               <motion.div
                                 key={label}
@@ -626,10 +639,10 @@ export default function GumpDonutsPage() {
                               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F472B6" strokeWidth="2" strokeLinecap="round"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 6v4l3 3"/></svg>
                             </div>
                             <div style={{ flex: 1 }}>
-                              <div style={{ fontSize: 11, fontWeight: 700, color: "#F472B6", lineHeight: 1.2 }}>Glazed Classic</div>
-                              <div style={{ fontSize: 9, color: "rgba(255,255,255,0.3)", fontFamily: "var(--font-mono,monospace)" }}>600 XP до награды</div>
+                              <div style={{ fontSize: 11, fontWeight: 700, color: "#F472B6", lineHeight: 1.2 }}>{t.idea.rewardName}</div>
+                              <div style={{ fontSize: 9, color: "rgba(255,255,255,0.3)", fontFamily: "var(--font-mono,monospace)" }}>{t.idea.rewardXp}</div>
                             </div>
-                            <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(244,114,182,0.6)", fontFamily: "var(--font-mono,monospace)", background: "rgba(244,114,182,0.1)", padding: "3px 7px", borderRadius: 6 }}>СКОРО</div>
+                            <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(244,114,182,0.6)", fontFamily: "var(--font-mono,monospace)", background: "rgba(244,114,182,0.1)", padding: "3px 7px", borderRadius: 6 }}>{t.idea.rewardSoon}</div>
                           </motion.div>
                         </div>
                       </div>
@@ -648,23 +661,18 @@ export default function GumpDonutsPage() {
               >
                 <motion.div variants={si}>
                   <div className="font-black leading-none mb-3" style={{ fontSize: "clamp(1.8rem,3.5vw,3rem)", letterSpacing: "-0.03em" }}>
-                    <span style={{ color: "var(--text)" }}>ГЕЙМИФИКАЦИЯ </span><br />
-                    <span style={{ color: "#1B3FD8" }}>КАК МЕХАНИКА</span>
+                    <span style={{ color: "var(--text)" }}>{t.idea.gamifHeading1}</span><br />
+                    <span style={{ color: "#1B3FD8" }}>{t.idea.gamifHeading2}</span>
                   </div>
                 </motion.div>
 
                 <motion.p variants={si} className="text-lg leading-relaxed" style={{ color: "var(--muted)" }}>
-                  Бренд строится на принципе <strong style={{ color: "var(--text)" }}>reward loop</strong> — отработал активность, заработал XP, получил пончик. Приложение отслеживает каждый километр и открывает награды.
+                  {t.idea.rewardLoopPre}<strong style={{ color: "var(--text)" }}>{t.idea.rewardLoopBold}</strong>{t.idea.rewardLoopPost}
                 </motion.p>
 
                 {/* Feature list with hover micro-interactions */}
                 <motion.div variants={si} className="flex flex-col">
-                  {[
-                    { label: "XP система",       desc: "каждый километр = очки" },
-                    { label: "Reward loop",       desc: "достиг цели — получи пончик" },
-                    { label: "Activity tracking", desc: "бег, велосипед, зал" },
-                    { label: "Loyalty program",   desc: "уровни и эксклюзивные награды" },
-                  ].map(({ label, desc }, i) => (
+                  {t.idea.features.map(({ label, desc }, i) => (
                     <FeatureRow key={label} label={label} desc={desc} index={i} />
                   ))}
                 </motion.div>
@@ -672,7 +680,7 @@ export default function GumpDonutsPage() {
                 {/* Quote */}
                 <motion.div variants={si}>
                   <div className="font-black leading-tight" style={{ fontSize: "clamp(1.5rem,2.8vw,2.2rem)", letterSpacing: "-0.025em" }}>
-                    <span style={{ color: "var(--text)" }}>«Беги. </span><span style={{ color: "#F472B6" }}>Зарабатывай. </span><span style={{ color: "var(--text)" }}>Съешь.»</span>
+                    <span style={{ color: "var(--text)" }}>{t.idea.quote1}</span><span style={{ color: "#F472B6" }}>{t.idea.quote2}</span><span style={{ color: "var(--text)" }}>{t.idea.quote3}</span>
                   </div>
                 </motion.div>
               </motion.div>
@@ -686,23 +694,23 @@ export default function GumpDonutsPage() {
         <section className="px-6 md:px-12 py-16" style={{ background: "var(--surface)" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <FadeIn>
-              <span className="font-mono text-xs uppercase tracking-widest flex items-center gap-3 mb-4" style={{ color: "rgba(0,0,0,0.55)" }}>
-                <span>—</span>02 — Айдентика
+              <span className="font-mono text-xs uppercase tracking-widest flex items-center gap-3 mb-4" style={{ color: "rgba(255,255,255,0.3)" }}>
+                <span>—</span>02 — {t.identity.eyebrow}
               </span>
             </FadeIn>
 
             <div className="mb-10">
-              <FadeIn><div style={{ color: "var(--text)", display: "block", fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em" }}>ЦВЕТ, ФОРМА</div></FadeIn>
-              <FadeIn delay={0.08}><div style={{ color: "#F472B6", display: "block", fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em" }}>ХАРАКТЕР</div></FadeIn>
+              <FadeIn><div style={{ color: "var(--text)", display: "block", fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em" }}>{t.identity.heading1}</div></FadeIn>
+              <FadeIn delay={0.08}><div style={{ color: "#F472B6", display: "block", fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em" }}>{t.identity.heading2}</div></FadeIn>
             </div>
 
             {/* Swatches */}
             <motion.div className="flex gap-3 mb-10 flex-wrap" variants={sc} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-40px" }}>
               {[
-                { color: "#1B3FD8", name: "Gump Blue",   hex: "#1B3FD8", role: "Основной" },
-                { color: "#F472B6", name: "Donut Pink",  hex: "#F472B6", role: "Акцент" },
-                { color: "#FFFFFF", name: "Glaze White", hex: "#FFFFFF", role: "Нейтральный" },
-                { color: "#0A0A0A", name: "Deep Dark",   hex: "#0A0A0A", role: "Фон" },
+                { color: "#1B3FD8", hex: "#1B3FD8", ...t.identity.swatches[0] },
+                { color: "#F472B6", hex: "#F472B6", ...t.identity.swatches[1] },
+                { color: "#FFFFFF", hex: "#FFFFFF", ...t.identity.swatches[2] },
+                { color: "#0A0A0A", hex: "#0A0A0A", ...t.identity.swatches[3] },
               ].map(({ color, name, hex, role }) => (
                 <motion.div key={color} variants={si}
                   className="rounded-2xl overflow-hidden flex-1 min-w-[130px]"
@@ -732,30 +740,30 @@ export default function GumpDonutsPage() {
               gridTemplateRows: "repeat(4, 280px)",
               gap: 12,
             }}>
-              <GCell src="/works/gump/truck.png"       alt="Брендированный фургон" label="Фургон · Брендинг"  col="1/9"   row={1} ratio="auto" i={0}  isTouch={isTouch} onClick={() => openGallery(2)} />
-              <GCell src="/works/gump/apron.png"       alt="Фирменный фартук"      label="Фартук · Мерч"      col="9/13"  row={1} ratio="auto" i={1}  isTouch={isTouch} onClick={() => openGallery(4)}  rowSpan={2} />
-              <GCell src="/works/gump/logo-photo.png"  alt="Логотип"               label="Логотип"            col="1/5"   row={2} ratio="auto" i={2}  isTouch={isTouch} onClick={() => openGallery(0)} />
-              <GCell src="/works/gump/boxes.png"       alt="Упаковка"              label="Упаковка · Коробки" col="5/9"   row={2} ratio="auto" i={3}  isTouch={isTouch} onClick={() => openGallery(6)} />
-              <GCell src="/works/gump/tshirt2.png"     alt="Футболки мерч"         label="Мерч · Линейка"     col="1/4"   row={3} ratio="auto" i={4}  isTouch={isTouch} onClick={() => openGallery(1)}  rowSpan={2} />
-              <GCell src="/works/gump/lifestyle.png"   alt="Лайфстайл"             label="Продуктовый кадр"   col="4/8"   row={3} ratio="auto" i={5}  isTouch={isTouch} onClick={() => openGallery(8)} />
-              <GCell src="/works/gump/shopper.png"     alt="Шоппер"                label="Шоппер · Мерч"      col="8/10"  row={3} ratio="auto" i={6}  isTouch={isTouch} onClick={() => openGallery(7)} />
-              <GCell src="/works/gump/poster-cafe.png" alt="Постер в кофейне"      label="Постер · Мокап"     col="10/13" row={3} ratio="auto" i={7}  isTouch={isTouch} onClick={() => openGallery(10)} rowSpan={2} />
-              <GCell src="/works/gump/billboard.png"   alt="Билборд"               label="Наружная реклама"   col="4/8"   row={4} ratio="auto" i={8}  isTouch={isTouch} onClick={() => openGallery(5)} />
-              <GCell src="/works/gump/banner.png"      alt="Рекламный баннер"      label="Баннер · OOH"       col="8/10"  row={4} ratio="auto" i={9}  isTouch={isTouch} onClick={() => openGallery(9)} />
+              <GCell src="/works/gump/truck.png"       alt={t.identity.gallery.truck.alt}      label={t.identity.gallery.truck.labelFull}      col="1/9"   row={1} ratio="auto" i={0}  isTouch={isTouch} onClick={() => openGallery(2)} />
+              <GCell src="/works/gump/apron.png"       alt={t.identity.gallery.apron.alt}      label={t.identity.gallery.apron.labelFull}      col="9/13"  row={1} ratio="auto" i={1}  isTouch={isTouch} onClick={() => openGallery(4)}  rowSpan={2} />
+              <GCell src="/works/gump/logo-photo.png"  alt={t.identity.gallery.logo.alt}       label={t.identity.gallery.logo.labelFull}       col="1/5"   row={2} ratio="auto" i={2}  isTouch={isTouch} onClick={() => openGallery(0)} />
+              <GCell src="/works/gump/boxes.png"       alt={t.identity.gallery.boxes.alt}      label={t.identity.gallery.boxes.labelFull}      col="5/9"   row={2} ratio="auto" i={3}  isTouch={isTouch} onClick={() => openGallery(6)} />
+              <GCell src="/works/gump/tshirt2.png"     alt={t.identity.gallery.tshirt2.alt}    label={t.identity.gallery.tshirt2.labelFull}    col="1/4"   row={3} ratio="auto" i={4}  isTouch={isTouch} onClick={() => openGallery(1)}  rowSpan={2} />
+              <GCell src="/works/gump/lifestyle.png"   alt={t.identity.gallery.lifestyle.alt}  label={t.identity.gallery.lifestyle.labelFull}  col="4/8"   row={3} ratio="auto" i={5}  isTouch={isTouch} onClick={() => openGallery(8)} />
+              <GCell src="/works/gump/shopper.png"     alt={t.identity.gallery.shopper.alt}    label={t.identity.gallery.shopper.labelFull}    col="8/10"  row={3} ratio="auto" i={6}  isTouch={isTouch} onClick={() => openGallery(7)} />
+              <GCell src="/works/gump/poster-cafe.png" alt={t.identity.gallery.posterCafe.alt} label={t.identity.gallery.posterCafe.labelFull} col="10/13" row={3} ratio="auto" i={7}  isTouch={isTouch} onClick={() => openGallery(10)} rowSpan={2} />
+              <GCell src="/works/gump/billboard.png"   alt={t.identity.gallery.billboard.alt}  label={t.identity.gallery.billboard.labelFull}  col="4/8"   row={4} ratio="auto" i={8}  isTouch={isTouch} onClick={() => openGallery(5)} />
+              <GCell src="/works/gump/banner.png"      alt={t.identity.gallery.banner.alt}     label={t.identity.gallery.banner.labelFull}     col="8/10"  row={4} ratio="auto" i={9}  isTouch={isTouch} onClick={() => openGallery(9)} />
             </div>
             {/* Gallery grid — mobile 2-col */}
             <div className="grid md:hidden" style={{ gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-              <GCell src="/works/gump/truck.png"       alt="Брендированный фургон" label="Фургон"    col="1/3"  row={0} ratio="3/2"  i={0}  isTouch={isTouch} onClick={() => openGallery(2)} />
-              <GCell src="/works/gump/apron.png"       alt="Фирменный фартук"      label="Фартук"    col="auto" row={0} ratio="3/4"  i={1}  isTouch={isTouch} onClick={() => openGallery(4)} />
-              <GCell src="/works/gump/tshirt2.png"     alt="Футболки мерч"         label="Мерч"      col="auto" row={0} ratio="3/4"  i={2}  isTouch={isTouch} onClick={() => openGallery(1)} />
-              <GCell src="/works/gump/logo-photo.png"  alt="Логотип"               label="Логотип"   col="1/3"  row={0} ratio="3/2"  i={3}  isTouch={isTouch} onClick={() => openGallery(0)} />
-              <GCell src="/works/gump/boxes.png"       alt="Упаковка"              label="Упаковка"  col="auto" row={0} ratio="3/2"  i={4}  isTouch={isTouch} onClick={() => openGallery(6)} />
-              <GCell src="/works/gump/tshirt.png"      alt="Футболка"              label="Мерч"      col="auto" row={0} ratio="3/4"  i={5}  isTouch={isTouch} onClick={() => openGallery(3)} />
-              <GCell src="/works/gump/lifestyle.png"   alt="Лайфстайл"             label="Лайфстайл" col="1/3"  row={0} ratio="3/2"  i={6}  isTouch={isTouch} onClick={() => openGallery(8)} />
-              <GCell src="/works/gump/shopper.png"     alt="Шоппер"                label="Шоппер"    col="auto" row={0} ratio="3/2"  i={7}  isTouch={isTouch} onClick={() => openGallery(7)} />
-              <GCell src="/works/gump/billboard.png"   alt="Билборд"               label="Наружка"   col="auto" row={0} ratio="3/2"  i={8}  isTouch={isTouch} onClick={() => openGallery(5)} />
-              <GCell src="/works/gump/banner.png"      alt="Баннер"                label="Баннер"    col="1/3"  row={0} ratio="16/9" i={9}  isTouch={isTouch} onClick={() => openGallery(9)} />
-              <GCell src="/works/gump/poster-cafe.png" alt="Постер в кофейне"      label="Постер"    col="auto" row={0} ratio="3/4"  i={10} isTouch={isTouch} onClick={() => openGallery(10)} />
+              <GCell src="/works/gump/truck.png"       alt={t.identity.gallery.truck.alt}      label={t.identity.gallery.truck.labelShort}      col="1/3"  row={0} ratio="3/2"  i={0}  isTouch={isTouch} onClick={() => openGallery(2)} />
+              <GCell src="/works/gump/apron.png"       alt={t.identity.gallery.apron.alt}      label={t.identity.gallery.apron.labelShort}      col="auto" row={0} ratio="3/4"  i={1}  isTouch={isTouch} onClick={() => openGallery(4)} />
+              <GCell src="/works/gump/tshirt2.png"     alt={t.identity.gallery.tshirt2.alt}    label={t.identity.gallery.tshirt2.labelShort}    col="auto" row={0} ratio="3/4"  i={2}  isTouch={isTouch} onClick={() => openGallery(1)} />
+              <GCell src="/works/gump/logo-photo.png"  alt={t.identity.gallery.logo.alt}       label={t.identity.gallery.logo.labelShort}       col="1/3"  row={0} ratio="3/2"  i={3}  isTouch={isTouch} onClick={() => openGallery(0)} />
+              <GCell src="/works/gump/boxes.png"       alt={t.identity.gallery.boxes.alt}      label={t.identity.gallery.boxes.labelShort}      col="auto" row={0} ratio="3/2"  i={4}  isTouch={isTouch} onClick={() => openGallery(6)} />
+              <GCell src="/works/gump/tshirt.png"      alt={t.identity.gallery.tshirt.alt}     label={t.identity.gallery.tshirt.labelShort}     col="auto" row={0} ratio="3/4"  i={5}  isTouch={isTouch} onClick={() => openGallery(3)} />
+              <GCell src="/works/gump/lifestyle.png"   alt={t.identity.gallery.lifestyle.alt}  label={t.identity.gallery.lifestyle.labelShort}  col="1/3"  row={0} ratio="3/2"  i={6}  isTouch={isTouch} onClick={() => openGallery(8)} />
+              <GCell src="/works/gump/shopper.png"     alt={t.identity.gallery.shopper.alt}    label={t.identity.gallery.shopper.labelShort}    col="auto" row={0} ratio="3/2"  i={7}  isTouch={isTouch} onClick={() => openGallery(7)} />
+              <GCell src="/works/gump/billboard.png"   alt={t.identity.gallery.billboard.alt}  label={t.identity.gallery.billboard.labelShort}  col="auto" row={0} ratio="3/2"  i={8}  isTouch={isTouch} onClick={() => openGallery(5)} />
+              <GCell src="/works/gump/banner.png"      alt={t.identity.gallery.banner.alt}     label={t.identity.gallery.banner.labelShort}     col="1/3"  row={0} ratio="16/9" i={9}  isTouch={isTouch} onClick={() => openGallery(9)} />
+              <GCell src="/works/gump/poster-cafe.png" alt={t.identity.gallery.posterCafe.alt} label={t.identity.gallery.posterCafe.labelShort} col="auto" row={0} ratio="3/4"  i={10} isTouch={isTouch} onClick={() => openGallery(10)} />
             </div>
           </div>
         </section>
@@ -767,25 +775,25 @@ export default function GumpDonutsPage() {
           <div className="px-6 md:px-12" style={{ maxWidth: 1200, margin: "0 auto" }}>
             <FadeIn>
               <span className="font-mono text-xs uppercase tracking-widest flex items-center gap-3 mb-4" style={{ color: "rgba(255,255,255,0.3)" }}>
-                <span>—</span>03 — AI Workflow
+                <span>—</span>03 — {t.workflow.eyebrow}
               </span>
             </FadeIn>
 
             <div className="mb-6">
-              <FadeIn><div style={{ color: "#fff", display: "block", fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em" }}>CGI БЕЗ</div></FadeIn>
-              <FadeIn delay={0.08}><div style={{ color: "#6e90ff", display: "block", fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em" }}>СТУДИИ</div></FadeIn>
+              <FadeIn><div style={{ color: "#fff", display: "block", fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em" }}>{t.workflow.heading1}</div></FadeIn>
+              <FadeIn delay={0.08}><div style={{ color: "#6e90ff", display: "block", fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em" }}>{t.workflow.heading2}</div></FadeIn>
             </div>
 
             <FadeIn delay={0.1}>
               <p className="text-lg mb-10" style={{ color: "rgba(255,255,255,0.5)", maxWidth: 700 }}>
-                Никаких съёмочных групп и реквизита. Весь визуал — от фургона в космосе до пончика в невесомости — сгенерирован и доработан в Kling, Figma и Photoshop за три дня.
+                {t.workflow.p}
               </p>
             </FadeIn>
 
             {/* Workflow board */}
             <FadeIn delay={0.05}>
               <div className="rounded-2xl overflow-hidden mb-6">
-                <Image src="/works/gump/workflow-board.png" alt="AI Pipeline — Kling воркфлоу" width={1920} height={1080} className="w-full h-auto" quality={92} />
+                <Image src="/works/gump/workflow-board.png" alt={t.workflow.boardAlt} width={1920} height={1080} className="w-full h-auto" quality={92} />
               </div>
             </FadeIn>
 
@@ -797,26 +805,24 @@ export default function GumpDonutsPage() {
             </FadeIn>
 
             {/* Space grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+            <div className="mb-6">
               <FadeIn>
                 <div className="rounded-2xl overflow-hidden" style={{ maxHeight: 360 }}>
-                  <Image src="/works/gump/space1.png" alt="Астронавт за рулём фургона в космосе" width={1280} height={853} className="w-full h-full object-cover rounded-2xl" style={{ maxHeight: 360 }} quality={92} />
-                </div>
-              </FadeIn>
-              <FadeIn delay={0.08}>
-                <div className="rounded-2xl overflow-hidden" style={{ background: "#000", maxHeight: 360 }}>
-                  <video src="/works/gump/space-video.mp4" className="w-full h-full object-cover" style={{ display: "block", maxHeight: 360 }} autoPlay muted loop playsInline />
+                  <Image src="/works/gump/space1.png" alt={t.workflow.spaceAlt} width={1280} height={853} className="w-full h-full object-cover rounded-2xl" style={{ maxHeight: 360 }} quality={92} />
                 </div>
               </FadeIn>
             </div>
 
+            {/* Space video */}
+            <FadeIn delay={0.08}>
+              <div className="rounded-2xl overflow-hidden mb-12" style={{ background: "#000" }}>
+                <video src="/works/gump/space-video.mp4" className="w-full h-auto" style={{ display: "block", maxHeight: "70vh" }} autoPlay muted loop playsInline />
+              </div>
+            </FadeIn>
+
             {/* Tool cards */}
             <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4" variants={sc} initial="hidden" whileInView="show" viewport={{ once: true }}>
-              {[
-                { num: "Инструмент 01", name: "Kling 3.0",   desc: "Фотореалистичные сцены без студии: фургон в городе, пончики в невесомости, lifestyle-кадры. Всё что обычно стоит недели съёмок — из Kling за часы.", tag: "AI Image Gen" },
-                { num: "Инструмент 02", name: "Figma",        desc: "Системная айдентика: компонентная библиотека, автолейауты, сетки для упаковки, digital и outdoor. Все мокапы и носители собраны здесь.", tag: "Design System" },
-                { num: "Инструмент 03", name: "Photoshop",    desc: "AI-кадры вживляются в реальные среды: билборды, фургон, одежда. Тени, светокоррекция, перспектива — то что делает генерацию неотличимой от съёмки.", tag: "Compositing" },
-              ].map(({ num, name, desc, tag }) => (
+              {t.workflow.tools.map(({ num, name, desc, tag }) => (
                 <motion.div key={name} variants={si}
                   className="rounded-2xl p-8"
                   style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
@@ -837,6 +843,13 @@ export default function GumpDonutsPage() {
 
         {/* ══ 04 В ДВИЖЕНИИ ════════════════════════════════════════════════ */}
         <section className="py-24 overflow-hidden">
+          <div className="px-6 md:px-12" style={{ maxWidth: 1200, margin: "0 auto" }}>
+            <FadeIn>
+              <span className="font-mono text-xs uppercase tracking-widest flex items-center gap-3 mb-4" style={{ color: "var(--muted)" }}>
+                <span>—</span>04 — {t.motion.eyebrow}
+              </span>
+            </FadeIn>
+          </div>
           {/* Bleed kinetic typography — full width */}
           <div className="relative mb-4" aria-hidden="true" style={{ overflow: "hidden" }}>
             <motion.div
@@ -845,7 +858,7 @@ export default function GumpDonutsPage() {
                 fontSize: "clamp(5rem,14vw,13rem)",
                 letterSpacing: "-0.04em",
                 color: "transparent",
-                WebkitTextStroke: "1.5px rgba(0,0,0,0.08)",
+                WebkitTextStroke: "1.5px rgba(255,255,255,0.08)",
                 paddingLeft: "clamp(1.5rem,6vw,3rem)",
               }}
               initial={{ x: "4%", opacity: 0 }}
@@ -878,12 +891,12 @@ export default function GumpDonutsPage() {
           <div className="px-6 md:px-12" style={{ maxWidth: 1200, margin: "0 auto" }}>
             <FadeIn delay={0.15}>
               <p className="text-xl mb-10 leading-relaxed" style={{ color: "var(--muted)", maxWidth: 620, fontWeight: 400 }}>
-                Рекламный ролик без актёров и оператора. Пончик в невесомости — буквально то, что обещает слоган.
+                {t.motion.p}
               </p>
             </FadeIn>
 
             <FadeIn delay={0.2}>
-              <VideoPlayer src="/works/gump/ad.mp4" ratio="48%" />
+              <VideoPlayer src="/works/gump/ad.mp4" ratio="48%" labels={t.videoPlayer} />
             </FadeIn>
           </div>
         </section>
@@ -894,13 +907,13 @@ export default function GumpDonutsPage() {
         <section className="px-6 md:px-12 py-16">
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <FadeIn>
-              <span className="font-mono text-xs uppercase tracking-widest flex items-center gap-3 mb-4" style={{ color: "rgba(0,0,0,0.55)" }}>
-                <span>—</span>05 — О проекте
+              <span className="font-mono text-xs uppercase tracking-widest flex items-center gap-3 mb-4" style={{ color: "rgba(255,255,255,0.3)" }}>
+                <span>—</span>05 — {t.about.eyebrow}
               </span>
             </FadeIn>
 
             <div className="mb-12">
-              <FadeIn><div style={{ display: "block", color: "var(--text)", fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em" }}>О ПРОЕКТЕ</div></FadeIn>
+              <FadeIn><div style={{ display: "block", color: "var(--text)", fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em" }}>{t.about.heading}</div></FadeIn>
             </div>
 
             {/* Top row: wide task card + metrics column */}
@@ -911,14 +924,14 @@ export default function GumpDonutsPage() {
                 <div>
                   <div className="flex items-center gap-2 mb-6">
                     <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#1B3FD8", display: "inline-block" }} />
-                    <span className="font-mono text-xs uppercase tracking-widest" style={{ color: "var(--muted)" }}>Задача</span>
+                    <span className="font-mono text-xs uppercase tracking-widest" style={{ color: "var(--muted)" }}>{t.about.taskLabel}</span>
                   </div>
                   <p className="leading-relaxed" style={{ fontSize: "clamp(0.95rem,1.4vw,1.1rem)", color: "var(--text)", maxWidth: 560 }}>
-                    Создать полноценный фирменный стиль для Gump Donuts — от нуля до готового к производству брендбука. Проверить, может ли связка AI-инструментов и одного дизайнера заменить студийный процесс по качеству результата.
+                    {t.about.taskP}
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2 mt-6">
-                  {["Брендинг", "AI Production", "Айдентика", "Промо"].map(tag => (
+                  {t.about.tags.map(tag => (
                     <span key={tag} className="font-mono text-xs px-3 py-1 rounded-full" style={{ background: "rgba(27,63,216,0.08)", color: "#1B3FD8", border: "1px solid rgba(27,63,216,0.15)" }}>{tag}</span>
                   ))}
                 </div>
@@ -926,11 +939,7 @@ export default function GumpDonutsPage() {
 
               {/* Метрики — стопка */}
               <motion.div variants={si} className="flex flex-col gap-4 md:w-56" suppressHydrationWarning>
-                {[
-                  { num: "3", unit: "дня", desc: "полный цикл" },
-                  { num: "360°", unit: "охват", desc: "от лого до видео" },
-                  { num: "0", unit: "студий", desc: "AI + дизайнер" },
-                ].map(({ num, unit, desc }) => (
+                {t.about.metrics.map(({ num, unit, desc }) => (
                   <div key={unit} className="p-5 rounded-2xl flex flex-col gap-1" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
                     <span className="font-black leading-none" style={{ fontSize: "2.2rem", letterSpacing: "-0.04em", color: "var(--text)" }}>{num}</span>
                     <span className="font-bold text-xs uppercase tracking-widest" style={{ color: "#1B3FD8" }}>{unit}</span>
@@ -947,19 +956,12 @@ export default function GumpDonutsPage() {
               <motion.div variants={si} className="p-8 rounded-2xl" style={{ background: "var(--surface)", border: "1px solid var(--border)" }} suppressHydrationWarning>
                 <div className="flex items-center gap-2 mb-6">
                   <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#EA580C", display: "inline-block" }} />
-                  <span className="font-mono text-xs uppercase tracking-widest" style={{ color: "var(--muted)" }}>Что сделано</span>
+                  <span className="font-mono text-xs uppercase tracking-widest" style={{ color: "var(--muted)" }}>{t.about.doneLabel}</span>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
-                  {[
-                    { label: "Логотип и маскот", icon: "01" },
-                    { label: "Фирменный стиль", icon: "02" },
-                    { label: "Упаковка и мерч", icon: "03" },
-                    { label: "Наружная реклама", icon: "04" },
-                    { label: "Промо-материалы", icon: "05" },
-                    { label: "Видеопродакшн", icon: "06" },
-                  ].map(({ label, icon }) => (
+                  {t.about.doneItems.map((label, idx) => (
                     <div key={label} className="flex items-center gap-3">
-                      <span className="font-mono text-xs font-bold" style={{ color: "#EA580C", minWidth: 20 }}>{icon}</span>
+                      <span className="font-mono text-xs font-bold" style={{ color: "#EA580C", minWidth: 20 }}>{String(idx + 1).padStart(2, "0")}</span>
                       <span className="text-sm" style={{ color: "var(--text)" }}>{label}</span>
                     </div>
                   ))}
@@ -970,7 +972,7 @@ export default function GumpDonutsPage() {
               <motion.div variants={si} className="p-8 rounded-2xl" style={{ background: "var(--surface)", border: "1px solid var(--border)" }} suppressHydrationWarning>
                 <div className="flex items-center gap-2 mb-6">
                   <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#F472B6", display: "inline-block" }} />
-                  <span className="font-mono text-xs uppercase tracking-widest" style={{ color: "var(--muted)" }}>Инструменты</span>
+                  <span className="font-mono text-xs uppercase tracking-widest" style={{ color: "var(--muted)" }}>{t.about.toolsLabel}</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {["Midjourney", "Kling AI", "Nano Banana 2", "Seedance 2.0", "Adobe Firefly", "Figma", "CapCut", "Runway", "Claude", "Photoshop"].map(tool => (
@@ -979,7 +981,7 @@ export default function GumpDonutsPage() {
                 </div>
                 <div className="mt-6 pt-5" style={{ borderTop: "1px solid var(--border)" }}>
                   <p className="text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
-                    Весь стек — AI-нативный. Ни одного стокового изображения, ни одной лицензионной фотографии.
+                    {t.about.toolsFooter}
                   </p>
                 </div>
               </motion.div>
@@ -1005,17 +1007,17 @@ export default function GumpDonutsPage() {
               transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
               suppressHydrationWarning
             >
-              <span style={{ color: "var(--text)" }}>Есть </span><span style={{ color: "#1B3FD8" }}>идея?</span>
+              <span style={{ color: "var(--text)" }}>{t.cta.heading1}</span><span style={{ color: "#1B3FD8" }}>{t.cta.heading2}</span>
             </motion.h2>
             <FadeIn delay={0.2}>
               <p className="text-base mb-10" style={{ color: "var(--muted)", maxWidth: 440, margin: "0 auto 40px" }}>
-                Ваша идея заслуживает визуала, который продаёт. Собираю бренд-айдентику под ключ: логотип, стиль, упаковка, видео.
+                {t.cta.p}
               </p>
             </FadeIn>
             <FadeIn delay={0.28}>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <PrimaryButton href={TELEGRAM_URL}>Написать в Telegram</PrimaryButton>
-                <GhostButton href="/#works">← Все работы</GhostButton>
+                <PrimaryButton href={TELEGRAM_URL}>{t.cta.primaryButton}</PrimaryButton>
+                <GhostButton href="/#works">{t.cta.ghostButton}</GhostButton>
               </div>
             </FadeIn>
           </div>
@@ -1026,7 +1028,7 @@ export default function GumpDonutsPage() {
       {/* Lightbox */}
       <AnimatePresence>
         {mounted && lightbox !== null && (
-          <Lightbox images={lightbox.images} index={lightbox.index} onClose={closeLightbox} onNav={i => setLightbox(lb => lb ? { ...lb, index: i } : null)} />
+          <Lightbox images={lightbox.images} index={lightbox.index} onClose={closeLightbox} onNav={i => setLightbox(lb => lb ? { ...lb, index: i } : null)} labels={t.lightbox} />
         )}
       </AnimatePresence>
     </>

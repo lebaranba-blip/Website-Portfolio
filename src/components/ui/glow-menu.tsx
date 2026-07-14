@@ -18,7 +18,7 @@ interface MenuBarProps {
   className?: string
   items: MenuItem[]
   activeItem?: string
-  onItemClick?: (label: string, href: string) => void
+  onItemClick?: (id: string, href: string) => void
 }
 
 const itemVariants = {
@@ -68,8 +68,8 @@ export const MenuBar = React.forwardRef<HTMLDivElement, MenuBarProps>(
         ref={ref}
         className={cn("p-2 rounded-2xl backdrop-blur-lg shadow-lg relative overflow-hidden", className)}
         style={{
-          background: "linear-gradient(to bottom, rgba(237,234,228,0.85), rgba(237,234,228,0.6))",
-          border: "1px solid rgba(0,0,0,0.08)",
+          background: "linear-gradient(to bottom, rgba(23,23,26,0.9), rgba(23,23,26,0.65))",
+          border: "1px solid rgba(255,255,255,0.1)",
         }}
         initial="initial"
         whileHover="hover"
@@ -89,13 +89,14 @@ export const MenuBar = React.forwardRef<HTMLDivElement, MenuBarProps>(
         <ul className="flex items-center gap-1 relative z-10">
           {items.map((item) => {
             const Icon = item.icon
-            const isActive = item.label === activeItem
+            const id = item.sectionId ?? item.label
+            const isActive = id === activeItem
 
             return (
-              <motion.li key={item.label} className="relative">
+              <motion.li key={id} className="relative">
                 <a
                   href={item.href}
-                  onClick={() => onItemClick?.(item.label, item.href)}
+                  onClick={() => onItemClick?.(id, item.href)}
                   className="block"
                 >
                   <motion.div
@@ -116,17 +117,17 @@ export const MenuBar = React.forwardRef<HTMLDivElement, MenuBarProps>(
                     <motion.div
                       className="flex items-center gap-2 px-4 py-2 relative z-10 bg-transparent rounded-xl"
                       style={{
-                        color: isActive ? "rgba(10,10,10,1)" : "rgba(10,10,10,0.4)",
+                        color: isActive ? "rgba(242,239,233,1)" : "rgba(242,239,233,0.45)",
                         transition: "color 0.2s",
                       }}
                       variants={itemVariants}
                       transition={sharedTransition}
-                      onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLElement).style.color = "rgba(10,10,10,1)" }}
-                      onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLElement).style.color = "rgba(10,10,10,0.4)" }}
+                      onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLElement).style.color = "rgba(242,239,233,1)" }}
+                      onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLElement).style.color = "rgba(242,239,233,0.45)" }}
                     >
                       <span
                         className={cn("transition-colors duration-300 h-5 w-5 flex items-center justify-center", isActive ? item.iconColor : "")}
-                        style={!isActive ? { color: "rgba(10,10,10,0.5)" } : undefined}
+                        style={!isActive ? { color: "rgba(242,239,233,0.55)" } : undefined}
                       >
                         <Icon className="h-5 w-5" />
                       </span>
@@ -136,7 +137,7 @@ export const MenuBar = React.forwardRef<HTMLDivElement, MenuBarProps>(
                     {/* Back face (flips in on hover) */}
                     <motion.div
                       className="flex items-center gap-2 px-4 py-2 absolute inset-0 z-10 bg-transparent rounded-xl"
-                      style={{ color: "rgba(10,10,10,1)" }}
+                      style={{ color: "rgba(242,239,233,1)" }}
                       variants={backVariants}
                       transition={sharedTransition}
                     >

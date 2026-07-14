@@ -25,20 +25,20 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Дмитрий — AI & Design",
-  description: "AI-визуал, автоматизация и брендинг для бизнеса. 50+ проектов, 3+ года опыта. Пишите в Telegram.",
-  keywords: ["AI визуал", "автоматизация", "брендинг", "дизайн", "портфолио", "Midjourney", "Kling", "нейросети"],
-  authors: [{ name: "Дмитрий" }],
-  creator: "Дмитрий",
+  title: "Дмитрий Коломиец — AI Production",
+  description: "Коммерческое AI-видео и визуал полного цикла: сценарий, промпт-инжиниринг, генерация, монтаж, цвет. Пишите в Telegram.",
+  keywords: ["AI видео", "AI Production", "визуал", "брендинг", "портфолио", "Kling", "Veo", "Seedance", "Remotion"],
+  authors: [{ name: "Дмитрий Коломиец" }],
+  creator: "Дмитрий Коломиец",
   metadataBase: new URL("https://website-portfolio-y48s.vercel.app"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Дмитрий — AI & Design",
-    description: "AI-визуал, автоматизация и брендинг для бизнеса. 50+ проектов, 3+ года опыта.",
+    title: "Дмитрий Коломиец — AI Production",
+    description: "Коммерческое AI-видео и визуал полного цикла: сценарий, промпт-инжиниринг, генерация, монтаж, цвет.",
     url: "https://website-portfolio-y48s.vercel.app",
-    siteName: "Дмитрий — AI & Design",
+    siteName: "Дмитрий Коломиец — AI Production",
     type: "website",
     locale: "ru_RU",
     images: [
@@ -46,14 +46,14 @@ export const metadata: Metadata = {
         url: "/works/gump/banner.png",
         width: 1200,
         height: 630,
-        alt: "Дмитрий — AI & Design",
+        alt: "Дмитрий Коломиец — AI Production",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Дмитрий — AI & Design",
-    description: "AI-визуал, автоматизация и брендинг для бизнеса.",
+    title: "Дмитрий Коломиец — AI Production",
+    description: "Коммерческое AI-видео и визуал полного цикла.",
     images: ["/works/gump/banner.png"],
   },
   robots: {
@@ -71,19 +71,19 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#EDEAE4",
-  colorScheme: "light",
+  themeColor: "#0B0B0D",
+  colorScheme: "dark",
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
-  name: "Дмитрий",
+  name: "Дмитрий Коломиец",
   url: "https://website-portfolio-y48s.vercel.app",
   sameAs: ["https://t.me/hopeless_blessed"],
-  jobTitle: "AI Designer & Automation Specialist",
-  description: "AI-визуал, автоматизация и брендинг для бизнеса.",
-  knowsAbout: ["AI Visual", "Branding", "Automation", "Midjourney", "Kling", "n8n", "Figma"],
+  jobTitle: "AI Video Producer",
+  description: "Коммерческое AI-видео и визуал полного цикла: сценарий, промпт-инжиниринг, генерация, монтаж, цвет.",
+  knowsAbout: ["AI Video Production", "Visual Production", "Motion Design", "Branding", "Kling", "Veo", "Seedance", "Remotion", "DaVinci Resolve"],
 };
 
 export default function RootLayout({
