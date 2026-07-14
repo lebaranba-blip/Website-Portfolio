@@ -3,6 +3,11 @@ import type { LucideIcon } from "lucide-react"
 import type { FC } from "react"
 
 export const TELEGRAM_URL = "https://t.me/hopeless_blessed"
+export const WHATSAPP_URL = "https://wa.me/79963977881"
+export const INSTAGRAM_URL = "https://www.instagram.com/kolomiets.ai.prod"
+export const THREADS_URL = "https://www.threads.net/@kolomiets.ai.prod"
+export const CV_EN_URL = "/cv/dmitry-kolomiets-cv-en.pdf"
+export const CV_RU_URL = "/cv/dmitry-kolomiets-cv-ru.pdf"
 
 // Единые константы анимации для всего сайта
 export const EASE_DEFAULT = [0.16, 1, 0.3, 1] as [number, number, number, number]

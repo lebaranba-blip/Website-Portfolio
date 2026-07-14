@@ -1,9 +1,10 @@
 "use client"
 import { motion } from "framer-motion"
-import { TELEGRAM_URL, EASE_DEFAULT } from "@/lib/constants"
+import { Download } from "lucide-react"
+import { TELEGRAM_URL, WHATSAPP_URL, INSTAGRAM_URL, THREADS_URL, CV_EN_URL, CV_RU_URL, EASE_DEFAULT } from "@/lib/constants"
 import TelegramButton from "@/components/ui/telegram-button"
 import { useIsTouch } from "@/lib/use-is-touch"
-import { useDict } from "@/lib/language-context"
+import { useDict, useLanguage } from "@/lib/language-context"
 import { footerDict } from "@/dictionaries/footer"
 
 const DOTS = ["var(--cyan)", "var(--orange)", "var(--blue)"]
@@ -13,6 +14,8 @@ export default function Footer() {
   const isTouch = useIsTouch()
   const noAnim = isTouch
   const t = useDict(footerDict)
+  const { lang } = useLanguage()
+  const cvUrl = lang === "ru" ? CV_RU_URL : CV_EN_URL
 
   return (
     <footer id="contact" className="relative pt-24 pb-10 px-6 md:px-10 overflow-x-hidden" style={{ boxShadow: "-1px 0 0 0 var(--border), 0 -1px 0 0 var(--border)" }}>
@@ -151,11 +154,24 @@ export default function Footer() {
           suppressHydrationWarning
         >
           <TelegramButton size="md" />
+          <a
+            href={cvUrl}
+            download
+            className="btn-secondary inline-flex items-center gap-2"
+          >
+            <Download size={15} aria-hidden="true" />
+            {t.downloadCV}
+          </a>
         </motion.div>
 
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-6" style={{ boxShadow: "0 -1px 0 0 var(--border)" }}>
           <p className="text-xs font-mono opacity-65">© {year} {t.copyrightName}</p>
-          <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="text-xs font-mono opacity-85 hover:opacity-100 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]" style={{ color: "inherit" }}>TG</a>
+          <div className="flex items-center gap-4">
+            <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="text-xs font-mono opacity-85 hover:opacity-100 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]" style={{ color: "inherit" }}>TG</a>
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" aria-label={t.whatsapp} className="text-xs font-mono opacity-85 hover:opacity-100 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]" style={{ color: "inherit" }}>{t.whatsapp}</a>
+            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label={t.instagram} className="text-xs font-mono opacity-85 hover:opacity-100 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]" style={{ color: "inherit" }}>{t.instagram}</a>
+            <a href={THREADS_URL} target="_blank" rel="noopener noreferrer" aria-label={t.threads} className="text-xs font-mono opacity-85 hover:opacity-100 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]" style={{ color: "inherit" }}>{t.threads}</a>
+          </div>
         </div>
       </div>
     </footer>
