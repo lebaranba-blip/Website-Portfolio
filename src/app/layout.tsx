@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     locale: "ru_RU",
     images: [
       {
-        url: "/works/gump/banner.png",
+        url: "/og-banner.jpg",
         width: 1200,
         height: 630,
         alt: "Дмитрий Коломиец — AI Production",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Дмитрий Коломиец — AI Production",
     description: "Коммерческое AI-видео и визуал полного цикла.",
-    images: ["/works/gump/banner.png"],
+    images: ["/og-banner.jpg"],
   },
   robots: {
     index: true,
