@@ -38,7 +38,7 @@ export const works: Work[] = [
     image: "/works/gump/banner.png",
     alt: "Gump Donuts — брендинг пончиков",
     year: 2026,
-    desc: "Полный брендинг для сети пончиков. Айдентика, упаковка, мерч, реклама.",
+    desc: "Придуманный с нуля брендинг для пончиковой. Айдентика, упаковка, мерч, реклама.",
     featured: true,
     href: "/works/gump",
     previewGrid: [
