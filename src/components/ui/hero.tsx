@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo } from "react"
 import { AnimatePresence, motion, useReducedMotion, useMotionValue, useTransform } from "framer-motion"
 import { usePreloaderDone } from "@/lib/preloader-context"
 import { MenuBar } from "@/components/ui/glow-menu"
-import { getNavItems, EASE_DEFAULT, TELEGRAM_URL } from "@/lib/constants"
+import { getNavItems, EASE_DEFAULT } from "@/lib/constants"
 import { useLenis } from "@/lib/lenis-context"
 import { useDict } from "@/lib/language-context"
 import { commonDict } from "@/dictionaries/common"
@@ -11,7 +11,7 @@ import { heroDict } from "@/dictionaries/hero"
 import TelegramButton from "@/components/ui/telegram-button"
 import Floating, { FloatingElement } from "@/components/ui/parallax-floating"
 import LanguageToggle from "@/components/ui/language-toggle"
-import { Menu, X, ArrowRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 
 // Plain inline text swap — no nested flex, so the baseline always matches the surrounding line
 function InlineRotator({ texts, interval, active }: { texts: readonly string[]; interval: number; active: boolean }) {
@@ -61,7 +61,6 @@ function scrollToSection(href: string, lenis: ReturnType<typeof useLenis>) {
 export default function HeroSection() {
   const prefersReduced = useReducedMotion()
   const [activeItem, setActiveItem] = useState<string | undefined>()
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const preloaderDone = usePreloaderDone()
   const t = useDict(heroDict)
@@ -141,7 +140,7 @@ export default function HeroSection() {
       )}
 
       {/* ── HEADER ── */}
-      <header className="relative z-20 flex items-center justify-between md:justify-center px-6 md:px-10 py-5 flex-shrink-0">
+      <header className="relative z-30 flex items-center justify-between md:justify-center px-6 md:px-10 py-5 flex-shrink-0">
         {/* Logo — mobile only */}
         <a href="#hero" className="md:hidden font-black text-lg tracking-tighter" style={{ color: "var(--text)" }}>DK</a>
 
@@ -162,60 +161,11 @@ export default function HeroSection() {
           <LanguageToggle />
         </div>
 
-        {/* Mobile — toggle + burger */}
+        {/* Mobile — language toggle only (nav lives in the bottom bar) */}
         <div className="md:hidden flex items-center gap-2">
           <LanguageToggle />
-          <button
-            className="flex items-center justify-center w-10 h-10 rounded-full"
-            style={{ background: "rgba(255,255,255,0.08)" }}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? tc.menuClose : tc.menuOpen}
-            aria-expanded={mobileMenuOpen}
-          >
-            {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
         </div>
       </header>
-
-      {/* Mobile menu overlay */}
-      {mobileMenuOpen && (
-        <div
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-8 md:hidden"
-          style={{ background: "var(--bg)" }}
-        >
-          <button
-            className="absolute top-5 right-6 w-10 h-10 flex items-center justify-center rounded-full"
-            style={{ background: "rgba(255,255,255,0.08)" }}
-            onClick={() => setMobileMenuOpen(false)}
-            aria-label={tc.menuClose}
-          >
-            <X size={18} />
-          </button>
-          {navItems.map((item) => (
-            <a
-              key={item.sectionId}
-              href={item.href}
-              className="text-3xl font-light"
-              style={{ color: "var(--text)" }}
-              onClick={(e) => {
-                e.preventDefault()
-                setMobileMenuOpen(false)
-                scrollToSection(item.href, lenis)
-              }}
-            >
-              {item.label}
-            </a>
-          ))}
-          <a
-            href={TELEGRAM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary text-sm px-6 py-3 mt-4"
-          >
-            {tc.write}
-          </a>
-        </div>
-      )}
 
       {/* ── CENTER CONTENT ── */}
       <div className="relative z-20 flex-1 flex items-center justify-center px-6 -mt-20 md:mt-0">

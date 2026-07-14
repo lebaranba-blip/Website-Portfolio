@@ -23,14 +23,14 @@ function TextReveal({
   className?: string; style?: React.CSSProperties
 }) {
   const isTouch = useIsTouch()
-  if (isTouch) return <div className={className} style={style}>{children}</div>
   return (
     <div style={{ overflow: "hidden", display: "block" }}>
       <motion.div
         className={className}
         style={style}
-        initial={{ y: "106%" }}
-        whileInView={{ y: "0%" }}
+        initial={isTouch ? false : { y: "106%" }}
+        animate={isTouch ? { y: "0%" } : undefined}
+        whileInView={isTouch ? undefined : { y: "0%" }}
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.8, delay, ease: EASE_DEFAULT }}
         suppressHydrationWarning
@@ -85,6 +85,7 @@ function FeatureRow({ label, desc, index }: { label: string; desc: string; index
       className="flex items-center gap-4 py-3 cursor-default relative"
       style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}
       initial={isTouch ? false : { opacity: 0, x: -16 }}
+      animate={isTouch ? { opacity: 1, x: 0 } : undefined}
       whileInView={isTouch ? undefined : { opacity: 1, x: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.45, delay: 0.1 + index * 0.08, ease: [0.16,1,0.3,1] }}
@@ -138,12 +139,12 @@ function FadeIn({
   className?: string; style?: React.CSSProperties
 }) {
   const isTouch = useIsTouch()
-  if (isTouch) return <div className={className} style={style}>{children}</div>
   return (
     <motion.div
       className={className} style={style}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={isTouch ? false : { opacity: 0, y }}
+      animate={isTouch ? { opacity: 1, y: 0 } : undefined}
+      whileInView={isTouch ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.6, delay, ease: EASE_DEFAULT }}
       suppressHydrationWarning
@@ -1053,6 +1054,7 @@ function GCell({ src, alt, label, col, row, ratio, i, onClick, rowSpan, isTouch 
       }}
       onClick={onClick}
       initial={isTouch ? false : { opacity: 0, y: 20 }}
+      animate={isTouch ? { opacity: 1, y: 0 } : undefined}
       whileInView={isTouch ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.55, delay: i * 0.055, ease: EASE_DEFAULT }}

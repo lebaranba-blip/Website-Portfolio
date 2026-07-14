@@ -10,16 +10,13 @@ export default function TextReveal({ children, delay = 0, className = "" }: {
 }) {
   const isTouch = useIsTouch()
 
-  if (isTouch) {
-    return <div className={className}>{children}</div>
-  }
-
   return (
     <motion.div
       className={className}
       variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
-      initial="hidden"
-      whileInView="visible"
+      initial={isTouch ? false : "hidden"}
+      animate={isTouch ? "visible" : undefined}
+      whileInView={isTouch ? undefined : "visible"}
       viewport={{ once: true, margin: "-30px" }}
       transition={{ duration: 0.6, delay, ease: EASE_DEFAULT }}
       suppressHydrationWarning

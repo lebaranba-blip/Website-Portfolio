@@ -176,13 +176,13 @@ function Lightbox({ images, index, onClose, onNav, labels }: {
 // ── Section fade-in wrapper ────────────────────────────────────────────────
 function FadeSection({ children, className, style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
   const isTouch = useIsTouch()
-  if (isTouch) return <section className={className} style={style}>{children}</section>
   return (
     <motion.section
       className={className}
       style={style}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={isTouch ? false : { opacity: 0, y: 24 }}
+      animate={isTouch ? { opacity: 1, y: 0 } : undefined}
+      whileInView={isTouch ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.6, ease: EASE_DEFAULT }}
       suppressHydrationWarning

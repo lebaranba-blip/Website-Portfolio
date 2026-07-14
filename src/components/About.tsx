@@ -60,6 +60,7 @@ export default function About() {
         style={{ background: "var(--border)", transformOrigin: "left" }}
         variants={{ hidden: { scaleX: 0 }, visible: { scaleX: 1 } }}
         initial={noAnim ? false : "hidden"}
+        animate={noAnim ? "visible" : undefined}
         whileInView={noAnim ? undefined : "visible"}
         viewport={{ once: true }}
         transition={{ duration: 0.8, ease: EASE_DEFAULT }}
@@ -74,6 +75,7 @@ export default function About() {
           className="flex-shrink-0"
           variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}
           initial={noAnim ? false : "hidden"}
+          animate={noAnim ? "visible" : undefined}
           whileInView={noAnim ? undefined : "visible"}
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.05, ease: EASE_DEFAULT }}
@@ -145,6 +147,7 @@ export default function About() {
             className="hidden md:block"
             variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
             initial={noAnim ? false : "hidden"}
+            animate={noAnim ? "visible" : undefined}
             whileInView={noAnim ? undefined : "visible"}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.15, ease: EASE_DEFAULT }}
@@ -167,6 +170,7 @@ export default function About() {
             style={{ color: "rgba(242,239,233,0.72)", gap: "1.2em", lineHeight: "1.85", fontFamily: "var(--font-space-grotesk), sans-serif" }}
             variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
             initial={noAnim ? false : "hidden"}
+            animate={noAnim ? "visible" : undefined}
             whileInView={noAnim ? undefined : "visible"}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.22, ease: EASE_DEFAULT }}
@@ -188,6 +192,7 @@ export default function About() {
           <motion.div
             variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
             initial={noAnim ? false : "hidden"}
+            animate={noAnim ? "visible" : undefined}
             whileInView={noAnim ? undefined : "visible"}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.35, ease: EASE_DEFAULT }}

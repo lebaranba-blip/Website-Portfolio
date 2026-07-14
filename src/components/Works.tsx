@@ -15,6 +15,7 @@ interface FeaturedItem {
   href: string
   bg: string
   image?: string
+  imageFit?: "cover" | "contain"
   video?: string
   videoFit?: "cover" | "contain"
   flip?: boolean
@@ -52,6 +53,7 @@ const FEATURED: FeaturedItem[] = [
     href: "/works/ai-avatar",
     bg: "linear-gradient(135deg, #00C8D7, #3F51B5)",
     image: "/works/ai-avatar/banner.png",
+    imageFit: "contain",
   },
   {
     id: "showreel",
@@ -111,7 +113,7 @@ function FeaturedCard({ p, i, mounted }: { p: typeof FEATURED[0]; i: number; mou
             style={{
               background: p.bg,
               backgroundImage: p.image ? `url(${p.image})` : undefined,
-              backgroundSize: "cover",
+              backgroundSize: p.imageFit ?? "cover",
               backgroundPosition: "center",
               transform: hovered ? "scale(1.04)" : "scale(1)",
               transition: "transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94)",

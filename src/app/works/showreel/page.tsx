@@ -109,11 +109,11 @@ function FadeIn({ children, delay = 0, y = 20, className, style }: {
   className?: string; style?: React.CSSProperties
 }) {
   const isTouch = useIsTouch()
-  if (isTouch) return <div className={className} style={style}>{children}</div>
   return (
     <motion.div className={className} style={style}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={isTouch ? false : { opacity: 0, y }}
+      animate={isTouch ? { opacity: 1, y: 0 } : undefined}
+      whileInView={isTouch ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.6, delay, ease: EASE_DEFAULT }}
       suppressHydrationWarning

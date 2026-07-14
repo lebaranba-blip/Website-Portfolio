@@ -53,6 +53,7 @@ export default function Footer() {
           className="mb-10"
           variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
           initial={noAnim ? false : "hidden"}
+          animate={noAnim ? "visible" : undefined}
           whileInView={noAnim ? undefined : "visible"}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.6, ease: EASE_DEFAULT }}
@@ -143,6 +144,7 @@ export default function Footer() {
           className="flex flex-wrap gap-4 mb-20"
           variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
           initial={noAnim ? false : "hidden"}
+          animate={noAnim ? "visible" : undefined}
           whileInView={noAnim ? undefined : "visible"}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.5, delay: 0.1, ease: EASE_DEFAULT }}
