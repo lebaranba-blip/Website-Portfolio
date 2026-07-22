@@ -23,14 +23,14 @@ interface FeaturedItem {
 
 const FEATURED: FeaturedItem[] = [
   {
-    id: "gump-donuts",
+    id: "showreel",
     idx: "01",
-    cat: "Branding · AI Video · 2026",
-    title: "Gump Donuts",
-    pills: ["Midjourney", "Nano Banana", "Photoshop", "Figma"],
-    href: "/works/gump",
-    bg: "linear-gradient(140deg, #FF85A1 0%, #FFA07A 30%, #FFE066 60%, #FF6B6B 100%)",
-    video: "/works/gump/card-bg.mp4",
+    cat: "AI Video · Showreel · 2026",
+    title: "Skills Reel",
+    pills: ["Kling 3.0", "Veo 3.1", "Seedance 2.0", "DaVinci Resolve"],
+    href: "/works/showreel",
+    bg: "linear-gradient(140deg, #0A0A0A 0%, #0E3A44 45%, #22D3EE 100%)",
+    video: "/works/showreel/card-bg.mp4",
   },
   {
     id: "motion-teaser",
@@ -56,14 +56,14 @@ const FEATURED: FeaturedItem[] = [
     imageFit: "contain",
   },
   {
-    id: "showreel",
+    id: "gump-donuts",
     idx: "04",
-    cat: "AI Video · Showreel · 2026",
-    title: "Skills Reel",
-    pills: ["Kling 3.0", "Veo 3.1", "Seedance 2.0", "DaVinci Resolve"],
-    href: "/works/showreel",
-    bg: "linear-gradient(140deg, #0A0A0A 0%, #0E3A44 45%, #22D3EE 100%)",
-    video: "/works/showreel/card-bg.mp4",
+    cat: "Branding · AI Video · 2026",
+    title: "Gump Donuts",
+    pills: ["Midjourney", "Nano Banana", "Photoshop", "Figma"],
+    href: "/works/gump",
+    bg: "linear-gradient(140deg, #FF85A1 0%, #FFA07A 30%, #FFE066 60%, #FF6B6B 100%)",
+    video: "/works/gump/card-bg.mp4",
     flip: true,
   },
 ]
