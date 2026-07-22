@@ -181,7 +181,12 @@ function VideoPlayer({ src, label, description, onOpen }: {
             aria-hidden="true"
           >
             <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.15)" }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 00-2 2v3m18-5h-3a2 2 0 00-2 2v0m5 8v3a2 2 0 01-2 2h-3M3 16v3a2 2 0 002 2h3"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+                <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+                <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+                <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+              </svg>
             </div>
           </div>
           <button
@@ -475,12 +480,22 @@ export default function ShowreelPage() {
             </div>
 
             {/* Closer — full width */}
-            <div>
+            <div className="mb-6">
               <VideoPlayer
                 src="/works/showreel/monstro.mp4"
                 label={t.demoReel.closerLabel}
                 description={t.demoReel.closerDescription}
                 onOpen={() => openLightbox("/works/showreel/monstro.mp4", t.demoReel.closerLabel)}
+              />
+            </div>
+
+            {/* POV — full width */}
+            <div>
+              <VideoPlayer
+                src="/works/showreel/pov.mp4"
+                label={t.demoReel.povLabel}
+                description={t.demoReel.povDescription}
+                onOpen={() => openLightbox("/works/showreel/pov.mp4", t.demoReel.povLabel)}
               />
             </div>
           </div>

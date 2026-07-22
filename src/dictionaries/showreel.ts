@@ -11,7 +11,7 @@ export const showreelDict = {
       headingLine2: "REEL",
       subline: "Без бренда и брифа — просто диапазон. Шесть коротких историй: жанр, свет, монтаж, генерация. То, что я умею, когда формат не ограничен клиентом.",
       metaFormatLabel: "Формат",
-      metaFormatValue: "6 историй",
+      metaFormatValue: "7 историй",
       metaGenresLabel: "Жанры",
       metaGenresValue: "Noir · Western · Sci-Fi",
       metaStackLabel: "Стек",
@@ -20,13 +20,15 @@ export const showreelDict = {
 
     demoReel: {
       sectionLabel: "Demo Reel",
-      headingLine1: "ШЕСТЬ ИСТОРИЙ.",
+      headingLine1: "СЕМЬ ИСТОРИЙ.",
       headingLine2: "ОДИН ПРОЦЕСС.",
       intro: "Каждая история — самостоятельный эксперимент: свой жанр, свет, монтажный ритм. Без брифа и клиента — только техника.",
       hookLabel: "Cyberpunk",
       hookDescription: "Неоновый город, кибер-героиня, дождь и отражения в мокром асфальте. Sci-fi визуал и консистентный персонаж между кадрами, 60fps.",
       closerLabel: "Urban Chase",
       closerDescription: "Ночная погоня по городу и парковке. Ручная камера, смог, контровой свет фар — драйв и клаустрофобия в одном ролике.",
+      povLabel: "POV",
+      povDescription: "Экспериментальное исследование возможностей современных AI-видеомоделей в создании реалистичной съёмки от первого лица. Проект сфокусирован на естественном поведении камеры, физике движений, ощущении присутствия и кинематографичном повествовании.",
       clips: {
         roadStory: { label: "Road Story", description: "Побег на кабриолете, поле, вечеринка, мотель — несколько сцен одной истории на сквозном цвете и монтажном ритме." },
         streetNoir: { label: "Street Noir", description: "Телефон-автомат, игра в кости, случайные лица района. Тёмный зернистый свет держит настроение через всю историю." },
@@ -70,7 +72,7 @@ export const showreelDict = {
       headingLine2: "REEL",
       subline: "No brand, no brief — just range. Six short stories: genre, light, edit, generation. What I can do when the client isn't setting the format.",
       metaFormatLabel: "Format",
-      metaFormatValue: "6 stories",
+      metaFormatValue: "7 stories",
       metaGenresLabel: "Genres",
       metaGenresValue: "Noir · Western · Sci-Fi",
       metaStackLabel: "Stack",
@@ -79,13 +81,15 @@ export const showreelDict = {
 
     demoReel: {
       sectionLabel: "Demo Reel",
-      headingLine1: "SIX STORIES.",
+      headingLine1: "SEVEN STORIES.",
       headingLine2: "ONE PROCESS.",
       intro: "Each story is its own experiment — its own genre, light, editing rhythm. No brief, no client — just craft.",
       hookLabel: "Cyberpunk",
       hookDescription: "A neon city, a cyber-heroine, rain and reflections on wet asphalt. Sci-fi visuals with a consistent character across shots, 60fps.",
       closerLabel: "Urban Chase",
       closerDescription: "A night chase through the city and a parking garage. Handheld camera, smog, headlights backlighting the frame — momentum and claustrophobia in one clip.",
+      povLabel: "POV",
+      povDescription: "Experimental AI short focused on natural first-person camera behavior. The project explores realistic head movement, body awareness, cinematic pacing, and immersive storytelling using modern generative video models.",
       clips: {
         roadStory: { label: "Road Story", description: "A convertible getaway, an open field, a party, a motel — several scenes of one story held together by consistent color and cutting rhythm." },
         streetNoir: { label: "Street Noir", description: "A payphone, a dice game, faces from the neighborhood. Dark, grainy light holds the mood across the whole story." },
