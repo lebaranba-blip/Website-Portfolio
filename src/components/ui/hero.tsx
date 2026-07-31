@@ -208,7 +208,6 @@ export default function HeroSection() {
             suppressHydrationWarning
           >
             <span style={{ color: "var(--text)", opacity: 0.85 }}>{t.name}</span>
-            <span style={{ color: "var(--muted)" }}> — {t.role}</span>
           </motion.p>
 
           {/* H1 */}
@@ -217,15 +216,15 @@ export default function HeroSection() {
             style={{ letterSpacing: "-0.04em", lineHeight: "1.05" }}
           >
             <motion.span
-              className="block font-black text-[clamp(3.5rem,9vw,8.5rem)] gradient-text"
-              style={{ fontFamily: "var(--font-display), sans-serif" }}
+              className="block font-black gradient-text whitespace-nowrap"
+              style={{ fontFamily: "var(--font-display), sans-serif", fontSize: "clamp(1.6rem, 7.4vw, 5.5rem)" }}
               variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}
               initial={skipIntro ? false : "hidden"}
               animate={preloaderDone ? "visible" : "hidden"}
               transition={{ duration: 1.1, delay: 0.28, ease: EASE_DEFAULT }}
               suppressHydrationWarning
             >
-              AI Production
+              {t.role}
             </motion.span>
           </h1>
 

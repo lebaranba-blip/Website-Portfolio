@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://website-portfolio-y48s.vercel.app/works/motion-teaser/banner-v2.png",
+        url: "https://www.hopelessblessed.online/works/motion-teaser/banner-v2.png",
         width: 1200,
         height: 630,
         alt: "Motion Teaser — Remotion demo reel",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    images: ["https://website-portfolio-y48s.vercel.app/works/motion-teaser/banner-v2.png"],
+    images: ["https://www.hopelessblessed.online/works/motion-teaser/banner-v2.png"],
   },
 }
 

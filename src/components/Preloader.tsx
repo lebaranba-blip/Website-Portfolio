@@ -26,7 +26,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
       return
     }
 
-    const duration = 2000
+    const duration = 1200
     const start = performance.now()
     let raf = 0
     let lastDisplayed = -1
@@ -50,7 +50,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         raf = requestAnimationFrame(tick)
       } else {
         try { sessionStorage.setItem("preloader-done", "1") } catch {}
-        setTimeout(() => setVisible(false), 400)
+        setTimeout(() => setVisible(false), 200)
       }
     }
 
@@ -93,7 +93,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              AI Production
+              AI Video Producer
             </motion.span>
           </div>
 

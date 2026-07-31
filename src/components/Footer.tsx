@@ -47,7 +47,7 @@ export default function Footer() {
             whiteSpace: "nowrap",
           }}
         >
-          AI Production
+          AI Video
         </span>
       </div>
 

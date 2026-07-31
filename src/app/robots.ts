@@ -17,6 +17,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: "/",
       },
     ],
-    sitemap: "https://website-portfolio-y48s.vercel.app/sitemap.xml",
+    sitemap: "https://www.hopelessblessed.online/sitemap.xml",
   };
 }

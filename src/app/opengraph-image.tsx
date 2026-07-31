@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Дмитрий Коломиец — AI Production";
+export const alt = "Дмитрий Коломиец — AI Video Producer";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -95,7 +95,7 @@ export default function OGImage() {
               letterSpacing: "-0.01em",
             }}
           >
-            AI Production
+            AI Video Producer
           </div>
           <div
             style={{
