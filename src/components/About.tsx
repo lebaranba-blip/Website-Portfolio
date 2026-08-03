@@ -49,7 +49,7 @@ export default function About() {
       <div className="mb-12">
         <TextReveal>
           <span className="font-mono text-xs tracking-[0.22em] uppercase block mb-3" style={{ color: "rgba(242,239,233,0.5)" }}>
-            — 03&nbsp;&nbsp;{t.eyebrowLabel}
+            — 04&nbsp;&nbsp;{t.eyebrowLabel}
           </span>
         </TextReveal>
       </div>

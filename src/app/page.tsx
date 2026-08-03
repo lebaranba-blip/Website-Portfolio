@@ -1,6 +1,7 @@
 import StickyNav from "@/components/StickyNav"
 import HeroSection from "@/components/ui/hero"
 import Works from "@/components/Works"
+import Services from "@/components/Services"
 import About from "@/components/About"
 import Footer from "@/components/Footer"
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
       <main className="relative z-10 pb-16 md:pb-0">
         <HeroSection />
         <Works />
+        <Services />
         <About />
       </main>
       <Footer />
