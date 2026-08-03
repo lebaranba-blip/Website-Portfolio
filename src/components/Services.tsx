@@ -1,16 +1,19 @@
 "use client"
 import { motion } from "framer-motion"
+import { Download } from "lucide-react"
 import TextReveal from "@/components/ui/TextReveal"
 import TelegramButton from "@/components/ui/telegram-button"
-import { TELEGRAM_URL, EASE_DEFAULT, STAGGER_DEFAULT } from "@/lib/constants"
+import { TELEGRAM_URL, RATE_CARD_RU_URL, RATE_CARD_EN_URL, EASE_DEFAULT, STAGGER_DEFAULT } from "@/lib/constants"
 import { useIsTouch } from "@/lib/use-is-touch"
-import { useDict } from "@/lib/language-context"
+import { useDict, useLanguage } from "@/lib/language-context"
 import { servicesDict } from "@/dictionaries/services"
 
 export default function Services() {
   const isTouch = useIsTouch()
   const noAnim = isTouch
   const t = useDict(servicesDict)
+  const { lang } = useLanguage()
+  const rateCardUrl = lang === "ru" ? RATE_CARD_RU_URL : RATE_CARD_EN_URL
 
   return (
     <section
@@ -194,7 +197,15 @@ export default function Services() {
         >
           {t.note}
         </p>
-        <div className="flex-shrink-0">
+        <div className="flex flex-wrap items-center gap-3 flex-shrink-0">
+          <a
+            href={rateCardUrl}
+            download
+            className="btn-secondary inline-flex items-center gap-2"
+          >
+            <Download size={15} aria-hidden="true" />
+            {t.downloadPdf}
+          </a>
           <TelegramButton />
         </div>
       </motion.div>

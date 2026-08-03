@@ -8,6 +8,11 @@ export const INSTAGRAM_URL = "https://www.instagram.com/kolomiets.ai.prod"
 export const THREADS_URL = "https://www.threads.net/@kolomiets.ai.prod"
 export const CV_EN_URL = "/cv/dmitry-kolomiets-cv-en.pdf"
 export const CV_RU_URL = "/cv/dmitry-kolomiets-cv-ru.pdf"
+export const RATE_CARD_RU_URL = "/rate-card-ru.pdf"
+export const RATE_CARD_EN_URL = "/rate-card-en.pdf"
+export const EMAIL = "lebaranba@gmail.com"
+export const TELEGRAM_HANDLE = "@hopeless_blessed"
+export const SITE_DOMAIN = "hopelessblessed.online"
 
 // Единые константы анимации для всего сайта
 export const EASE_DEFAULT = [0.16, 1, 0.3, 1] as [number, number, number, number]
