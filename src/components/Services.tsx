@@ -144,7 +144,7 @@ export default function Services() {
             </div>
 
             {/* Price + affordance */}
-            <div className="relative flex flex-row md:flex-col items-baseline md:items-end justify-between md:justify-start gap-x-4 gap-y-1.5 md:pt-1 md:min-w-[9.5rem]">
+            <div className="relative flex flex-row flex-wrap md:flex-col md:flex-nowrap items-baseline md:items-end justify-between md:justify-start gap-x-4 gap-y-1.5 md:pt-1 md:min-w-[9.5rem]">
               <span
                 className="font-black tabular-nums whitespace-nowrap"
                 style={{
