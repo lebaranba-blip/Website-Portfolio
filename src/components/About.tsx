@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import { EASE_DEFAULT } from "@/lib/constants"
 import { useLenis } from "@/lib/lenis-context"
 import TextReveal from "@/components/ui/TextReveal"
-import { services, skills } from "@/data/services"
+import { skills } from "@/data/services"
 import { useIsTouch } from "@/lib/use-is-touch"
 import { useDict } from "@/lib/language-context"
 import { aboutDict } from "@/dictionaries/about"
@@ -68,7 +68,7 @@ export default function About() {
       />
 
       {/* layout: на мобиле — стек, на планшете — 2 кол, на десктопе — 3 кол */}
-      <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] lg:grid-cols-[420px_1fr_1fr] gap-10 lg:gap-14 relative z-10 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] lg:grid-cols-[420px_1fr] gap-10 lg:gap-14 relative z-10 items-start">
 
         {/* Col 1 — фото */}
         <motion.div
@@ -167,7 +167,7 @@ export default function About() {
           {/* Bio text */}
           <motion.div
             className="flex flex-col text-[clamp(14px,1.5vw,16px)]"
-            style={{ color: "rgba(242,239,233,0.72)", gap: "1.2em", lineHeight: "1.85", fontFamily: "var(--font-space-grotesk), sans-serif" }}
+            style={{ color: "rgba(242,239,233,0.72)", gap: "1.2em", lineHeight: "1.85", fontFamily: "var(--font-space-grotesk), sans-serif", maxWidth: "62ch" }}
             variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
             initial={noAnim ? false : "hidden"}
             animate={noAnim ? "visible" : undefined}
@@ -214,51 +214,6 @@ export default function About() {
           </motion.div>
         </div>
 
-        {/* Right — services list */}
-        <div className="flex flex-col justify-between h-full">
-          {services.map((s) => (
-            <motion.div
-              key={s.num}
-              className="flex items-center gap-5 py-3.5 md:py-5 group cursor-default relative overflow-hidden"
-              style={{ boxShadow: "0 1px 0 0 var(--border)" }}
-              whileHover={{ x: 5 }}
-              transition={{ duration: 0.55, ease: EASE_DEFAULT }}
-              suppressHydrationWarning
-            >
-              <motion.div
-                className="absolute inset-0 pointer-events-none"
-                style={{ background: "rgba(255,255,255,0.03)" }}
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.2 }}
-              />
-              <span
-                className="font-mono text-xs flex-shrink-0 w-8 relative z-10"
-                style={{ color: "var(--cyan)", opacity: 0.7 }}
-              >
-                {s.num}
-              </span>
-              <div className="relative z-10">
-                <p
-                  className="font-semibold text-lg leading-tight transition-colors duration-200 group-hover:text-[var(--cyan)]"
-                  style={{ color: "var(--text)" }}
-                >
-                  {t.services[s.num]?.label ?? s.label}
-                </p>
-                <p className="text-sm mt-0.5 leading-relaxed" style={{ color: "rgba(242,239,233,0.55)" }}>
-                  {t.services[s.num]?.desc ?? s.desc}
-                </p>
-              </div>
-              <motion.span
-                className="ml-auto flex-shrink-0 relative z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                style={{ color: "var(--cyan)" }}
-                aria-hidden="true"
-              >
-                →
-              </motion.span>
-            </motion.div>
-          ))}
-        </div>
       </div>
 
       {/* Skills section */}

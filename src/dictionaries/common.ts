@@ -1,6 +1,6 @@
 export const commonDict = {
   ru: {
-    nav: { works: "Работы", about: "Обо мне", contact: "Контакт" },
+    nav: { works: "Работы", services: "Услуги", about: "Обо мне", contact: "Контакт" },
     write: "Написать",
     writeTelegram: "Написать в Telegram",
     allWorks: "Все работы",
@@ -9,7 +9,7 @@ export const commonDict = {
     menuClose: "Закрыть меню",
   },
   en: {
-    nav: { works: "Work", about: "About", contact: "Contact" },
+    nav: { works: "Work", services: "Services", about: "About", contact: "Contact" },
     write: "Message",
     writeTelegram: "Message on Telegram",
     allWorks: "All work",

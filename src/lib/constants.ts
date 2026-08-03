@@ -1,4 +1,4 @@
-import { Briefcase, User, Mail } from "lucide-react"
+import { Briefcase, Layers, User, Mail } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import type { FC } from "react"
 
@@ -40,7 +40,7 @@ export const CATEGORY_HUE: Record<string, number> = {
 }
 
 // Единый список nav-items (hero.tsx + StickyNav.tsx) — labels зависят от языка
-export function getNavItems(labels: { works: string; about: string; contact: string }): NavItem[] {
+export function getNavItems(labels: { works: string; services: string; about: string; contact: string }): NavItem[] {
   return [
     {
       icon: Briefcase,
@@ -49,6 +49,14 @@ export function getNavItems(labels: { works: string; about: string; contact: str
       sectionId: "works",
       gradient: "radial-gradient(circle, rgba(139,92,246,0.25) 0%, rgba(109,40,217,0.1) 60%, transparent 80%)",
       iconColor: "text-violet-500",
+    },
+    {
+      icon: Layers,
+      label: labels.services,
+      href: "#services",
+      sectionId: "services",
+      gradient: "radial-gradient(circle, rgba(251,146,60,0.25) 0%, rgba(234,88,12,0.1) 60%, transparent 80%)",
+      iconColor: "text-orange-500",
     },
     {
       icon: User,
