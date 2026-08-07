@@ -47,6 +47,16 @@ const HERO_REEL = [
   { src: "/hero/film.mp4", depth: 1.8, size: "clamp(190px, 19vw, 270px)", pos: "top-[32%] left-[78%]" },
 ] as const
 
+// Phone-sized cuts of the same reel — 480px wide, ~570KB for all four
+// Offsets are in px where they have to clear fixed chrome (header, bottom nav)
+// so the scatter survives short phones as well as tall ones.
+const MOBILE_REEL = [
+  { src: "/hero/m/westrn.mp4",  cls: "float-card",     pos: { top: 72,        left: "3vw",  width: "36vw" } },
+  { src: "/hero/m/film.mp4",    cls: "float-card-alt", pos: { top: 98,        right: "3vw", width: "29vw" } },
+  { src: "/hero/m/cinema.mp4",  cls: "float-card-alt", pos: { bottom: 152,    left: "4vw",  width: "30vw" } },
+  { src: "/hero/m/blessed.mp4", cls: "float-card",     pos: { bottom: 110,    right: "3vw", width: "36vw" } },
+] as const
+
 const isMobileDevice = () => typeof window !== "undefined" && (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768)
 
 function scrollToSection(href: string, lenis: ReturnType<typeof useLenis>) {
@@ -61,14 +71,15 @@ function scrollToSection(href: string, lenis: ReturnType<typeof useLenis>) {
 export default function HeroSection() {
   const prefersReduced = useReducedMotion()
   const [activeItem, setActiveItem] = useState<string | undefined>()
-  const [isMobile, setIsMobile] = useState(false)
+  // "unknown" until measured — keeps phones from fetching the desktop clips
+  const [device, setDevice] = useState<"unknown" | "mobile" | "desktop">("unknown")
   const preloaderDone = usePreloaderDone()
   const t = useDict(heroDict)
   const tc = useDict(commonDict)
   const navItems = useMemo(() => getNavItems(tc.nav), [tc])
 
   useEffect(() => {
-    setIsMobile(isMobileDevice())
+    setDevice(isMobileDevice() ? "mobile" : "desktop")
   }, [])
   const lenis = useLenis()
   const [skipIntro, setSkipIntro] = useState(false)
@@ -111,8 +122,41 @@ export default function HeroSection() {
         }}
       />
 
+      {/* ── Scattered video wall — mobile: fixed scatter, gentle float ── */}
+      {device === "mobile" && (
+        <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
+          {MOBILE_REEL.map((clip, i) => (
+            <div key={clip.src} className={`absolute ${clip.cls}`} style={clip.pos}>
+              <motion.video
+                className="block w-full rounded-lg object-cover"
+                style={{
+                  aspectRatio: "16/9",
+                  boxShadow: "0 14px 34px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.07)",
+                }}
+                initial={{ opacity: 0 }}
+                animate={preloaderDone ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ duration: 0.8, delay: 0.45 + i * 0.1, ease: EASE_DEFAULT }}
+                src={clip.src}
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+            </div>
+          ))}
+          {/* Scrim — keeps the centred copy legible wherever a clip lands */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 82% 40% at 50% 47%, rgba(11,11,13,0.96) 0%, rgba(11,11,13,0.88) 48%, rgba(11,11,13,0) 78%)",
+            }}
+          />
+        </div>
+      )}
+
       {/* ── Scattered video wall — desktop only, mouse parallax ── */}
-      {!isMobile && (
+      {device === "desktop" && (
         <Floating className="z-10" sensitivity={prefersReduced ? 0 : 0.7}>
           {HERO_REEL.map((clip, i) => (
             <FloatingElement key={clip.src} depth={clip.depth} className={clip.pos}>
