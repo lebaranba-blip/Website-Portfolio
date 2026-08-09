@@ -40,7 +40,7 @@ const FEATURED: FeaturedItem[] = [
     pills: ["Freepik Spaces", "AI Portrait"],
     href: "/works/ai-avatar",
     bg: "linear-gradient(135deg, #00C8D7, #3F51B5)",
-    image: "/works/ai-avatar/banner.png",
+    image: "/works/ai-avatar/banner.webp",
     imageFit: "contain",
     flip: true,
   },
