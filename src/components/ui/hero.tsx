@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useRef } from "react"
 import { AnimatePresence, motion, useReducedMotion, useMotionValue, useTransform } from "framer-motion"
 import { usePreloaderDone } from "@/lib/preloader-context"
 import { MenuBar } from "@/components/ui/glow-menu"
@@ -58,6 +58,67 @@ const MOBILE_REEL = [
 ] as const
 
 const isMobileDevice = () => typeof window !== "undefined" && (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768)
+
+/**
+ * iOS Safari ignores the autoplay attribute on <video> elements inserted after
+ * the initial paint — which is exactly how this wall mounts, since it waits for
+ * the viewport measurement. It also wants `muted` as a property, not just an
+ * attribute, before it will allow an unprompted play. So drive playback by hand
+ * and retry as the clip becomes ready; if the OS still refuses (Low Power Mode),
+ * the poster stays up instead of a black box.
+ */
+function useAutoPlay(ref: React.RefObject<HTMLVideoElement | null>) {
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    el.muted = true
+    el.defaultMuted = true
+    const play = () => { void el.play().catch(() => {}) }
+    play()
+    el.addEventListener("loadeddata", play)
+    el.addEventListener("canplay", play)
+    const onVisible = () => { if (document.visibilityState === "visible") play() }
+    document.addEventListener("visibilitychange", onVisible)
+    return () => {
+      el.removeEventListener("loadeddata", play)
+      el.removeEventListener("canplay", play)
+      document.removeEventListener("visibilitychange", onVisible)
+    }
+  }, [ref])
+}
+
+function HeroClip({ src, poster, className, style, initial, animate, transition, whileHover }: {
+  src: string
+  poster: string
+  className?: string
+  style?: React.CSSProperties
+  initial?: Record<string, number>
+  animate?: Record<string, number>
+  transition?: Record<string, unknown>
+  whileHover?: Record<string, number>
+}) {
+  const ref = useRef<HTMLVideoElement>(null)
+  useAutoPlay(ref)
+  return (
+    <motion.video
+      ref={ref}
+      className={className}
+      style={style}
+      initial={initial}
+      animate={animate}
+      transition={transition}
+      whileHover={whileHover}
+      src={src}
+      poster={poster}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="auto"
+      aria-hidden="true"
+    />
+  )
+}
 
 function scrollToSection(href: string, lenis: ReturnType<typeof useLenis>) {
   if (lenis) {
@@ -127,7 +188,7 @@ export default function HeroSection() {
         <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
           {MOBILE_REEL.map((clip, i) => (
             <div key={clip.src} className={`absolute ${clip.cls}`} style={clip.pos}>
-              <motion.video
+              <HeroClip
                 className="block w-full rounded-lg object-cover"
                 style={{
                   aspectRatio: "16/9",
@@ -138,10 +199,6 @@ export default function HeroSection() {
                 transition={{ duration: 0.8, delay: 0.45 + i * 0.1, ease: EASE_DEFAULT }}
                 src={clip.src}
                 poster={clip.src.replace(".mp4", ".webp")}
-                autoPlay
-                muted
-                loop
-                playsInline
               />
             </div>
           ))}
@@ -161,7 +218,7 @@ export default function HeroSection() {
         <Floating className="z-10" sensitivity={prefersReduced ? 0 : 0.7}>
           {HERO_REEL.map((clip, i) => (
             <FloatingElement key={clip.src} depth={clip.depth} className={clip.pos}>
-              <motion.video
+              <HeroClip
                 className="rounded-xl object-cover block cursor-pointer"
                 style={{
                   width: clip.size,
@@ -174,11 +231,6 @@ export default function HeroSection() {
                 transition={{ duration: 0.7, delay: 0.5 + i * 0.08, ease: EASE_DEFAULT }}
                 src={clip.src}
                 poster={clip.src.replace(".mp4", ".webp")}
-                autoPlay
-                muted
-                loop
-                playsInline
-                aria-hidden="true"
               />
             </FloatingElement>
           ))}
