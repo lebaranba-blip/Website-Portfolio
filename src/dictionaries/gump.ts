@@ -170,7 +170,8 @@ export const gumpDict = {
     },
     motion: {
       eyebrow: "В движении",
-      p: "Рекламный ролик без актёров и оператора. Пончик в невесомости — буквально то, что обещает слоган.",
+      p: "Первый акт «The Last Delivery» — ночная смена, погрузка, дорога из города в горы. Ни актёров, ни площадки, ни камеры: каждый кадр собран от листов из продакшн-библии.",
+      wip: "Монтаж в работе · Акт I из II",
     },
     about: {
       eyebrow: "О проекте",
@@ -367,7 +368,8 @@ export const gumpDict = {
     },
     motion: {
       eyebrow: "In Motion",
-      p: "An ad film with no actors and no camera operator. A donut in zero gravity — literally what the tagline promises.",
+      p: "Act one of \"The Last Delivery\" — the night shift, the load-out, the road from the city into the mountains. No actors, no set, no camera: every shot is built from the production-bible sheets.",
+      wip: "Cut in progress · Act I of II",
     },
     about: {
       eyebrow: "About the Project",

@@ -45,7 +45,7 @@ export const works: Work[] = [
       "/works/gump/banner2.png",
     ],
     previewLayout: "single-banner",
-    fullVideo: "/works/gump/ad.mp4",
+    fullVideo: "/works/gump/film/the-last-delivery.mp4",
     workflow: "/Workflow.png",
     gallery: [
       { src: "/works/gump/poster.png", alt: "Постер", aspect: "portrait" },

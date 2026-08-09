@@ -532,13 +532,13 @@ export default function GumpDonutsPage() {
             <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-5 mb-14"
               variants={sc} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-40px" }}
             >
-              <motion.p variants={si} className="text-lg leading-relaxed" style={{ color: "var(--muted)", maxWidth: "65ch" }}>
+              <motion.p variants={si} className="text-lg leading-relaxed" style={{ color: "var(--muted)", maxWidth: "65ch" }} suppressHydrationWarning>
                 <strong style={{ color: "var(--text)" }}>{t.idea.p1intro}</strong>{t.idea.p1rest}
               </motion.p>
-              <motion.p variants={si} className="text-lg leading-relaxed" style={{ color: "var(--muted)", maxWidth: "65ch" }}>
+              <motion.p variants={si} className="text-lg leading-relaxed" style={{ color: "var(--muted)", maxWidth: "65ch" }} suppressHydrationWarning>
                 {t.idea.p2intro}<strong style={{ color: "var(--text)" }}>{t.idea.p2bold}</strong>{t.idea.p2rest}
               </motion.p>
-              <motion.p variants={si} className="text-lg leading-relaxed md:col-span-2" style={{ color: "var(--muted)", maxWidth: "65ch" }}>
+              <motion.p variants={si} className="text-lg leading-relaxed md:col-span-2" style={{ color: "var(--muted)", maxWidth: "65ch" }} suppressHydrationWarning>
                 {t.idea.p3}
               </motion.p>
             </motion.div>
@@ -705,26 +705,26 @@ export default function GumpDonutsPage() {
               <motion.div className="flex flex-col gap-8"
                 variants={sc} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-60px" }}
               >
-                <motion.div variants={si}>
+                <motion.div variants={si} suppressHydrationWarning>
                   <div className="font-black leading-none mb-3" style={{ fontSize: "clamp(1.8rem,3.5vw,3rem)", letterSpacing: "-0.03em" }}>
                     <span style={{ color: "var(--text)" }}>{t.idea.gamifHeading1}</span><br />
                     <span style={{ color: "#1B3FD8" }}>{t.idea.gamifHeading2}</span>
                   </div>
                 </motion.div>
 
-                <motion.p variants={si} className="text-lg leading-relaxed" style={{ color: "var(--muted)" }}>
+                <motion.p variants={si} className="text-lg leading-relaxed" style={{ color: "var(--muted)" }} suppressHydrationWarning>
                   {t.idea.rewardLoopPre}<strong style={{ color: "var(--text)" }}>{t.idea.rewardLoopBold}</strong>{t.idea.rewardLoopPost}
                 </motion.p>
 
                 {/* Feature list with hover micro-interactions */}
-                <motion.div variants={si} className="flex flex-col">
+                <motion.div variants={si} className="flex flex-col" suppressHydrationWarning>
                   {t.idea.features.map(({ label, desc }, i) => (
                     <FeatureRow key={label} label={label} desc={desc} index={i} />
                   ))}
                 </motion.div>
 
                 {/* Quote */}
-                <motion.div variants={si}>
+                <motion.div variants={si} suppressHydrationWarning>
                   <div className="font-black leading-tight" style={{ fontSize: "clamp(1.5rem,2.8vw,2.2rem)", letterSpacing: "-0.025em" }}>
                     <span style={{ color: "var(--text)" }}>{t.idea.quote1}</span><span style={{ color: "#F472B6" }}>{t.idea.quote2}</span><span style={{ color: "var(--text)" }}>{t.idea.quote3}</span>
                   </div>
@@ -1108,8 +1108,17 @@ export default function GumpDonutsPage() {
               </p>
             </FadeIn>
 
+            <FadeIn delay={0.18}>
+              <div className="flex items-center gap-2.5 mb-4">
+                <span className="inline-block rounded-full" style={{ width: 6, height: 6, background: "#F472B6" }} aria-hidden="true" />
+                <span className="font-mono text-xs uppercase tracking-widest" style={{ color: "rgba(242,239,233,0.4)" }}>
+                  {t.motion.wip}
+                </span>
+              </div>
+            </FadeIn>
+
             <FadeIn delay={0.2}>
-              <VideoPlayer src="/works/gump/ad.mp4" ratio="48%" labels={t.videoPlayer} />
+              <VideoPlayer src="/works/gump/film/the-last-delivery.mp4" ratio="56.25%" labels={t.videoPlayer} />
             </FadeIn>
           </div>
         </section>
