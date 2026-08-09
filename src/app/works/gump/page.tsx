@@ -163,9 +163,14 @@ const staggerItem: Variants = {
   hidden: { opacity: 0, y: 18 },
   show:   { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
 }
-// Touch-safe: no initial hidden state
-const staggerContainerTouch: Variants = { show: {} }
-const staggerItemTouch: Variants = { show: {} }
+// Touch-safe. These must state the visible values explicitly: the server renders
+// with the non-touch variants, so opacity:0 is already baked into the HTML by the
+// time isTouch flips. An empty `show` would never paint those elements back in.
+const staggerContainerTouch: Variants = { hidden: {}, show: {} }
+const staggerItemTouch: Variants = {
+  hidden: { opacity: 1, y: 0 },
+  show:   { opacity: 1, y: 0 },
+}
 
 // ─── NavBackButton ────────────────────────────────────────────────────────────
 function NavBackButton({ href, label }: { href: string; label: string }) {
@@ -308,6 +313,36 @@ function VideoPlayer({ src, ratio = "56.25%", labels }: { src: string; ratio?: s
   )
 }
 
+// ─── SceneTile — nine of these on screen, so each plays only while visible ────
+function SceneTile({ src, cap }: { src: string; cap: string }) {
+  const ref = useRef<HTMLVideoElement>(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) el.play().catch(() => {}); else el.pause() },
+      { threshold: 0.25 }
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+  return (
+    <figure className="m-0">
+      <div className="rounded-xl overflow-hidden" style={{ background: "#000", border: "1px solid rgba(255,255,255,0.07)" }}>
+        <video
+          ref={ref}
+          src={src}
+          className="block w-full h-auto"
+          style={{ aspectRatio: "16/9", objectFit: "cover" }}
+          muted loop playsInline preload="metadata"
+          aria-hidden="true"
+        />
+      </div>
+      <figcaption className="font-mono mt-2" style={{ fontSize: 11, color: "rgba(255,255,255,0.38)", letterSpacing: "0.02em" }}>{cap}</figcaption>
+    </figure>
+  )
+}
+
 // ─── Gallery images ───────────────────────────────────────────────────────────
 function getGallery(t: ReturnType<typeof useDict<typeof gumpDict>>) {
   const g = t.identity.gallery
@@ -349,6 +384,16 @@ export default function GumpDonutsPage() {
 
   const openGallery = useCallback((i: number) => setLightbox({ images: GALLERY, index: i }), [])
   const closeLightbox = useCallback(() => setLightbox(null), [])
+
+  // Film block — posters and bible sheets each open as their own lightbox set
+  const POSTERS = [1, 2, 3].map(i => ({ src: `/works/gump/film/poster-${i}.webp`, alt: `${t.bible.posterAlt} ${i}` }))
+  const BIBLE = t.bible.groups.flatMap(g => g.items.map(it => ({ src: `/works/gump/film/bible/${it.src}.webp`, alt: it.cap })))
+  const bibleOffsets = t.bible.groups.reduce<number[]>((acc, g, i) => {
+    acc.push(i === 0 ? 0 : acc[i - 1] + t.bible.groups[i - 1].items.length)
+    return acc
+  }, [])
+  const openPosters = (i: number) => setLightbox({ images: POSTERS, index: i })
+  const openBible = (i: number) => setLightbox({ images: BIBLE, index: i })
 
   // Hero parallax
   const heroRef = useRef<HTMLDivElement>(null)
@@ -842,12 +887,179 @@ export default function GumpDonutsPage() {
 
         <div style={{ height: 1, background: "var(--border)" }} />
 
-        {/* ══ 04 В ДВИЖЕНИИ ════════════════════════════════════════════════ */}
+        {/* ══ 04 ПРОДАКШН-БИБЛИЯ ═══════════════════════════════════════════ */}
+        <section className="py-24" style={{ background: "#0D0D0D" }}>
+          <div className="px-6 md:px-12" style={{ maxWidth: 1200, margin: "0 auto" }}>
+            <FadeIn>
+              <span className="font-mono text-xs uppercase tracking-widest flex items-center gap-3 mb-8" style={{ color: "rgba(255,255,255,0.3)" }}>
+                <span>—</span>04 — {t.bible.eyebrow}
+              </span>
+            </FadeIn>
+
+            {/* Poster wall */}
+            <motion.div className="grid grid-cols-1 sm:grid-cols-3 gap-4" variants={sc} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-60px" }}>
+              {POSTERS.map((p, i) => (
+                <motion.button
+                  key={p.src}
+                  variants={si}
+                  onClick={() => openPosters(i)}
+                  className="group relative block w-full rounded-2xl overflow-hidden cursor-pointer p-0"
+                  style={{ background: "#000", border: "1px solid rgba(255,255,255,0.08)" }}
+                  aria-label={p.alt}
+                  suppressHydrationWarning
+                >
+                  <Image
+                    src={p.src}
+                    alt={p.alt}
+                    width={1000}
+                    height={1500}
+                    className="w-full h-auto block transition-transform duration-700 group-hover:scale-[1.03]"
+                    quality={88}
+                    sizes="(max-width: 640px) 100vw, 33vw"
+                  />
+                </motion.button>
+              ))}
+            </motion.div>
+
+            <FadeIn delay={0.06}>
+              <div className="flex flex-wrap items-baseline justify-between gap-3 mt-5 mb-16 pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+                <span className="font-black" style={{ fontSize: "clamp(1.1rem,2vw,1.5rem)", letterSpacing: "-0.02em", color: "#fff" }}>
+                  {t.bible.filmTitle}
+                </span>
+                <span className="font-mono text-xs uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.32)" }}>
+                  {t.bible.filmMeta}
+                </span>
+              </div>
+            </FadeIn>
+
+            {/* Heading */}
+            <div className="mb-6">
+              <FadeIn><div style={{ color: "#fff", display: "block", fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em" }}>{t.bible.heading1}</div></FadeIn>
+              <FadeIn delay={0.08}><div style={{ color: "#6e90ff", display: "block", fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em" }}>{t.bible.heading2}</div></FadeIn>
+            </div>
+
+            <FadeIn delay={0.1}>
+              <p className="text-lg mb-14" style={{ color: "rgba(255,255,255,0.5)", maxWidth: 700 }}>
+                {t.bible.p}
+              </p>
+            </FadeIn>
+
+            {/* Groups */}
+            {t.bible.groups.map((group, gi) => (
+              <div key={group.label} className={gi === t.bible.groups.length - 1 ? "" : "mb-14"}>
+                <FadeIn>
+                  <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1 mb-5">
+                    <span className="font-mono text-xs uppercase tracking-widest" style={{ color: "#6e90ff" }}>
+                      {String(gi + 1).padStart(2, "0")} · {group.label}
+                    </span>
+                    <span className="text-sm" style={{ color: "rgba(255,255,255,0.4)", maxWidth: 620 }}>{group.note}</span>
+                  </div>
+                </FadeIn>
+                <motion.div
+                  className={`grid gap-4 ${gi === 3 ? "grid-cols-2 md:grid-cols-4" : "grid-cols-1 md:grid-cols-2"}`}
+                  variants={sc} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-40px" }}
+                >
+                  {group.items.map((item, ii) => (
+                    <motion.button
+                      key={item.src}
+                      variants={si}
+                      onClick={() => openBible(bibleOffsets[gi] + ii)}
+                      className="group text-left p-0 cursor-pointer"
+                      aria-label={item.cap}
+                      suppressHydrationWarning
+                    >
+                      <div className="rounded-xl overflow-hidden" style={{ background: "#000", border: "1px solid rgba(255,255,255,0.07)" }}>
+                        <Image
+                          src={`/works/gump/film/bible/${item.src}.webp`}
+                          alt={item.cap}
+                          width={1400}
+                          height={933}
+                          className="w-full h-auto block transition-transform duration-700 group-hover:scale-[1.02]"
+                          quality={85}
+                          sizes={gi === 3 ? "(max-width: 768px) 50vw, 25vw" : "(max-width: 768px) 100vw, 50vw"}
+                        />
+                      </div>
+                      <div className="font-mono mt-2" style={{ fontSize: 11, color: "rgba(255,255,255,0.38)", letterSpacing: "0.02em" }}>
+                        {item.cap}
+                      </div>
+                    </motion.button>
+                  ))}
+                </motion.div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <div style={{ height: 1, background: "var(--border)" }} />
+
+        {/* ══ 05 ОТ ПРОМПТА К КАДРУ ════════════════════════════════════════ */}
+        <section className="py-24">
+          <div className="px-6 md:px-12" style={{ maxWidth: 1200, margin: "0 auto" }}>
+            <FadeIn>
+              <span className="font-mono text-xs uppercase tracking-widest flex items-center gap-3 mb-4" style={{ color: "var(--muted)" }}>
+                <span>—</span>05 — {t.craft.eyebrow}
+              </span>
+            </FadeIn>
+
+            <div className="mb-6">
+              <FadeIn><div style={{ color: "var(--text)", display: "block", fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em" }}>{t.craft.heading1}</div></FadeIn>
+              <FadeIn delay={0.08}><div style={{ color: "#F472B6", display: "block", fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.04em" }}>{t.craft.heading2}</div></FadeIn>
+            </div>
+
+            <FadeIn delay={0.1}>
+              <p className="text-lg mb-12" style={{ color: "var(--muted)", maxWidth: 700 }}>
+                {t.craft.p}
+              </p>
+            </FadeIn>
+
+            {/* Scene plan anatomy */}
+            <FadeIn>
+              <div className="font-mono text-xs uppercase tracking-widest mb-5" style={{ color: "rgba(242,239,233,0.35)" }}>
+                {t.craft.specsLabel}
+              </div>
+            </FadeIn>
+            <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-16" variants={sc} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-40px" }}>
+              {t.craft.specs.map(({ k, v }) => (
+                <motion.div
+                  key={k}
+                  variants={si}
+                  className="rounded-xl p-5"
+                  style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
+                  suppressHydrationWarning
+                >
+                  <div className="font-mono text-xs uppercase tracking-widest mb-2" style={{ color: "#F472B6" }}>{k}</div>
+                  <div className="text-sm leading-relaxed" style={{ color: "var(--muted)" }}>{v}</div>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Key scenes */}
+            <FadeIn>
+              <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1 mb-5">
+                <span className="font-mono text-xs uppercase tracking-widest" style={{ color: "rgba(242,239,233,0.35)" }}>
+                  {t.craft.scenesLabel}
+                </span>
+                <span className="text-sm" style={{ color: "var(--muted)", maxWidth: 620 }}>{t.craft.scenesNote}</span>
+              </div>
+            </FadeIn>
+            <motion.div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" variants={sc} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-40px" }}>
+              {t.craft.scenes.map((cap, i) => (
+                <motion.div key={cap} variants={si} suppressHydrationWarning>
+                  <SceneTile src={`/works/gump/film/scenes/scene-${i + 1}.mp4`} cap={`${String(i + 1).padStart(2, "0")} · ${cap}`} />
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        <div style={{ height: 1, background: "var(--border)" }} />
+
+        {/* ══ 06 В ДВИЖЕНИИ ════════════════════════════════════════════════ */}
         <section className="py-24 overflow-hidden">
           <div className="px-6 md:px-12" style={{ maxWidth: 1200, margin: "0 auto" }}>
             <FadeIn>
               <span className="font-mono text-xs uppercase tracking-widest flex items-center gap-3 mb-4" style={{ color: "var(--muted)" }}>
-                <span>—</span>04 — {t.motion.eyebrow}
+                <span>—</span>06 — {t.motion.eyebrow}
               </span>
             </FadeIn>
           </div>
@@ -909,7 +1121,7 @@ export default function GumpDonutsPage() {
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <FadeIn>
               <span className="font-mono text-xs uppercase tracking-widest flex items-center gap-3 mb-4" style={{ color: "rgba(255,255,255,0.3)" }}>
-                <span>—</span>05 — {t.about.eyebrow}
+                <span>—</span>07 — {t.about.eyebrow}
               </span>
             </FadeIn>
 
