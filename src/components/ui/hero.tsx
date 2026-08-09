@@ -137,6 +137,7 @@ export default function HeroSection() {
                 animate={preloaderDone ? { opacity: 1 } : { opacity: 0 }}
                 transition={{ duration: 0.8, delay: 0.45 + i * 0.1, ease: EASE_DEFAULT }}
                 src={clip.src}
+                poster={clip.src.replace(".mp4", ".webp")}
                 autoPlay
                 muted
                 loop
@@ -172,6 +173,7 @@ export default function HeroSection() {
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.7, delay: 0.5 + i * 0.08, ease: EASE_DEFAULT }}
                 src={clip.src}
+                poster={clip.src.replace(".mp4", ".webp")}
                 autoPlay
                 muted
                 loop
