@@ -150,8 +150,16 @@ function VideoPlayer({ src, label, description, onOpen }: {
   const ref = useRef<HTMLVideoElement>(null)
   const [muted, setMuted] = useState(true)
 
+  // Seven full-length clips live on this page — only stream the ones on screen
   useEffect(() => {
-    ref.current?.play().catch(() => {})
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) el.play().catch(() => {}); else el.pause() },
+      { threshold: 0.2 }
+    )
+    io.observe(el)
+    return () => io.disconnect()
   }, [])
 
   const toggle = () => {
@@ -167,6 +175,8 @@ function VideoPlayer({ src, label, description, onOpen }: {
           <video
             ref={ref}
             src={src}
+            poster={src.replace(".mp4", ".webp")}
+            preload="metadata"
             className="w-full h-auto"
             style={{ display: "block", aspectRatio: "16/9", objectFit: "cover" }}
             muted={muted}
