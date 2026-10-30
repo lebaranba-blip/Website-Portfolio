@@ -12,6 +12,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
+      url: `${base}/works/yandex-october`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.8,
+    },
+    {
       url: `${base}/works/showreel`,
       lastModified: now,
       changeFrequency: "yearly",

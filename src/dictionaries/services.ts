@@ -58,7 +58,7 @@ export const servicesDict = {
     downloadPdf: "Скачать прайс (PDF)",
     rateCard: {
       docTitle: "Прайс-лист",
-      role: "AI Video Producer",
+      role: "AI Director & Visual Artist",
       intro: "Стартовые цены на AI-видео, визуал и лендинги. Полный цикл: сценарий, генерация, монтаж, цвет.",
       note: "Все проекты рассчитываются индивидуально. Указанные цены являются стартовыми и зависят от сложности, сроков и объёма работ.",
       contactsLabel: "Контакты",
@@ -126,7 +126,7 @@ export const servicesDict = {
     downloadPdf: "Download Rate Card (PDF)",
     rateCard: {
       docTitle: "Rate Card",
-      role: "AI Video Producer",
+      role: "AI Director & Visual Artist",
       intro: "Starting rates for AI video, visuals and landing pages. Full cycle: script, generation, edit, color.",
       note: "All projects are quoted individually. Listed prices are starting rates and may vary depending on project scope, complexity and timeline.",
       contactsLabel: "Contacts",

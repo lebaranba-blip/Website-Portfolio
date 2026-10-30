@@ -4,7 +4,7 @@ export const aboutDict = {
     name: "Дмитрий",
     role: "AI Video · Visual Production",
     bio: [
-      "AI Video Producer. Строю AI-видео и визуал с нуля — сценарий, промпт-инжиниринг, генерация, монтаж, цвет.",
+      "AI-режиссёр и визуальный художник. Строю AI-видео и визуал с нуля — сценарий, промпт-инжиниринг, генерация, монтаж, цвет.",
       "Начинал с видеомонтажа, потом веб-дизайн, графика, бренд-айдентика. Два года назад полностью перешёл на AI-продакшн. Самоучка — кино, режиссуру и операторскую работу разбирал по фильмам, не по курсам.",
       "Генерация: Kling, Seedance, Veo, Google Flow, ChatGPT Images, Nano Banana.\nМонтаж и цвет: DaVinci Resolve, Remotion, Figma.",
       "AI — не способ сделать картинку красивой, а инструмент полноценного продакшна. Использую его на каждом этапе, а не вместо мастерства.",
@@ -23,7 +23,7 @@ export const aboutDict = {
     name: "Dmitry",
     role: "AI Video · Visual Production",
     bio: [
-      "AI Video Producer. I build AI video and visuals from scratch — script, prompt engineering, generation, edit, color.",
+      "AI director and visual artist. I build AI video and visuals from scratch — script, prompt engineering, generation, edit, color.",
       "Started in video editing, then web design, graphics, brand identity. Moved fully into AI production two years ago. Self-taught — I studied film, direction, and cinematography from films, not courses.",
       "Generation: Kling, Seedance, Veo, Google Flow, ChatGPT Images, Nano Banana.\nEdit and color: DaVinci Resolve, Remotion, Figma.",
       "AI isn't a way to make an image look nice — it's a tool for a full production. I use it at every stage, not instead of craft.",

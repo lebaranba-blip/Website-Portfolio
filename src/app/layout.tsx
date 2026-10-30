@@ -25,9 +25,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Дмитрий Коломиец — AI Video Producer",
+  title: "Дмитрий Коломиец — AI Director & Visual Artist",
   description: "Коммерческое AI-видео и визуал полного цикла: сценарий, промпт-инжиниринг, генерация, монтаж, цвет. Пишите в Telegram.",
-  keywords: ["AI Video Producer", "AI видео", "AI Production", "визуал", "брендинг", "портфолио", "Kling", "Veo", "Seedance", "Remotion"],
+  keywords: ["AI Director", "AI-режиссёр", "AI Visual Artist", "AI видео", "AI Production", "визуал", "брендинг", "портфолио", "Kling", "Veo", "Seedance", "Remotion"],
   authors: [{ name: "Дмитрий Коломиец" }],
   creator: "Дмитрий Коломиец",
   metadataBase: new URL("https://www.hopelessblessed.online"),
@@ -35,10 +35,10 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Дмитрий Коломиец — AI Video Producer",
+    title: "Дмитрий Коломиец — AI Director & Visual Artist",
     description: "Коммерческое AI-видео и визуал полного цикла: сценарий, промпт-инжиниринг, генерация, монтаж, цвет.",
     url: "https://www.hopelessblessed.online",
-    siteName: "Дмитрий Коломиец — AI Video Producer",
+    siteName: "Дмитрий Коломиец — AI Director & Visual Artist",
     type: "website",
     locale: "ru_RU",
     images: [
@@ -46,13 +46,13 @@ export const metadata: Metadata = {
         url: "/og-banner.jpg",
         width: 1200,
         height: 630,
-        alt: "Дмитрий Коломиец — AI Video Producer",
+        alt: "Дмитрий Коломиец — AI Director & Visual Artist",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Дмитрий Коломиец — AI Video Producer",
+    title: "Дмитрий Коломиец — AI Director & Visual Artist",
     description: "Коммерческое AI-видео и визуал полного цикла.",
     images: ["/og-banner.jpg"],
   },
@@ -87,7 +87,7 @@ const jsonLd = {
     "https://www.instagram.com/kolomiets.ai.prod",
     "https://www.threads.net/@kolomiets.ai.prod",
   ],
-  jobTitle: "AI Video Producer",
+  jobTitle: "AI Director & Visual Artist",
   description: "Коммерческое AI-видео и визуал полного цикла: сценарий, промпт-инжиниринг, генерация, монтаж, цвет.",
   knowsAbout: ["AI Video Production", "Visual Production", "Motion Design", "Branding", "Kling", "Veo", "Seedance", "Remotion", "DaVinci Resolve"],
 };

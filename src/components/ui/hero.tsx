@@ -322,7 +322,9 @@ export default function HeroSection() {
               transition={{ duration: 1.1, delay: 0.28, ease: EASE_DEFAULT }}
               suppressHydrationWarning
             >
-              {t.role}
+              {t.role.split(" & ").map((part, i) => (
+                <span key={part} className="block">{i > 0 ? `& ${part}` : part}</span>
+              ))}
             </motion.span>
           </h1>
 
