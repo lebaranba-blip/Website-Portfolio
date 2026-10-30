@@ -42,6 +42,15 @@ const FEATURED: FeaturedItem[] = [
     video: "/works/yandex-october/card-bg.mp4",
   },
   {
+    id: "valter",
+    cat: "AI Video · UGC · 2026",
+    title: "Valter",
+    pills: ["Seedance 2.5", "Character sheet", "Remotion"],
+    href: "/works/valter",
+    bg: "linear-gradient(140deg, #0B1530 0%, #14275C 55%, #E4002B 130%)",
+    video: "/works/valter/card-bg.mp4",
+  },
+  {
     id: "showreel",
     cat: "AI Video · Showreel · 2026",
     title: "Skills Reel",

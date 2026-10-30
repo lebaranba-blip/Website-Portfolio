@@ -13,6 +13,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     // Link-only cases (hidden on the home grid) stay out of the sitemap
     {
+      url: `${base}/works/valter`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.8,
+    },
+    {
       url: `${base}/works/showreel`,
       lastModified: now,
       changeFrequency: "yearly",
