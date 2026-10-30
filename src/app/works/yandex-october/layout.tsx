@@ -3,6 +3,8 @@ import type { Metadata } from "next"
 export const metadata: Metadata = {
   title: "Яндекс Маркет · Медиафасад «Октябрь» — Дмитрий",
   description: "AI-анимация героя для медиафасада кинотеатра «Октябрь». Дни Яндекс Фабрики: 12 секунд, один непрерывный план, эмоции глазами.",
+  // Link-only until the second payment; drop this once the case goes back on the home grid
+  robots: { index: false, follow: false },
   openGraph: {
     title: "Яндекс Маркет · Медиафасад «Октябрь»",
     description: "AI-анимация героя для медиафасада 3232×288. Seedance, first/last frame, режиссура по таймкодам.",

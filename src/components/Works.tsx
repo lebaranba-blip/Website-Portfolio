@@ -8,7 +8,8 @@ import { worksDict } from "@/dictionaries/works"
 
 interface FeaturedItem {
   id: string
-  idx: string
+  /** Off the home grid; the case page still opens by direct link */
+  hidden?: boolean
   cat: string
   title: string
   pills: string[]
@@ -18,13 +19,11 @@ interface FeaturedItem {
   imageFit?: "cover" | "contain"
   video?: string
   videoFit?: "cover" | "contain"
-  flip?: boolean
 }
 
 const FEATURED: FeaturedItem[] = [
   {
     id: "gump-donuts",
-    idx: "01",
     cat: "Branding · AI Video · 2026",
     title: "Gump Donuts",
     pills: ["Midjourney", "Nano Banana", "Photoshop", "Figma"],
@@ -34,18 +33,16 @@ const FEATURED: FeaturedItem[] = [
   },
   {
     id: "yandex-october",
-    idx: "02",
+    hidden: true, // until the second payment lands
     cat: "AI Video · Media Facade · 2026",
     title: "Yandex Market",
     pills: ["Seedance", "First/Last frame", "Topaz Video AI"],
     href: "/works/yandex-october",
     bg: "#0047FF",
     video: "/works/yandex-october/card-bg.mp4",
-    flip: true,
   },
   {
     id: "showreel",
-    idx: "03",
     cat: "AI Video · Showreel · 2026",
     title: "Skills Reel",
     pills: ["Kling 3.0", "Veo 3.1", "Seedance 2.0", "DaVinci Resolve"],
@@ -55,7 +52,6 @@ const FEATURED: FeaturedItem[] = [
   },
   {
     id: "ai-avatar",
-    idx: "04",
     cat: "AI Visual · Portrait · 2026",
     title: "AI Avatar",
     pills: ["Freepik Spaces", "AI Portrait"],
@@ -63,11 +59,9 @@ const FEATURED: FeaturedItem[] = [
     bg: "linear-gradient(135deg, #00C8D7, #3F51B5)",
     image: "/works/ai-avatar/banner.webp",
     imageFit: "contain",
-    flip: true,
   },
   {
     id: "motion-teaser",
-    idx: "05",
     cat: "Motion Design · Code · 2026",
     title: "Motion Teaser",
     pills: ["Remotion 4.0", "React", "TypeScript", "Claude Code"],
@@ -78,7 +72,12 @@ const FEATURED: FeaturedItem[] = [
   },
 ]
 
+// Number and alternate sides by position among visible cards, so hiding one never leaves a gap
+const VISIBLE = FEATURED.filter(p => !p.hidden)
+
 function FeaturedCard({ p, i, mounted }: { p: typeof FEATURED[0]; i: number; mounted: boolean }) {
+  const flip = i % 2 === 1
+  const idx = String(i + 1).padStart(2, "0")
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, margin: "-10% 0px -10% 0px" })
   const [hovered, setHovered] = useState(false)
@@ -92,7 +91,7 @@ function FeaturedCard({ p, i, mounted }: { p: typeof FEATURED[0]; i: number; mou
       className="grid grid-cols-1 md:grid-cols-2 overflow-hidden relative"
       style={{
         minHeight: 540,
-        direction: p.flip ? "rtl" : "ltr",
+        direction: flip ? "rtl" : "ltr",
         opacity: show ? 1 : 0,
         transform: show ? "translateY(0px)" : "translateY(36px)",
         transition: `opacity 0.85s ${i * 0.08}s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.85s ${i * 0.08}s cubic-bezier(0.25,0.46,0.45,0.94)`,
@@ -165,7 +164,7 @@ function FeaturedCard({ p, i, mounted }: { p: typeof FEATURED[0]; i: number; mou
           className="absolute font-black"
           style={{ top: 28, right: 28, fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.12)", letterSpacing: "0.1em" }}
         >
-          {p.idx}
+          {idx}
         </span>
         <div className="relative font-mono text-[10px] font-bold tracking-[0.14em] uppercase mb-5" style={{ color: "rgba(255,255,255,0.3)" }}>
           {p.cat}
@@ -251,7 +250,7 @@ export default function Works() {
 
       {/* Featured cards stack */}
       <div className="flex flex-col gap-1">
-        {FEATURED.map((p, i) => (
+        {VISIBLE.map((p, i) => (
           <FeaturedCard key={p.id} p={p} i={i} mounted={mounted} />
         ))}
       </div>

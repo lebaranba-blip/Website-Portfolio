@@ -11,12 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 1,
     },
-    {
-      url: `${base}/works/yandex-october`,
-      lastModified: now,
-      changeFrequency: "yearly",
-      priority: 0.8,
-    },
+    // Link-only cases (hidden on the home grid) stay out of the sitemap
     {
       url: `${base}/works/showreel`,
       lastModified: now,
