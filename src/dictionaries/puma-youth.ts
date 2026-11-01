@@ -25,9 +25,19 @@ export const pumaYouthDict = {
     story: {
       label: "Сюжет",
       items: [
-        { img: "story_1", title: "Улица.", text: "Летний Лос-Анджелес, внук и друзья. Голос за кадром о том, что такое молодость.", alt: "Внук и друзья на улице Лос-Анджелеса на закате" },
-        { img: "story_2", title: "Барбершоп.", text: "Спор о кроссовках превращается в воспоминание: 1975 год, седьмая игра, четыре секунды до конца.", alt: "Дед и внук в креслах барбершопа" },
-        { img: "story_3", title: "Корт.", text: "Дед обыгрывает внука один на один и уходит в его новых кроссовках.", alt: "Дед и внук играют один на один на уличном корте" },
+        { img: "story_1", loop: "story_1-ru", at: 0, title: "Улица.", text: "Летний Лос-Анджелес, внук и друзья. Голос за кадром о том, что такое молодость.", alt: "Внук и друзья на улице Лос-Анджелеса на закате" },
+        { img: "story_2", loop: "story_2", at: 33.4, title: "Барбершоп.", text: "Спор о кроссовках превращается в воспоминание: 1975 год, седьмая игра, четыре секунды до конца.", alt: "Дед и внук в креслах барбершопа" },
+        { img: "story_3", loop: "story_3-ru", at: 102.9, title: "Корт.", text: "Дед обыгрывает внука один на один и уходит в его новых кроссовках.", alt: "Дед и внук играют один на один на уличном корте" },
+      ],
+      // DRAFT — not in the approved brief, waiting for the author
+      watchFrom: "Смотреть с этой сцены",
+    },
+    // DRAFT section — not in the approved brief, waiting for the author
+    then: {
+      label: "1975 / сегодня",
+      pairs: [
+        { a: "grandpa-1975", b: "grandpa-today", aLabel: "1975", bLabel: "Сегодня", aAlt: "Дед в 1975 году", bAlt: "Дед сегодня", caption: "Один герой в двух возрастах: отдельные листы персонажа для молодого деда и для нынешнего." },
+        { a: "sneakers-1975", b: "sneakers-today", aLabel: "1975", bLabel: "Сегодня", aAlt: "Старые замшевые кроссовки деда", bAlt: "Новые кроссовки внука", caption: "Та же модель: пара, в которой дед выиграл финал, и новая пара внука." },
       ],
     },
     process: {
@@ -37,7 +47,7 @@ export const pumaYouthDict = {
         { img: "process_2", title: "Персонажи.", text: "Листы лица и одежды для деда, внука и друзей и единый мастер-цвет, чтобы герои и свет не менялись от сцены к сцене.", alt: "Листы персонажей: лица и одежда" },
         { img: "process_3", title: "Локация.", text: "Отдельно собранный барбершоп: три одинаковых кресла, фото на стене, улица Лос-Анджелеса за окном.", alt: "Локация барбершопа" },
         { img: "process_4", title: "Анимация.", text: "Сцены по 8–15 секунд с репликами и движением камеры. Последний кадр каждой сцены становится референсом для следующей, поэтому склейки не видны.", alt: "Кадр из анимированной сцены" },
-        { img: null, title: "Пост.", text: "Голоса, монтаж, цветокоррекция, плёночное зерно, субтитры, анимация лого.", alt: "Монтаж и цветокоррекция в DaVinci Resolve" },
+        { img: "post", title: "Пост.", text: "Голоса, монтаж, цветокоррекция, плёночное зерно, субтитры, анимация лого.", alt: "Монтаж и цветокоррекция в DaVinci Resolve" },
       ],
     },
     challenges: {
@@ -65,6 +75,7 @@ export const pumaYouthDict = {
         "Анимация лого с прозрачностью, 4 варианта",
       ],
       // Hidden until the vertical cut exists
+      logos: "Анимация лого, 4 варианта", // DRAFT
       vertical: "[Вертикальная версия 9:16 — добавлю позже, плашку пока не показывать]",
     },
     tools: {
@@ -112,9 +123,17 @@ export const pumaYouthDict = {
     story: {
       label: "Story",
       items: [
-        { img: "story_1", title: "The street.", text: "Summer in Los Angeles, the grandson and his friends. A voice-over on what youth really is.", alt: "Grandson and friends on a Los Angeles street at sunset" },
-        { img: "story_2", title: "The barbershop.", text: "An argument about sneakers turns into a memory: 1975, Game 7, four seconds left.", alt: "Grandfather and grandson in barbershop chairs" },
-        { img: "story_3", title: "The court.", text: "Grandpa beats his grandson one-on-one and walks off in his new sneakers.", alt: "Grandfather and grandson playing one-on-one on a street court" },
+        { img: "story_1", loop: "story_1-en", at: 0, title: "The street.", text: "Summer in Los Angeles, the grandson and his friends. A voice-over on what youth really is.", alt: "Grandson and friends on a Los Angeles street at sunset" },
+        { img: "story_2", loop: "story_2", at: 33.4, title: "The barbershop.", text: "An argument about sneakers turns into a memory: 1975, Game 7, four seconds left.", alt: "Grandfather and grandson in barbershop chairs" },
+        { img: "story_3", loop: "story_3-en", at: 102.9, title: "The court.", text: "Grandpa beats his grandson one-on-one and walks off in his new sneakers.", alt: "Grandfather and grandson playing one-on-one on a street court" },
+      ],
+      watchFrom: "Watch from this scene",
+    },
+    then: {
+      label: "1975 / today",
+      pairs: [
+        { a: "grandpa-1975", b: "grandpa-today", aLabel: "1975", bLabel: "Today", aAlt: "Grandfather in 1975", bAlt: "Grandfather today", caption: "One character at two ages: separate character sheets for the young grandfather and for today's." },
+        { a: "sneakers-1975", b: "sneakers-today", aLabel: "1975", bLabel: "Today", aAlt: "Grandfather's worn suede sneakers", bAlt: "Grandson's new sneakers", caption: "The same model: the pair grandpa won the finals in, and the grandson's new one." },
       ],
     },
     process: {
@@ -124,7 +143,7 @@ export const pumaYouthDict = {
         { img: "process_2", title: "Characters.", text: "Face and wardrobe sheets for the grandfather, grandson and friends, plus one master color reference, so characters and light stay the same from scene to scene.", alt: "Character sheets: faces and wardrobe" },
         { img: "process_3", title: "Location.", text: "A purpose-built barbershop: three matching chairs, photos on the wall, an LA street outside.", alt: "Barbershop location" },
         { img: "process_4", title: "Animation.", text: "Scenes of 8–15 seconds with dialogue and camera moves. The last frame of each scene becomes the reference for the next one, so the cuts stay invisible.", alt: "Frame from an animated scene" },
-        { img: null, title: "Post.", text: "Voices, editing, color grading, film grain, subtitles, logo animation.", alt: "Editing and color grading in DaVinci Resolve" },
+        { img: "post", title: "Post.", text: "Voices, editing, color grading, film grain, subtitles, logo animation.", alt: "Editing and color grading in DaVinci Resolve" },
       ],
     },
     challenges: {
@@ -151,6 +170,7 @@ export const pumaYouthDict = {
         "Version with Russian subtitles",
         "Logo animation with alpha, 4 variants",
       ],
+      logos: "Logo animation, 4 variants",
       vertical: "[Vertical 9:16 version — coming later, don't show this tile yet]",
     },
     tools: {

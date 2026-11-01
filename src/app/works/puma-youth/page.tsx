@@ -206,7 +206,7 @@ function HeroFilm({ lang, small, poster, title, soundLabel, watchLabel, onWatch,
 }
 
 // ─── FilmModal — full film with native controls ───────────────────────────────
-function FilmModal({ src, title, closeLabel, onClose }: { src: string; title: string; closeLabel: string; onClose: () => void }) {
+function FilmModal({ src, start = 0, title, closeLabel, onClose }: { src: string; start?: number; title: string; closeLabel: string; onClose: () => void }) {
   const closeRef = useRef<HTMLButtonElement>(null)
   useEffect(() => {
     closeRef.current?.focus()
@@ -230,6 +230,7 @@ function FilmModal({ src, title, closeLabel, onClose }: { src: string; title: st
         playsInline
         preload="metadata"
         aria-label={title}
+        onLoadedMetadata={e => { if (start) e.currentTarget.currentTime = start }}
         onClick={e => e.stopPropagation()}
       />
     </div>
@@ -290,6 +291,56 @@ function CompareSlider({ before, after, beforeLabel, afterLabel, alt }: {
   )
 }
 
+// ─── StoryTile — still first, then a muted loop while on screen; opens the film at the scene
+function StoryTile({ img, loop, alt, label, onOpen }: { img: string; loop: string; alt: string; label: string; onOpen: () => void }) {
+  const ref = useRef<HTMLVideoElement>(null)
+  const [live, setLive] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) el.play().catch(() => {}); else el.pause() },
+      { rootMargin: "100px 0px" },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [loop])
+  return (
+    <button onClick={onOpen} aria-label={`${label}: ${alt}`} className="group relative block w-full overflow-hidden rounded-xl text-left" style={{ aspectRatio: "16 / 9", background: TEAL_DEEP }}>
+      <Image src={`${MEDIA}/${img}-1600.jpg`} alt={alt} fill sizes="(max-width: 768px) 100vw, 400px" quality={82} style={{ objectFit: "cover" }} />
+      <video
+        ref={ref}
+        src={`${MEDIA}/${loop}.mp4`}
+        className="absolute inset-0 w-full h-full"
+        style={{ objectFit: "cover", opacity: live ? 1 : 0, transition: "opacity 0.5s ease" }}
+        muted
+        loop
+        playsInline
+        preload="none"
+        aria-hidden="true"
+        onPlaying={() => setLive(true)}
+      />
+      <span className="absolute bottom-3 left-3 inline-flex items-center gap-2 font-semibold text-xs transition-transform duration-300 group-hover:-translate-y-0.5" style={{ minHeight: 32, padding: "0 12px", borderRadius: 9999, color: "#0B0A08", background: SUNSET }}>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4l15 8-15 8z"/></svg>
+        {label}
+      </span>
+    </button>
+  )
+}
+
+// ─── LoopTile — tiny muted loop that only plays on screen ─────────────────────
+function LoopTile({ src, label }: { src: string; label: string }) {
+  const ref = useRef<HTMLVideoElement>(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) el.play().catch(() => {}); else el.pause() })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [src])
+  return <video ref={ref} src={src} className="block w-full h-auto rounded-xl" style={{ aspectRatio: "16 / 9", background: "#0B0A08", border: "1px solid rgba(242,230,207,0.08)" }} muted loop playsInline preload="none" aria-label={label} />
+}
+
 // ─── Still — 16:9 frame through next/image (AVIF/WebP + srcset, lazy) ────────
 function Still({ name, alt, sizes }: { name: string; alt: string; sizes: string }) {
   return (
@@ -309,6 +360,7 @@ export default function PumaYouthPage() {
   const small = useIsSmall()
   const [scrolled, setScrolled] = useState(false)
   const [modal, setModal] = useState(false)
+  const [start, setStart] = useState(0)
   const isTouch = useIsTouch()
   const s = isTouch ? scTouch : sc
   const si_ = isTouch ? siTouch : si
@@ -368,7 +420,7 @@ export default function PumaYouthPage() {
                 title={t.hero.title}
                 soundLabel={t.hero.sound}
                 watchLabel={t.hero.watchFull}
-                onWatch={() => setModal(true)}
+                onWatch={() => { setStart(0); setModal(true) }}
                 paused={modal}
               />
             </div>
@@ -399,9 +451,9 @@ export default function PumaYouthPage() {
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <SectionLabel num="02" text={t.story.label} />
             <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4" variants={s} initial="hidden" whileInView="show" viewport={{ once: true }}>
-              {t.story.items.map(({ img, title, text, alt }) => (
+              {t.story.items.map(({ img, loop, at, title, text, alt }) => (
                 <motion.figure key={img} variants={si_} className="m-0" suppressHydrationWarning>
-                  <Still name={img} alt={alt} sizes="(max-width: 768px) 100vw, 400px" />
+                  <StoryTile img={img} loop={loop} alt={alt} label={t.story.watchFrom} onOpen={() => { setStart(at); setModal(true) }} />
                   <figcaption className="mt-4 text-sm leading-relaxed" style={{ color: "rgba(242,230,207,0.7)" }}>
                     <span className="font-bold" style={{ color: SUNSET }}>{title}</span> {text}
                   </figcaption>
@@ -413,15 +465,46 @@ export default function PumaYouthPage() {
 
         {divider}
 
-        {/* ══ 03 ПРОЦЕСС ════════════════════════════════════════════════════ */}
+        {/* ══ 03 1975 / СЕГОДНЯ ═════════════════════════════════════════════ */}
         <section className="px-6 md:px-12 py-20">
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-            <SectionLabel num="03" text={t.process.label} />
+            <SectionLabel num="03" text={t.then.label} />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8">
+              {t.then.pairs.map(pair => (
+                <FadeIn key={pair.a}>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[{ src: pair.a, label: pair.aLabel, alt: pair.aAlt, accent: SAND }, { src: pair.b, label: pair.bLabel, alt: pair.bAlt, accent: SUNSET }].map(f => (
+                      <figure key={f.src} className="m-0 relative overflow-hidden rounded-xl" style={{ aspectRatio: "688 / 768", background: "#ECEAE6" }}>
+                        <Image src={`${MEDIA}/${f.src}.jpg`} alt={f.alt} fill sizes="(max-width: 1024px) 50vw, 300px" quality={82} style={{ objectFit: "cover" }} />
+                        <figcaption className="absolute top-2 left-2 font-mono text-xs font-bold px-2.5 py-1 rounded-full" style={{ background: "rgba(11,10,8,0.78)", color: f.accent }}>{f.label}</figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                  <p className="text-sm leading-relaxed mt-4" style={{ color: "rgba(242,230,207,0.7)", maxWidth: "52ch" }}>{pair.caption}</p>
+                </FadeIn>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {divider}
+
+        {/* ══ 04 ПРОЦЕСС ════════════════════════════════════════════════════ */}
+        <section className="px-6 md:px-12 py-20" style={{ background: "#0E0D0B" }}>
+          <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+            <SectionLabel num="04" text={t.process.label} />
             <motion.ol className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-12 m-0 p-0 list-none" variants={s} initial="hidden" whileInView="show" viewport={{ once: true }}>
               {t.process.steps.map(({ img, title, text, alt }, i) => (
                 // A step without a picture yet becomes a full-width text card
-                <motion.li key={title} variants={si_} className={img ? undefined : "md:col-span-2 p-6 md:p-8 rounded-2xl"} style={img ? undefined : card} suppressHydrationWarning>
-                  {img && <Still name={img} alt={alt} sizes="(max-width: 768px) 100vw, 600px" />}
+                <motion.li
+                  key={title}
+                  variants={si_}
+                  // The odd last step (the DaVinci screen) gets the full row so its UI stays legible
+                  className={!img ? "md:col-span-2 p-6 md:p-8 rounded-2xl" : i === t.process.steps.length - 1 && i % 2 === 0 ? "md:col-span-2" : undefined}
+                  style={img ? undefined : card}
+                  suppressHydrationWarning
+                >
+                  {img && <Still name={img} alt={alt} sizes={i === t.process.steps.length - 1 && i % 2 === 0 ? "(max-width: 1280px) 100vw, 1200px" : "(max-width: 768px) 100vw, 600px"} />}
                   <div className={`flex items-baseline gap-3 mb-2 ${img ? "mt-5" : ""}`}>
                     <span className="font-mono text-xs font-bold" style={{ color: SUNSET }}>0{i + 1}</span>
                     <span className="font-black" style={{ fontSize: "clamp(1.2rem,2vw,1.5rem)", letterSpacing: "-0.03em", color: CREAM }}>{title}</span>
@@ -435,10 +518,10 @@ export default function PumaYouthPage() {
 
         {divider}
 
-        {/* ══ 04 СЛОЖНОСТИ ══════════════════════════════════════════════════ */}
-        <section className="px-6 md:px-12 py-20" style={{ background: "#0E0D0B" }}>
+        {/* ══ 05 СЛОЖНОСТИ ══════════════════════════════════════════════════ */}
+        <section className="px-6 md:px-12 py-20">
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-            <SectionLabel num="04" text={t.challenges.label} />
+            <SectionLabel num="05" text={t.challenges.label} />
             <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-3" variants={s} initial="hidden" whileInView="show" viewport={{ once: true }}>
               {t.challenges.items.map(({ title, text }) => (
                 <motion.div key={title} variants={si_} className="p-6 md:p-7 rounded-2xl" style={card} suppressHydrationWarning>
@@ -454,10 +537,10 @@ export default function PumaYouthPage() {
 
         {divider}
 
-        {/* ══ 05 ДО / ПОСЛЕ ═════════════════════════════════════════════════ */}
-        <section className="px-6 md:px-12 py-20">
+        {/* ══ 06 ДО / ПОСЛЕ ═════════════════════════════════════════════════ */}
+        <section className="px-6 md:px-12 py-20" style={{ background: "#0E0D0B" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-            <SectionLabel num="05" text={t.grade.label} />
+            <SectionLabel num="06" text={t.grade.label} />
             <FadeIn>
               <CompareSlider
                 before={`${MEDIA}/grade_before-1600.jpg`}
@@ -473,15 +556,22 @@ export default function PumaYouthPage() {
 
         {divider}
 
-        {/* ══ 06 ЧТО СДАНО / ИНСТРУМЕНТЫ / СРОК / ПРАВА ═════════════════════ */}
-        <section className="px-6 md:px-12 py-20" style={{ background: "#0E0D0B" }}>
+        {/* ══ 07 ЧТО СДАНО / ИНСТРУМЕНТЫ / СРОК / ПРАВА ═════════════════════ */}
+        <section className="px-6 md:px-12 py-20">
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-            <SectionLabel num="06" text={t.deliverables.label} />
-            <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-14" variants={s} initial="hidden" whileInView="show" viewport={{ once: true }}>
+            <SectionLabel num="07" text={t.deliverables.label} />
+            <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-10" variants={s} initial="hidden" whileInView="show" viewport={{ once: true }}>
               {t.deliverables.items.map(d => (
                 <motion.div key={d} variants={si_} className="p-5 rounded-xl font-semibold text-sm leading-snug" style={{ ...card, color: CREAM }} suppressHydrationWarning>{d}</motion.div>
               ))}
             </motion.div>
+
+            <FadeIn className="mb-14">
+              <div className="font-mono text-xs uppercase tracking-widest mb-4" style={{ color: "rgba(242,230,207,0.62)" }}>{t.deliverables.logos}</div>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                {[1, 2, 3, 4].map(n => <LoopTile key={n} src={`${MEDIA}/logo-${n}.mp4`} label={`${t.deliverables.logos} — ${n}`} />)}
+              </div>
+            </FadeIn>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
               <FadeIn>
@@ -534,7 +624,7 @@ export default function PumaYouthPage() {
 
       </main>
 
-      {modal && <FilmModal src={filmSrc} title={t.hero.title} closeLabel={t.hero.close} onClose={() => setModal(false)} />}
+      {modal && <FilmModal src={filmSrc} start={start} title={t.hero.title} closeLabel={t.hero.close} onClose={() => setModal(false)} />}
     </>
   )
 }
