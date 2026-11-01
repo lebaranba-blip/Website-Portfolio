@@ -405,8 +405,9 @@ export default function PumaYouthPage() {
           <div aria-hidden="true" className="absolute pointer-events-none" style={{ top: "-25%", left: "-10%", width: "70vw", height: "70vh", background: `radial-gradient(ellipse, ${SUNSET}26 0%, transparent 70%)`, filter: "blur(40px)" }} />
           <div aria-hidden="true" className="absolute pointer-events-none" style={{ bottom: "-20%", right: "-10%", width: "60vw", height: "60vh", background: `radial-gradient(ellipse, ${TEAL}33 0%, transparent 70%)`, filter: "blur(40px)" }} />
           <div className="relative" style={{ maxWidth: 1280, margin: "0 auto" }}>
-            <motion.h1 className="font-black leading-[1.02] px-6 md:px-12 mb-8 md:mb-10"
-              style={{ fontSize: "clamp(2.2rem,6.4vw,5.6rem)", letterSpacing: "-0.04em", color: CREAM }}
+            {/* One line at every width: size follows the viewport instead of wrapping */}
+            <motion.h1 className="font-black leading-[1.02] whitespace-nowrap px-6 md:px-12 mb-8 md:mb-10"
+              style={{ fontSize: "clamp(1.2rem,5.6vw,5rem)", letterSpacing: "-0.04em", color: CREAM }}
               initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.9, ease: EASE_DEFAULT }}
               suppressHydrationWarning
