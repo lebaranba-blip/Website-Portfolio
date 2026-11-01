@@ -23,6 +23,16 @@ interface FeaturedItem {
 
 const FEATURED: FeaturedItem[] = [
   {
+    // Title, line and tags come from worksDict.cards so they switch with the language
+    id: "puma-youth",
+    cat: "Spec-реклама · AI-фильм · 2:08",
+    title: "PUMA Suede — «Молодость»",
+    pills: ["Spec", "AI-видео", "Режиссура", "Цветокоррекция"],
+    href: "/works/puma-youth",
+    bg: "linear-gradient(140deg, #1F4A4C 0%, #2E6B6A 45%, #F2A65A 100%)",
+    video: "/works/puma-youth/card-bg.mp4",
+  },
+  {
     id: "gump-donuts",
     cat: "Branding · AI Video · 2026",
     title: "Gump Donuts",
@@ -91,6 +101,8 @@ function FeaturedCard({ p, i, mounted }: { p: typeof FEATURED[0]; i: number; mou
   const inView = useInView(ref, { once: true, margin: "-10% 0px -10% 0px" })
   const [hovered, setHovered] = useState(false)
   const t = useDict(worksDict)
+  const loc = t.cards[p.id]
+  const desc = t.items[p.id]
 
   const show = mounted && inView
 
@@ -176,19 +188,21 @@ function FeaturedCard({ p, i, mounted }: { p: typeof FEATURED[0]; i: number; mou
           {idx}
         </span>
         <div className="relative font-mono text-[10px] font-bold tracking-[0.14em] uppercase mb-5" style={{ color: "rgba(255,255,255,0.3)" }}>
-          {p.cat}
+          {loc?.cat ?? p.cat}
         </div>
         <h3
           className="relative font-black mb-5"
           style={{ fontSize: "clamp(34px,3.2vw,52px)", letterSpacing: "-0.035em", color: "#fff", lineHeight: 1.05 }}
         >
-          {p.title}
+          {loc?.title ?? p.title}
         </h3>
-        <p className="relative mb-8" style={{ fontSize: 16, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, maxWidth: 360 }}>
-          {t.items[p.id]}
-        </p>
+        {desc && (
+          <p className="relative mb-8" style={{ fontSize: 16, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, maxWidth: 360 }}>
+            {desc}
+          </p>
+        )}
         <div className="relative flex flex-wrap gap-2 mb-12">
-          {p.pills.map(t => (
+          {(loc?.pills ?? p.pills).map(t => (
             <span
               key={t}
               className="font-semibold"

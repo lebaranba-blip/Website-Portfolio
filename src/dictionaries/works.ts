@@ -1,3 +1,9 @@
+import { pumaYouthDict } from "@/dictionaries/puma-youth"
+
+// Per-language card title, line and tags for cases whose card text is translated
+type CardText = { title: string; cat: string; pills: readonly string[] }
+const card = (c: { title: string; subtitle: string; tags: readonly string[] }): CardText => ({ title: c.title, cat: c.subtitle, pills: c.tags })
+
 export const worksDict = {
   ru: {
     eyebrow: "— 02 Работы",
@@ -12,6 +18,9 @@ export const worksDict = {
       "ai-avatar": "Консистентный AI-персонаж: «паспорт модели» из 5–6 ракурсов. Решает проблему плывущего лица.",
       "showreel": "Семь коротких историй — диапазон жанров, света и монтажа на AI-генерации.",
     } as Record<string, string>,
+    cards: {
+      "puma-youth": card(pumaYouthDict.ru.card),
+    } as Record<string, CardText>,
   },
   en: {
     eyebrow: "— 02 Work",
@@ -26,5 +35,8 @@ export const worksDict = {
       "ai-avatar": "Consistent AI character: a 5–6 angle “model passport.” Solves the drifting-face problem.",
       "showreel": "Seven short stories — a range of genres, light and editing, all AI-generated.",
     } as Record<string, string>,
+    cards: {
+      "puma-youth": card(pumaYouthDict.en.card),
+    } as Record<string, CardText>,
   },
 } as const
