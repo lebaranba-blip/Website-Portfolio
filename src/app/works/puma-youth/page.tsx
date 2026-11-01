@@ -291,12 +291,10 @@ function CompareSlider({ before, after, beforeLabel, afterLabel, alt }: {
 }
 
 // ─── Still — 16:9 frame through next/image (AVIF/WebP + srcset, lazy) ────────
-function Still({ name, alt, sizes }: { name: string | null; alt: string; sizes: string }) {
+function Still({ name, alt, sizes }: { name: string; alt: string; sizes: string }) {
   return (
     <div className="relative w-full overflow-hidden rounded-xl" style={{ aspectRatio: "16 / 9", background: TEAL_DEEP }}>
-      {name
-        ? <Image src={`${MEDIA}/${name}-1600.jpg`} alt={alt} fill sizes={sizes} quality={82} style={{ objectFit: "cover" }} />
-        : <div className="absolute inset-0 flex items-center justify-center p-4 text-center font-mono text-xs" style={{ color: "rgba(242,230,207,0.5)", border: "1px dashed rgba(242,230,207,0.25)", borderRadius: 12 }}>[process_5 — {alt}]</div>}
+      <Image src={`${MEDIA}/${name}-1600.jpg`} alt={alt} fill sizes={sizes} quality={82} style={{ objectFit: "cover" }} />
     </div>
   )
 }
@@ -421,9 +419,10 @@ export default function PumaYouthPage() {
             <SectionLabel num="03" text={t.process.label} />
             <motion.ol className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-12 m-0 p-0 list-none" variants={s} initial="hidden" whileInView="show" viewport={{ once: true }}>
               {t.process.steps.map(({ img, title, text, alt }, i) => (
-                <motion.li key={title} variants={si_} suppressHydrationWarning>
-                  <Still name={img} alt={alt} sizes="(max-width: 768px) 100vw, 600px" />
-                  <div className="flex items-baseline gap-3 mt-5 mb-2">
+                // A step without a picture yet becomes a full-width text card
+                <motion.li key={title} variants={si_} className={img ? undefined : "md:col-span-2 p-6 md:p-8 rounded-2xl"} style={img ? undefined : card} suppressHydrationWarning>
+                  {img && <Still name={img} alt={alt} sizes="(max-width: 768px) 100vw, 600px" />}
+                  <div className={`flex items-baseline gap-3 mb-2 ${img ? "mt-5" : ""}`}>
                     <span className="font-mono text-xs font-bold" style={{ color: SUNSET }}>0{i + 1}</span>
                     <span className="font-black" style={{ fontSize: "clamp(1.2rem,2vw,1.5rem)", letterSpacing: "-0.03em", color: CREAM }}>{title}</span>
                   </div>

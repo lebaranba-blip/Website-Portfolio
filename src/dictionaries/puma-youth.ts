@@ -33,7 +33,7 @@ export const pumaYouthDict = {
     process: {
       label: "Процесс",
       steps: [
-        { img: "process_1", title: "Раскадровка.", text: "25 кадров с таймингом и репликами до первой генерации.", alt: "Раскадровка ролика из 25 кадров" },
+        { img: "storyboard", title: "Раскадровка.", text: "25 кадров с таймингом и репликами до первой генерации.", alt: "Раскадровка ролика из 25 кадров" },
         { img: "process_2", title: "Персонажи.", text: "Листы лица и одежды для деда, внука и друзей и единый мастер-цвет, чтобы герои и свет не менялись от сцены к сцене.", alt: "Листы персонажей: лица и одежда" },
         { img: "process_3", title: "Локация.", text: "Отдельно собранный барбершоп: три одинаковых кресла, фото на стене, улица Лос-Анджелеса за окном.", alt: "Локация барбершопа" },
         { img: "process_4", title: "Анимация.", text: "Сцены по 8–15 секунд с репликами и движением камеры. Последний кадр каждой сцены становится референсом для следующей, поэтому склейки не видны.", alt: "Кадр из анимированной сцены" },
@@ -120,7 +120,7 @@ export const pumaYouthDict = {
     process: {
       label: "Process",
       steps: [
-        { img: "process_1", title: "Storyboard.", text: "25 frames with timing and dialogue before the first generation.", alt: "25-frame storyboard" },
+        { img: "storyboard", title: "Storyboard.", text: "25 frames with timing and dialogue before the first generation.", alt: "25-frame storyboard" },
         { img: "process_2", title: "Characters.", text: "Face and wardrobe sheets for the grandfather, grandson and friends, plus one master color reference, so characters and light stay the same from scene to scene.", alt: "Character sheets: faces and wardrobe" },
         { img: "process_3", title: "Location.", text: "A purpose-built barbershop: three matching chairs, photos on the wall, an LA street outside.", alt: "Barbershop location" },
         { img: "process_4", title: "Animation.", text: "Scenes of 8–15 seconds with dialogue and camera moves. The last frame of each scene becomes the reference for the next one, so the cuts stay invisible.", alt: "Frame from an animated scene" },
