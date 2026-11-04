@@ -7,7 +7,7 @@ export const pumaYouthDict = {
     },
     card: {
       title: "PUMA Suede — «Молодость»",
-      subtitle: "Spec-реклама · AI-фильм · 2:08",
+      subtitle: "Spec-реклама · AI-фильм · 2:06",
       tags: ["Spec", "AI-видео", "Режиссура", "Цветокоррекция"],
     },
     hero: {
@@ -105,7 +105,7 @@ export const pumaYouthDict = {
     },
     card: {
       title: "PUMA Suede — \"Youth\"",
-      subtitle: "Spec ad · AI film · 2:08",
+      subtitle: "Spec ad · AI film · 2:06",
       tags: ["Spec", "AI video", "Direction", "Color grading"],
     },
     hero: {

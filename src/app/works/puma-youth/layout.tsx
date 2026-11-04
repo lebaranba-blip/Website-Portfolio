@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 
 const TITLE = "PUMA Suede «Молодость» — AI-фильм | Дмитрий Коломиец"
-const DESCRIPTION = "Spec-реклама PUMA Suede: AI-фильм 2:08 о молодости, которая не зависит от возраста. Идея, режиссура, AI-продакшн, монтаж и цвет."
+const DESCRIPTION = "Spec-реклама PUMA Suede: AI-фильм 2:06 о молодости, которая не зависит от возраста. Идея, режиссура, AI-продакшн, монтаж и цвет."
 const OG = "https://www.hopelessblessed.online/works/puma-youth/og.jpg"
 
 export const metadata: Metadata = {

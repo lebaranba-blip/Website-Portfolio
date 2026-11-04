@@ -25,7 +25,7 @@ const FEATURED: FeaturedItem[] = [
   {
     // Title, line and tags come from worksDict.cards so they switch with the language
     id: "puma-youth",
-    cat: "Spec-реклама · AI-фильм · 2:08",
+    cat: "Spec-реклама · AI-фильм · 2:06",
     title: "PUMA Suede — «Молодость»",
     pills: ["Spec", "AI-видео", "Режиссура", "Цветокоррекция"],
     href: "/works/puma-youth",
