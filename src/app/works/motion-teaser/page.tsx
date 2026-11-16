@@ -319,7 +319,7 @@ export default function MotionTeaserPage() {
           {/* DEPTH 0 — background video with parallax */}
           <motion.div className="absolute inset-0" style={{ y: heroVideoY }} suppressHydrationWarning aria-hidden="true">
             <video
-              src="/works/motion-teaser/vivid-gradient.mp4"
+              src="/works/motion-teaser/vivid-gradient-bg.mp4"
               className="absolute inset-0 w-full h-full object-cover"
               style={{ opacity: 0.35, scale: 1.08 }}
               muted loop playsInline autoPlay
@@ -454,7 +454,7 @@ export default function MotionTeaserPage() {
             {/* Two secondary videos */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <VideoPlayer
-                src="/works/motion-teaser/vivid-gradient.mp4"
+                src="/works/motion-teaser/vivid-gradient-web.mp4"
                 label={t.section01.secondaryVideos[0].label}
                 description={t.section01.secondaryVideos[0].description}
                 soundOnLabel={t.video.soundOn}

@@ -30,7 +30,7 @@ export default function AvatarRotator({ images, onOpenLightbox }: Props) {
               alt={img.alt}
               fill
               className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.05]"
-              quality={82}
+              quality={90}
               priority={i === 0}
               draggable={false}
               sizes="(max-width: 640px) 20vw, (max-width: 1024px) 15vw, 200px"

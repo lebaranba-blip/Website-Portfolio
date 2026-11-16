@@ -432,7 +432,7 @@ export default function GumpDonutsPage() {
               transition={{ duration: 16, ease: "easeOut" }}
               suppressHydrationWarning
             >
-              <Image src="/works/gump/freepik_wide-cinematic-shot.-a-pi_2742556639.png" alt="Gump Donuts" fill className="object-cover" priority quality={92} />
+              <Image src="/works/gump/freepik_wide-cinematic-shot.-a-pi_2742556639.png" alt="Gump Donuts" fill sizes="(max-width: 768px) 380vw, 100vw" className="object-cover" priority quality={92} />
             </motion.div>
           </motion.div>
 
@@ -854,7 +854,7 @@ export default function GumpDonutsPage() {
             <div className="mb-6">
               <FadeIn>
                 <div className="rounded-2xl overflow-hidden" style={{ maxHeight: 360 }}>
-                  <Image src="/works/gump/space1.png" alt={t.workflow.spaceAlt} width={1280} height={853} className="w-full h-full object-cover rounded-2xl" style={{ maxHeight: 360 }} quality={92} />
+                  <Image src="/works/gump/space1.png" alt={t.workflow.spaceAlt} width={1280} height={853} sizes="(max-width: 1280px) 100vw, 1200px" className="w-full h-full object-cover rounded-2xl" style={{ maxHeight: 360 }} quality={92} />
                 </div>
               </FadeIn>
             </div>
@@ -914,7 +914,7 @@ export default function GumpDonutsPage() {
                     width={1000}
                     height={1500}
                     className="w-full h-auto block transition-transform duration-700 group-hover:scale-[1.03]"
-                    quality={88}
+                    quality={90}
                     sizes="(max-width: 640px) 100vw, 33vw"
                   />
                 </motion.button>
@@ -975,7 +975,7 @@ export default function GumpDonutsPage() {
                           width={1400}
                           height={933}
                           className="w-full h-auto block transition-transform duration-700 group-hover:scale-[1.02]"
-                          quality={85}
+                          quality={90}
                           sizes={gi === 3 ? "(max-width: 768px) 50vw, 25vw" : "(max-width: 768px) 100vw, 50vw"}
                         />
                       </div>
@@ -1284,7 +1284,7 @@ function GCell({ src, alt, label, col, row, ratio, i, onClick, rowSpan, isTouch 
       <Image
         src={src} alt={alt} fill
         className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
-        quality={85}
+        quality={90}
       />
       {/* Gradient overlay — appears on hover */}
       <div className="absolute inset-0 pointer-events-none transition-opacity duration-300 opacity-0 group-hover:opacity-100"

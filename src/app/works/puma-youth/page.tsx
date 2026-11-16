@@ -161,7 +161,7 @@ function HeroFilm({ lang, small, poster, title, soundLabel, watchLabel, onWatch,
     <div className="relative">
     <div className="relative w-full overflow-hidden md:rounded-2xl" style={{ aspectRatio: "16 / 9", background: "#0B0A08" }}>
       {/* Poster as a real image so it is the LCP element */}
-      <Image src={poster} alt="" fill priority fetchPriority="high" sizes="(max-width: 1280px) 100vw, 1200px" quality={82} style={{ objectFit: "cover" }} onLoad={arm} />
+      <Image src={poster} alt="" fill priority fetchPriority="high" sizes="(max-width: 1280px) 100vw, 1200px" quality={90} style={{ objectFit: "cover" }} onLoad={arm} />
       <video
         ref={ref}
         src={armed ? src : undefined}
@@ -262,9 +262,9 @@ function CompareSlider({ before, after, beforeLabel, afterLabel, alt }: {
       onPointerUp={() => { dragging.current = false }}
       onPointerCancel={() => { dragging.current = false }}
     >
-      <Image src={after} alt={alt} fill sizes="(max-width: 1280px) 100vw, 1200px" quality={82} style={{ objectFit: "cover" }} draggable={false} />
+      <Image src={after} alt={alt} fill sizes="(max-width: 1280px) 100vw, 1200px" quality={90} style={{ objectFit: "cover" }} draggable={false} />
       <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-        <Image src={before} alt="" fill sizes="(max-width: 1280px) 100vw, 1200px" quality={82} style={{ objectFit: "cover" }} draggable={false} />
+        <Image src={before} alt="" fill sizes="(max-width: 1280px) 100vw, 1200px" quality={90} style={{ objectFit: "cover" }} draggable={false} />
       </div>
 
       <span className="absolute top-3 left-3 font-mono text-xs font-bold px-3 py-1.5 rounded-full" style={{ background: "rgba(11,10,8,0.65)", color: CREAM }}>{beforeLabel}</span>
@@ -307,7 +307,7 @@ function StoryTile({ img, loop, alt, label, onOpen }: { img: string; loop: strin
   }, [loop])
   return (
     <button onClick={onOpen} aria-label={`${label}: ${alt}`} className="group relative block w-full overflow-hidden rounded-xl text-left" style={{ aspectRatio: "16 / 9", background: TEAL_DEEP }}>
-      <Image src={`${MEDIA}/${img}-1600.jpg`} alt={alt} fill sizes="(max-width: 768px) 100vw, 400px" quality={82} style={{ objectFit: "cover" }} />
+      <Image src={`${MEDIA}/${img}-1600.jpg`} alt={alt} fill sizes="(max-width: 768px) 100vw, 400px" quality={90} style={{ objectFit: "cover" }} />
       <video
         ref={ref}
         src={`${MEDIA}/${loop}.mp4`}
@@ -345,7 +345,7 @@ function LoopTile({ src, label }: { src: string; label: string }) {
 function Still({ name, alt, sizes }: { name: string; alt: string; sizes: string }) {
   return (
     <div className="relative w-full overflow-hidden rounded-xl" style={{ aspectRatio: "16 / 9", background: TEAL_DEEP }}>
-      <Image src={`${MEDIA}/${name}-1600.jpg`} alt={alt} fill sizes={sizes} quality={82} style={{ objectFit: "cover" }} />
+      <Image src={`${MEDIA}/${name}-1600.jpg`} alt={alt} fill sizes={sizes} quality={90} style={{ objectFit: "cover" }} />
     </div>
   )
 }
@@ -476,7 +476,7 @@ export default function PumaYouthPage() {
                   <div className="grid grid-cols-2 gap-2">
                     {[{ src: pair.a, label: pair.aLabel, alt: pair.aAlt, accent: SAND }, { src: pair.b, label: pair.bLabel, alt: pair.bAlt, accent: SUNSET }].map(f => (
                       <figure key={f.src} className="m-0 relative overflow-hidden rounded-xl" style={{ aspectRatio: "688 / 768", background: "#ECEAE6" }}>
-                        <Image src={`${MEDIA}/${f.src}.jpg`} alt={f.alt} fill sizes="(max-width: 1024px) 50vw, 300px" quality={82} style={{ objectFit: "cover" }} />
+                        <Image src={`${MEDIA}/${f.src}.jpg`} alt={f.alt} fill sizes="(max-width: 1024px) 50vw, 300px" quality={90} style={{ objectFit: "cover" }} />
                         <figcaption className="absolute top-2 left-2 font-mono text-xs font-bold px-2.5 py-1 rounded-full" style={{ background: "rgba(11,10,8,0.78)", color: f.accent }}>{f.label}</figcaption>
                       </figure>
                     ))}

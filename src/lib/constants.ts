@@ -10,7 +10,7 @@ export const CV_EN_URL = "/cv/dmitry-kolomiets-cv-en.pdf"
 export const CV_RU_URL = "/cv/dmitry-kolomiets-cv-ru.pdf"
 export const RATE_CARD_RU_URL = "/rate-card-ru.pdf"
 export const RATE_CARD_EN_URL = "/rate-card-en.pdf"
-export const EMAIL = "lebaranba@gmail.com"
+export const EMAIL = "dmitryaiprod@gmail.com"
 export const TELEGRAM_HANDLE = "@hopeless_blessed"
 export const SITE_DOMAIN = "hopelessblessed.online"
 

@@ -2,7 +2,7 @@
 import { useState, useEffect, useMemo, useRef } from "react"
 import { AnimatePresence, motion, useReducedMotion, useMotionValue, useTransform } from "framer-motion"
 import { usePreloaderDone } from "@/lib/preloader-context"
-import { MenuBar } from "@/components/ui/glow-menu"
+import { TextNav } from "@/components/ui/text-nav"
 import { getNavItems, EASE_DEFAULT } from "@/lib/constants"
 import { useLenis } from "@/lib/lenis-context"
 import { useDict } from "@/lib/language-context"
@@ -39,22 +39,28 @@ function InlineRotator({ texts, interval, active }: { texts: readonly string[]; 
 }
 
 const HERO_REEL = [
-  { src: "/hero/cinema.mp4", depth: 1.2, size: "clamp(200px, 20vw, 320px)", pos: "top-[7%] left-[3%]" },
-  { src: "/hero/blessed.mp4", depth: 2, size: "clamp(220px, 23vw, 350px)", pos: "top-[4%] left-[70%]" },
-  { src: "/hero/westrn.mp4", depth: 3, size: "clamp(220px, 23vw, 350px)", pos: "top-[62%] left-[4%]" },
-  { src: "/hero/midwest.mp4", depth: 1.5, size: "clamp(230px, 24vw, 360px)", pos: "top-[60%] left-[68%]" },
-  { src: "/hero/monstro.mp4", depth: 0.7, size: "clamp(170px, 17vw, 250px)", pos: "top-[38%] left-[1%]" },
-  { src: "/hero/film.mp4", depth: 1.8, size: "clamp(190px, 19vw, 270px)", pos: "top-[32%] left-[78%]" },
+  // left column
+  { src: "/hero/cinema.mp4",   depth: 1.2, size: "clamp(220px, 22vw, 380px)", pos: "top-[7%] left-[3%]" },
+  { src: "/hero/monstro.mp4",  depth: 2.2, size: "clamp(170px, 16vw, 260px)", pos: "top-[38%] left-[2%]" },
+  { src: "/hero/westrn.mp4",   depth: 1.6, size: "clamp(220px, 21vw, 360px)", pos: "top-[64%] left-[5%]" },
+  { src: "/hero/timeline.mp4", depth: 0.9, size: "clamp(150px, 13vw, 220px)", pos: "top-[10%] left-[28%]" },
+  // right column, mirrored
+  { src: "/hero/blessed.mp4",  depth: 1.4, size: "clamp(220px, 22vw, 380px)", pos: "top-[7%] left-[75%]" },
+  { src: "/hero/film.mp4",     depth: 2.4, size: "clamp(170px, 16vw, 260px)", pos: "top-[38%] left-[82%]" },
+  { src: "/hero/midwest.mp4",  depth: 1.8, size: "clamp(220px, 21vw, 360px)", pos: "top-[64%] left-[74%]" },
+  { src: "/hero/video2.mp4",   depth: 1.0, size: "clamp(150px, 13vw, 220px)", pos: "top-[10%] left-[59%]" },
 ] as const
 
-// Phone-sized cuts of the same reel — 480px wide, ~570KB for all four
+// Phone-sized cuts of the same reel — 480px wide
 // Offsets are in px where they have to clear fixed chrome (header, bottom nav)
 // so the scatter survives short phones as well as tall ones.
 const MOBILE_REEL = [
-  { src: "/hero/m/westrn.mp4",  cls: "float-card",     pos: { top: 72,        left: "3vw",  width: "36vw" } },
-  { src: "/hero/m/film.mp4",    cls: "float-card-alt", pos: { top: 98,        right: "3vw", width: "29vw" } },
-  { src: "/hero/m/cinema.mp4",  cls: "float-card-alt", pos: { bottom: 152,    left: "4vw",  width: "30vw" } },
-  { src: "/hero/m/blessed.mp4", cls: "float-card",     pos: { bottom: 110,    right: "3vw", width: "36vw" } },
+  { src: "/hero/m/westrn.mp4",   cls: "float-card",     pos: { top: 72,     left: "3vw",  width: "36vw" } },
+  { src: "/hero/m/film.mp4",     cls: "float-card-alt", pos: { top: 98,     right: "3vw", width: "29vw" } },
+  { src: "/hero/m/timeline.mp4", cls: "float-card-alt", pos: { top: 150,    left: "40vw", width: "26vw" } },
+  { src: "/hero/m/cinema.mp4",   cls: "float-card-alt", pos: { bottom: 152, left: "4vw",  width: "30vw" } },
+  { src: "/hero/m/blessed.mp4",  cls: "float-card",     pos: { bottom: 110, right: "3vw", width: "36vw" } },
+  { src: "/hero/m/video2.mp4",   cls: "float-card",     pos: { bottom: 96,  left: "36vw", width: "26vw" } },
 ] as const
 
 const isMobileDevice = () => typeof window !== "undefined" && (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768)
@@ -218,6 +224,7 @@ export default function HeroSection() {
         <Floating className="z-10" sensitivity={prefersReduced ? 0 : 0.7}>
           {HERO_REEL.map((clip, i) => (
             <FloatingElement key={clip.src} depth={clip.depth} className={clip.pos}>
+              <div className={i % 2 ? "float-card-alt" : "float-card"} style={{ animationDelay: `${-i * 1.3}s` }}>
               <HeroClip
                 className="rounded-xl object-cover block cursor-pointer"
                 style={{
@@ -228,10 +235,11 @@ export default function HeroSection() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={preloaderDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
                 whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.7, delay: 0.5 + i * 0.08, ease: EASE_DEFAULT }}
+                transition={{ duration: 0.7, delay: 0.2 + i * 0.06, ease: EASE_DEFAULT }}
                 src={clip.src}
                 poster={clip.src.replace(".mp4", ".webp")}
               />
+            </div>
             </FloatingElement>
           ))}
         </Floating>
@@ -244,7 +252,7 @@ export default function HeroSection() {
 
         {/* GlowMenu — center, desktop only */}
         <nav aria-label={tc.navAriaLabel} className="hidden md:block">
-          <MenuBar
+          <TextNav
             items={navItems}
             activeItem={activeItem}
             onItemClick={(id, href) => {
@@ -315,11 +323,11 @@ export default function HeroSection() {
           >
             <motion.span
               className="block font-black gradient-text whitespace-nowrap"
-              style={{ fontFamily: "var(--font-display), sans-serif", fontSize: "clamp(1.6rem, 7.4vw, 5.5rem)" }}
+              style={{ fontFamily: "var(--font-display), sans-serif", fontSize: "clamp(1.75rem, 7.6vw, 5.4rem)" }}
               variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}
               initial={skipIntro ? false : "hidden"}
               animate={preloaderDone ? "visible" : "hidden"}
-              transition={{ duration: 1.1, delay: 0.28, ease: EASE_DEFAULT }}
+              transition={{ duration: 0.9, delay: 0.14, ease: EASE_DEFAULT }}
               suppressHydrationWarning
             >
               {t.role.split(" & ").map((part, i) => (
@@ -330,12 +338,12 @@ export default function HeroSection() {
 
           {/* Subline */}
           <motion.div
-            className="text-[15px] md:text-lg font-mono max-w-sm md:max-w-md mb-10 leading-[1.6]"
+            className="text-[16px] md:text-[19px] max-w-sm md:max-w-lg mb-10 leading-[1.55]"
             style={{ color: "var(--text)", opacity: 0.75 }}
             variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 0.75, y: 0 } }}
             initial={skipIntro ? false : "hidden"}
             animate={preloaderDone ? "visible" : "hidden"}
-            transition={{ duration: 0.7, delay: 0.46, ease: EASE_DEFAULT }}
+            transition={{ duration: 0.7, delay: 0.24, ease: EASE_DEFAULT }}
             suppressHydrationWarning
           >
             {t.sublinePrefix}{" "}
@@ -349,7 +357,7 @@ export default function HeroSection() {
             variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
             initial={skipIntro ? false : "hidden"}
             animate={preloaderDone ? "visible" : "hidden"}
-            transition={{ duration: 0.7, delay: 0.6, ease: EASE_DEFAULT }}
+            transition={{ duration: 0.7, delay: 0.32, ease: EASE_DEFAULT }}
             suppressHydrationWarning
           >
             <TelegramButton />
@@ -375,24 +383,6 @@ export default function HeroSection() {
         aria-hidden="true"
       />
 
-      {/* ── SCROLL INDICATOR ── */}
-      <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2.5"
-        aria-hidden="true"
-      >
-        <span
-          className="text-xs font-mono tracking-[0.3em] uppercase font-semibold"
-          style={{ color: "var(--text)", opacity: 0.6 }}
-        >
-          scroll
-        </span>
-        <motion.div
-          className="w-[3px] h-10 rounded-full origin-top"
-          style={{ background: "linear-gradient(to bottom, #fff, transparent)" }}
-          animate={prefersReduced ? {} : { scaleY: [0.4, 1, 0.4], opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-        />
-      </div>
     </section>
   )
 }

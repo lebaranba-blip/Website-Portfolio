@@ -1,6 +1,6 @@
 export const servicesDict = {
   ru: {
-    eyebrow: "— 03 Услуги",
+    eyebrow: "— 04 Услуги",
     heading1: "Услуги",
     heading2: "и цены",
     items: [
@@ -58,7 +58,7 @@ export const servicesDict = {
     downloadPdf: "Скачать прайс (PDF)",
     rateCard: {
       docTitle: "Прайс-лист",
-      role: "AI Director & Visual Artist",
+      role: "AI Artist",
       intro: "Стартовые цены на AI-видео, визуал и лендинги. Полный цикл: сценарий, генерация, монтаж, цвет.",
       note: "Все проекты рассчитываются индивидуально. Указанные цены являются стартовыми и зависят от сложности, сроков и объёма работ.",
       contactsLabel: "Контакты",
@@ -68,7 +68,7 @@ export const servicesDict = {
     },
   },
   en: {
-    eyebrow: "— 03 Services",
+    eyebrow: "— 04 Services",
     heading1: "Services",
     heading2: "& pricing",
     items: [
@@ -126,7 +126,7 @@ export const servicesDict = {
     downloadPdf: "Download Rate Card (PDF)",
     rateCard: {
       docTitle: "Rate Card",
-      role: "AI Director & Visual Artist",
+      role: "AI Artist",
       intro: "Starting rates for AI video, visuals and landing pages. Full cycle: script, generation, edit, color.",
       note: "All projects are quoted individually. Listed prices are starting rates and may vary depending on project scope, complexity and timeline.",
       contactsLabel: "Contacts",

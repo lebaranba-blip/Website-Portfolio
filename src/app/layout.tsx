@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Golos_Text, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import AppShell from "@/components/AppShell";
+import SiteAnalytics from "@/components/SiteAnalytics";
 
 const spaceGrotesk = Golos_Text({
   variable: "--font-space-grotesk",
@@ -25,9 +26,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Дмитрий Коломиец — AI Director & Visual Artist",
+  title: "Дмитрий Коломиец — AI Artist",
   description: "Коммерческое AI-видео и визуал полного цикла: сценарий, промпт-инжиниринг, генерация, монтаж, цвет. Пишите в Telegram.",
-  keywords: ["AI Director", "AI-режиссёр", "AI Visual Artist", "AI видео", "AI Production", "визуал", "брендинг", "портфолио", "Kling", "Veo", "Seedance", "Remotion"],
+  keywords: ["AI Artist", "AI-художник", "AI видео", "AI Production", "визуал", "брендинг", "портфолио", "Kling", "Veo", "Seedance", "Remotion"],
   authors: [{ name: "Дмитрий Коломиец" }],
   creator: "Дмитрий Коломиец",
   metadataBase: new URL("https://www.hopelessblessed.online"),
@@ -35,10 +36,10 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Дмитрий Коломиец — AI Director & Visual Artist",
+    title: "Дмитрий Коломиец — AI Artist",
     description: "Коммерческое AI-видео и визуал полного цикла: сценарий, промпт-инжиниринг, генерация, монтаж, цвет.",
     url: "https://www.hopelessblessed.online",
-    siteName: "Дмитрий Коломиец — AI Director & Visual Artist",
+    siteName: "Дмитрий Коломиец — AI Artist",
     type: "website",
     locale: "ru_RU",
     images: [
@@ -46,13 +47,13 @@ export const metadata: Metadata = {
         url: "/og-banner.jpg",
         width: 1200,
         height: 630,
-        alt: "Дмитрий Коломиец — AI Director & Visual Artist",
+        alt: "Дмитрий Коломиец — AI Artist",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Дмитрий Коломиец — AI Director & Visual Artist",
+    title: "Дмитрий Коломиец — AI Artist",
     description: "Коммерческое AI-видео и визуал полного цикла.",
     images: ["/og-banner.jpg"],
   },
@@ -87,7 +88,7 @@ const jsonLd = {
     "https://www.instagram.com/kolomiets.ai.prod",
     "https://www.threads.net/@kolomiets.ai.prod",
   ],
-  jobTitle: "AI Director & Visual Artist",
+  jobTitle: "AI Artist",
   description: "Коммерческое AI-видео и визуал полного цикла: сценарий, промпт-инжиниринг, генерация, монтаж, цвет.",
   knowsAbout: ["AI Video Production", "Visual Production", "Motion Design", "Branding", "Kling", "Veo", "Seedance", "Remotion", "DaVinci Resolve"],
 };
@@ -110,6 +111,8 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen antialiased">
         <AppShell>{children}</AppShell>
+        <div className="film-grain" aria-hidden="true" />
+        <SiteAnalytics />
       </body>
     </html>
   );

@@ -1,13 +1,12 @@
 "use client"
 import { motion } from "framer-motion"
 import { Download } from "lucide-react"
-import { TELEGRAM_URL, WHATSAPP_URL, INSTAGRAM_URL, THREADS_URL, CV_EN_URL, CV_RU_URL, EASE_DEFAULT } from "@/lib/constants"
+import { TELEGRAM_URL, WHATSAPP_URL, INSTAGRAM_URL, THREADS_URL, CV_EN_URL, CV_RU_URL, EASE_DEFAULT, EMAIL, TELEGRAM_HANDLE } from "@/lib/constants"
 import TelegramButton from "@/components/ui/telegram-button"
 import { useIsTouch } from "@/lib/use-is-touch"
 import { useDict, useLanguage } from "@/lib/language-context"
 import { footerDict } from "@/dictionaries/footer"
 
-const DOTS = ["var(--cyan)", "var(--orange)", "var(--blue)"]
 
 export default function Footer() {
   const year = new Date().getFullYear()
@@ -30,28 +29,7 @@ export default function Footer() {
         }}
       />
 
-      {/* Faded background text — depth element */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 flex items-center justify-end pr-6 md:pr-10 pointer-events-none overflow-hidden"
-        style={{ zIndex: 0 }}
-      >
-        <span
-          className="font-black select-none"
-          style={{
-            fontSize: "clamp(8rem, 22vw, 20rem)",
-            letterSpacing: "-0.06em",
-            lineHeight: "1",
-            color: "var(--text)",
-            opacity: 0.03,
-            whiteSpace: "nowrap",
-          }}
-        >
-          AI Video
-        </span>
-      </div>
-
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="max-w-[1280px] mx-auto relative z-10">
         <motion.div
           className="mb-10"
           variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
@@ -90,61 +68,9 @@ export default function Footer() {
           </p>
         </motion.div>
 
-        {/* Marquee strip — анимированная бегущая строка */}
-        <div
-          className="relative overflow-hidden mb-14 py-3"
-          style={{ boxShadow: "0 -1px 0 0 var(--border), 0 1px 0 0 var(--border)" }}
-          aria-hidden="true"
-        >
-          <div
-            className="marquee-track"
-            style={{
-              display: "flex",
-              width: "max-content",
-              animation: "marquee 28s linear infinite",
-            }}
-          >
-            {[...Array(3)].map((_, ri) => (
-              <div key={ri} style={{ display: "flex" }}>
-                {t.marqueeItems.map((item, i) => (
-                  <span
-                    key={i}
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "0.75rem",
-                      padding: "0 2.5rem",
-                      fontFamily: "var(--font-jetbrains-mono), monospace",
-                      fontSize: "0.7rem",
-                      letterSpacing: "0.18em",
-                      textTransform: "uppercase",
-                      color: "var(--muted)",
-                      opacity: 0.75,
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    <span
-                      style={{
-                        width: 4,
-                        height: 4,
-                        borderRadius: "50%",
-                        background: DOTS[i % 3],
-                        display: "inline-block",
-                        flexShrink: 0,
-                      }}
-                    />
-                    {item}
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
-
-        </div>
-
         {/* CTA — только Telegram */}
         <motion.div
-          className="flex flex-wrap gap-4 mb-20"
+          className="flex flex-wrap items-center gap-4 mb-8"
           variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
           initial={noAnim ? false : "hidden"}
           animate={noAnim ? "visible" : undefined}
@@ -163,6 +89,11 @@ export default function Footer() {
             {t.downloadCV}
           </a>
         </motion.div>
+
+        <div className="flex flex-wrap gap-x-10 gap-y-3 mb-20">
+          <a href={`mailto:${EMAIL}`} className="footer-contact">{EMAIL}</a>
+          <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" className="footer-contact">{TELEGRAM_HANDLE}</a>
+        </div>
 
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-6" style={{ boxShadow: "0 -1px 0 0 var(--border)" }}>
           <p className="text-xs font-mono opacity-65">© {year} {t.copyrightName}</p>

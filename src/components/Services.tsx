@@ -19,7 +19,7 @@ export default function Services() {
     <section
       id="services"
       aria-label={t.heading1}
-      className="py-24 md:py-32 px-6 md:px-10 max-w-7xl mx-auto relative"
+      className="py-24 md:py-32 px-6 md:px-10 max-w-[1280px] mx-auto relative"
     >
       {/* Ambient depth — matches About/Footer glow language */}
       <div
@@ -48,17 +48,10 @@ export default function Services() {
               className="font-black text-[clamp(2.4rem,7.5vw,6.5rem)]"
               style={{ letterSpacing: "-0.04em", color: "var(--text)", lineHeight: "1.0" }}
             >
-              {t.heading1}<br />{t.heading2}
+              {t.heading1}<br /><span className="gradient-text">{t.heading2}</span>
             </h2>
           </TextReveal>
         </div>
-        <span
-          className="hidden md:block font-black leading-none pb-2"
-          style={{ fontSize: "clamp(3rem,6vw,6rem)", color: "var(--text)", opacity: 0.05 }}
-          aria-hidden="true"
-        >
-          03
-        </span>
       </div>
 
       {/* ── Catalog rows ── */}

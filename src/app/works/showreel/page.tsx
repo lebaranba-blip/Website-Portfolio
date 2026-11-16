@@ -150,7 +150,7 @@ function VideoPlayer({ src, label, description, onOpen }: {
   const ref = useRef<HTMLVideoElement>(null)
   const [muted, setMuted] = useState(true)
 
-  // Seven full-length clips live on this page — only stream the ones on screen
+  // Eight full-length clips live on this page — only stream the ones on screen
   useEffect(() => {
     const el = ref.current
     if (!el) return
@@ -273,10 +273,10 @@ function VideoLightbox({ src, label, onClose }: { src: string; label: string; on
 
 // ─── Reel clips ───────────────────────────────────────────────────────────────
 const PAIR_CLIP_SOURCES = [
-  { src: "/works/showreel/cinema.mp4",  key: "roadStory" as const },
   { src: "/works/showreel/blessed.mp4", key: "streetNoir" as const },
-  { src: "/works/showreel/westrn.mp4",  key: "western" as const },
   { src: "/works/showreel/midwest.mp4", key: "ruralAmericana" as const },
+  { src: "/works/showreel/pov.mp4",     key: "pov" as const },
+  { src: "/works/showreel/westrn.mp4",  key: "western" as const },
 ]
 
 // ─── Stack marquee ────────────────────────────────────────────────────────────
@@ -288,7 +288,9 @@ const STACK_SOURCES = [
 ]
 
 function StackMarquee({ items, reducedMotion }: { items: { name: string; sub: string }[]; reducedMotion: boolean }) {
-  const loop = [...items, ...items]
+  // Four copies: half the track is always wider than the screen, so the loop never shows a gap
+  void reducedMotion
+  const loop = [...items, ...items, ...items, ...items]
   return (
     <div
       className="relative overflow-hidden"
@@ -297,13 +299,7 @@ function StackMarquee({ items, reducedMotion }: { items: { name: string; sub: st
         maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
       }}
     >
-      <motion.div
-        className="flex gap-3"
-        style={{ width: "max-content" }}
-        animate={reducedMotion ? undefined : { x: ["0%", "-50%"] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-        suppressHydrationWarning
-      >
+      <div className="stack-marquee flex gap-3" style={{ width: "max-content" }}>
         {loop.map(({ name, sub }, i) => (
           <div
             key={`${name}-${i}`}
@@ -314,7 +310,7 @@ function StackMarquee({ items, reducedMotion }: { items: { name: string; sub: st
             <div className="text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>{sub}</div>
           </div>
         ))}
-      </motion.div>
+      </div>
     </div>
   )
 }
@@ -329,7 +325,10 @@ export default function ShowreelPage() {
   const s = isTouch ? scTouch : sc
   const si_ = isTouch ? siTouch : si
 
-  const pairClips = PAIR_CLIP_SOURCES.map(({ src, key }) => ({ src, ...t.demoReel.clips[key] }))
+  const pairClips = PAIR_CLIP_SOURCES.map(({ src, key }) => ({
+    src,
+    ...(key === "pov" ? { label: t.demoReel.povLabel, description: t.demoReel.povDescription } : t.demoReel.clips[key]),
+  }))
   const stackItems = STACK_SOURCES.map(({ name, subKey }) => ({ name, sub: t.approach[subKey] }))
 
   const openLightbox = useCallback((src: string, label: string) => setLightbox({ src, label }), [])
@@ -472,13 +471,13 @@ export default function ShowreelPage() {
               </p>
             </FadeIn>
 
-            {/* Hook — full width */}
+            {/* Magic School — full width, opens the reel */}
             <div className="mb-6">
               <VideoPlayer
-                src="/works/showreel/film.mp4"
-                label={t.demoReel.hookLabel}
-                description={t.demoReel.hookDescription}
-                onOpen={() => openLightbox("/works/showreel/film.mp4", t.demoReel.hookLabel)}
+                src="/works/showreel/timeline.mp4"
+                label={t.demoReel.magicLabel}
+                description={t.demoReel.magicDescription}
+                onOpen={() => openLightbox("/works/showreel/timeline.mp4", t.demoReel.magicLabel)}
               />
             </div>
 
@@ -499,13 +498,23 @@ export default function ShowreelPage() {
               />
             </div>
 
-            {/* POV — full width */}
+            {/* Cyberpunk — full width, moved down */}
+            <div className="mb-6">
+              <VideoPlayer
+                src="/works/showreel/film.mp4"
+                label={t.demoReel.hookLabel}
+                description={t.demoReel.hookDescription}
+                onOpen={() => openLightbox("/works/showreel/film.mp4", t.demoReel.hookLabel)}
+              />
+            </div>
+
+            {/* Road Story — full width, closes the reel */}
             <div>
               <VideoPlayer
-                src="/works/showreel/pov.mp4"
-                label={t.demoReel.povLabel}
-                description={t.demoReel.povDescription}
-                onOpen={() => openLightbox("/works/showreel/pov.mp4", t.demoReel.povLabel)}
+                src="/works/showreel/cinema.mp4"
+                label={t.demoReel.clips.roadStory.label}
+                description={t.demoReel.clips.roadStory.description}
+                onOpen={() => openLightbox("/works/showreel/cinema.mp4", t.demoReel.clips.roadStory.label)}
               />
             </div>
           </div>

@@ -2,7 +2,7 @@
 import { useEffect, useState, useMemo } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import MagneticWrapper from "@/components/MagneticWrapper"
-import { MenuBar } from "@/components/ui/glow-menu"
+import { TextNav } from "@/components/ui/text-nav"
 import LanguageToggle from "@/components/ui/language-toggle"
 import { TELEGRAM_URL, getNavItems, EASE_DEFAULT } from "@/lib/constants"
 import { useLenis } from "@/lib/lenis-context"
@@ -75,7 +75,7 @@ export default function StickyNav() {
           >
             <div />
 
-            <MenuBar
+            <TextNav
               items={navItems}
               activeItem={activeItem}
               onItemClick={(id, href) => scrollTo(href ?? "", id)}

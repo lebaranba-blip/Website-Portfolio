@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import AvatarRotator from "@/components/AvatarRotator"
+import LazyVideo from "@/components/LazyVideo"
 import { TELEGRAM_URL, EASE_DEFAULT } from "@/lib/constants"
 import LanguageToggle from "@/components/ui/language-toggle"
 import { useIsTouch } from "@/lib/use-is-touch"
@@ -390,12 +391,9 @@ export default function AiAvatarPage() {
             </h2>
           </div>
           <div className="rounded-2xl overflow-hidden" style={{ background: "var(--surface)" }}>
-            <video
-              src="/works/ai-avatar/video.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
+            <LazyVideo
+              src="/works/ai-avatar/card-bg.mp4"
+              poster="/works/ai-avatar/video-poster.webp"
               className="w-full h-auto"
               style={{ display: "block", maxHeight: "80vh" }}
             />
@@ -424,33 +422,33 @@ export default function AiAvatarPage() {
             style={{ gridTemplateColumns: "1.2fr 1fr 1fr", gridTemplateRows: "1fr 1fr", height: 700 }}
           >
             <div className="rounded-2xl overflow-hidden" style={{ gridRow: "1 / 3", background: "var(--surface)" }}>
-              <video src="/works/ai-avatar/ugc/freepik_closeup-portrait-of-woman_2781037723.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover" />
+              <LazyVideo src="/works/ai-avatar/ugc/s/freepik_closeup-portrait-of-woman_2781037723.mp4" className="w-full h-full object-cover" />
             </div>
             <div className="rounded-2xl overflow-hidden" style={{ background: "var(--surface)" }}>
-              <video src="/works/ai-avatar/ugc/freepik_young-woman-with-curly-bl_2781040377.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover" />
+              <LazyVideo src="/works/ai-avatar/ugc/s/freepik_young-woman-with-curly-bl_2781040377.mp4" className="w-full h-full object-cover" />
             </div>
             <div className="rounded-2xl overflow-hidden" style={{ background: "var(--surface)" }}>
-              <video src="/works/ai-avatar/ugc/freepik_extreme-macro-of-lips-lip_2781032383.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover" />
+              <LazyVideo src="/works/ai-avatar/ugc/s/freepik_extreme-macro-of-lips-lip_2781032383.mp4" className="w-full h-full object-cover" />
             </div>
             <div className="rounded-2xl overflow-hidden" style={{ background: "var(--surface)" }}>
-              <video src="/works/ai-avatar/ugc/freepik_young-woman-with-curly-bl_2781042514.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover" />
+              <LazyVideo src="/works/ai-avatar/ugc/s/freepik_young-woman-with-curly-bl_2781042514.mp4" className="w-full h-full object-cover" />
             </div>
             <div className="rounded-2xl overflow-hidden" style={{ background: "var(--surface)" }}>
-              <video src="/works/ai-avatar/ugc/freepik_young-woman-with-curly-bl_2781057141.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover" />
+              <LazyVideo src="/works/ai-avatar/ugc/s/freepik_young-woman-with-curly-bl_2781057141.mp4" className="w-full h-full object-cover" />
             </div>
           </div>
 
           {/* Мобиль: 2 колонки */}
           <div className="grid md:hidden gap-3" style={{ gridTemplateColumns: "1fr 1fr" }}>
             {[
-              "/works/ai-avatar/ugc/freepik_closeup-portrait-of-woman_2781037723.mp4",
-              "/works/ai-avatar/ugc/freepik_young-woman-with-curly-bl_2781040377.mp4",
-              "/works/ai-avatar/ugc/freepik_extreme-macro-of-lips-lip_2781032383.mp4",
-              "/works/ai-avatar/ugc/freepik_young-woman-with-curly-bl_2781042514.mp4",
-              "/works/ai-avatar/ugc/freepik_young-woman-with-curly-bl_2781057141.mp4",
+              "/works/ai-avatar/ugc/s/freepik_closeup-portrait-of-woman_2781037723.mp4",
+              "/works/ai-avatar/ugc/s/freepik_young-woman-with-curly-bl_2781040377.mp4",
+              "/works/ai-avatar/ugc/s/freepik_extreme-macro-of-lips-lip_2781032383.mp4",
+              "/works/ai-avatar/ugc/s/freepik_young-woman-with-curly-bl_2781042514.mp4",
+              "/works/ai-avatar/ugc/s/freepik_young-woman-with-curly-bl_2781057141.mp4",
             ].map((src) => (
               <div key={src} className="rounded-xl overflow-hidden" style={{ aspectRatio: "9/16", background: "var(--surface)" }}>
-                <video src={src} autoPlay muted loop playsInline className="w-full h-full object-cover" />
+                <LazyVideo src={src} className="w-full h-full object-cover" />
               </div>
             ))}
           </div>

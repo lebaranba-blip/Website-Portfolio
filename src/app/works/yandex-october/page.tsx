@@ -426,7 +426,7 @@ export default function YandexOctoberPage() {
                     {[{ src: `${MEDIA}/first-frame.webp`, alt: t.problems.firstFrame }, { src: `${MEDIA}/last-frame.webp`, alt: t.problems.lastFrame }].map(f => (
                       <figure key={f.src} className="m-0">
                         <div className="rounded-xl overflow-hidden relative" style={{ aspectRatio: "3 / 4", background: BLUE }}>
-                          <Image src={f.src} alt={f.alt} fill sizes="(max-width: 768px) 50vw, 240px" quality={78} style={{ objectFit: "cover" }} />
+                          <Image src={f.src} alt={f.alt} fill sizes="(max-width: 768px) 50vw, 240px" quality={90} style={{ objectFit: "cover" }} />
                         </div>
                         <figcaption className="font-mono text-xs mt-2" style={{ color: "rgba(255,255,255,0.35)" }}>{f.alt}</figcaption>
                       </figure>

@@ -319,7 +319,7 @@ export default function ValterPage() {
               {t.character.shots.map(({ src, alt }) => (
                 <motion.figure key={src} variants={si_} className="m-0" suppressHydrationWarning>
                   <div className="rounded-xl overflow-hidden relative" style={{ aspectRatio: "1200 / 670", background: "#fff" }}>
-                    <Image src={`${MEDIA}/${src}.webp`} alt={alt} fill sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 400px" quality={78} style={{ objectFit: "cover" }} />
+                    <Image src={`${MEDIA}/${src}.webp`} alt={alt} fill sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 400px" quality={90} style={{ objectFit: "cover" }} />
                   </div>
                   <figcaption className="font-mono text-xs mt-2" style={{ color: "rgba(255,255,255,0.35)" }}>{alt}</figcaption>
                 </motion.figure>
