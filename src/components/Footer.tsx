@@ -29,7 +29,7 @@ export default function Footer() {
         }}
       />
 
-      <div className="max-w-[1280px] mx-auto relative z-10">
+      <div className="max-w-[1280px] mx-auto relative z-10 md:px-10">
         <motion.div
           className="mb-10"
           variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
@@ -48,16 +48,12 @@ export default function Footer() {
               color: "var(--text)",
               lineHeight: "0.95",
               fontSize: "clamp(2.2rem, 11.5vw, 10.5rem)",
-              width: "100vw",
-              marginLeft: "calc(-1 * (50vw - 50%))",
-              paddingLeft: "calc(50vw - 50% + 1.5rem)",
-              fontFamily: "var(--font-display), sans-serif",
             }}
           >
             {t.heading}
           </h2>
           <p
-            className="font-mono mt-4 opacity-50"
+            className="mt-4 opacity-60"
             style={{
               fontSize: "clamp(0.85rem, 1.5vw, 1.1rem)",
               letterSpacing: "0.01em",
@@ -97,11 +93,11 @@ export default function Footer() {
 
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-6" style={{ boxShadow: "0 -1px 0 0 var(--border)" }}>
           <p className="text-xs font-mono opacity-65">© {year} {t.copyrightName}</p>
-          <div className="flex items-center gap-4">
-            <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="text-xs font-mono opacity-85 hover:opacity-100 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]" style={{ color: "inherit" }}>TG</a>
-            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" aria-label={t.whatsapp} className="text-xs font-mono opacity-85 hover:opacity-100 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]" style={{ color: "inherit" }}>{t.whatsapp}</a>
-            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label={t.instagram} className="text-xs font-mono opacity-85 hover:opacity-100 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]" style={{ color: "inherit" }}>{t.instagram}</a>
-            <a href={THREADS_URL} target="_blank" rel="noopener noreferrer" aria-label={t.threads} className="text-xs font-mono opacity-85 hover:opacity-100 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]" style={{ color: "inherit" }}>{t.threads}</a>
+          <div className="flex flex-wrap items-center gap-x-1 gap-y-1 -mx-3">
+            <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="inline-flex items-center min-h-[44px] px-3 text-xs font-mono opacity-85 hover:opacity-100 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]" style={{ color: "inherit" }}>TG</a>
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" aria-label={t.whatsapp} className="inline-flex items-center min-h-[44px] px-3 text-xs font-mono opacity-85 hover:opacity-100 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]" style={{ color: "inherit" }}>{t.whatsapp}</a>
+            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label={t.instagram} className="inline-flex items-center min-h-[44px] px-3 text-xs font-mono opacity-85 hover:opacity-100 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]" style={{ color: "inherit" }}>{t.instagram}</a>
+            <a href={THREADS_URL} target="_blank" rel="noopener noreferrer" aria-label={t.threads} className="inline-flex items-center min-h-[44px] px-3 text-xs font-mono opacity-85 hover:opacity-100 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cyan)]" style={{ color: "inherit" }}>{t.threads}</a>
           </div>
         </div>
       </div>

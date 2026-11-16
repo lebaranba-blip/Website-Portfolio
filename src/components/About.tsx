@@ -32,7 +32,7 @@ export default function About() {
     <section
       id="about"
       aria-label="Обо мне"
-      className="py-24 md:py-32 px-6 md:px-10 max-w-7xl mx-auto relative"
+      className="py-16 md:py-24 px-6 md:px-10 max-w-7xl mx-auto relative"
     >
       {/* Depth-1 atmosphere */}
       <div
@@ -128,7 +128,7 @@ export default function About() {
             <div className="md:hidden pb-2">
               <h2
                 className="font-black"
-                style={{ fontSize: "clamp(2rem,8vw,3rem)", lineHeight: "0.92", letterSpacing: "-0.04em", color: "var(--text)", fontFamily: "var(--font-display), sans-serif" }}
+                style={{ fontSize: "clamp(2rem,8vw,3rem)", lineHeight: "0.92", letterSpacing: "-0.04em", color: "var(--text)" }}
               >
                 {t.name}
               </h2>
@@ -155,7 +155,7 @@ export default function About() {
           >
             <h2
               className="font-black"
-              style={{ fontSize: "clamp(2.6rem,3.5vw,4rem)", lineHeight: "0.92", letterSpacing: "-0.04em", color: "var(--text)", fontFamily: "var(--font-display), sans-serif" }}
+              style={{ fontSize: "clamp(2.6rem,3.5vw,4rem)", lineHeight: "0.92", letterSpacing: "-0.04em", color: "var(--text)" }}
             >
               {t.name}
             </h2>
@@ -200,7 +200,7 @@ export default function About() {
           >
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 font-mono text-sm tracking-wide transition-opacity hover:opacity-60"
+              className="inline-flex items-center gap-2 min-h-[44px] text-sm font-medium tracking-wide transition-opacity hover:opacity-60"
               style={{ color: "var(--text)" }}
               onClick={(e) => {
                 e.preventDefault()
@@ -248,7 +248,7 @@ export default function About() {
                 whileHover={{ opacity: 1 }}
                 transition={{ duration: 0.25 }}
               />
-              <p className="text-xs md:text-sm font-mono leading-tight relative z-10">{skill}</p>
+              <p className="text-xs md:text-sm font-semibold leading-tight relative z-10">{skill}</p>
             </motion.div>
           ))}
         </div>

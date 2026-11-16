@@ -49,7 +49,7 @@ body {
 }
 
 h1, h2, h3 {
-  font-family: var(--font-display), var(--font-sans), sans-serif;
+  font-family: var(--font-sans), sans-serif;
 }
 
 html, body {
@@ -451,8 +451,9 @@ html, body {
 
 /* ── Process steps ── */
 .process-steps { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border); }
-.process-step { display: grid; grid-template-columns: 2.6rem 1fr; gap: 8px; padding: 26px 0; border-bottom: 1px solid var(--border); transition: padding-left 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-.process-step:hover { padding-left: 10px; }
+.process-step { display: grid; grid-template-columns: 2.6rem 1fr; gap: 8px; padding: 26px 0; border-bottom: 1px solid var(--border); }
+.process-step > * { transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
+.process-step:hover > * { transform: translateX(10px); }
 .process-step > span { padding-top: 7px; }
 
 /* ── Footer contacts ── */
@@ -498,3 +499,19 @@ html, body {
 @keyframes stack-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .stack-marquee { animation: stack-marquee 28s linear infinite; will-change: transform; }
 .stack-marquee:hover { animation-play-state: paused; }
+
+/* ── Headings: one Cyrillic-capable family, calmer tracking than the old -0.04em ── */
+h2 { letter-spacing: -0.03em !important; font-weight: 800 !important; }
+h3 { letter-spacing: -0.02em !important; font-weight: 700 !important; }
+#hero h1 { letter-spacing: -0.035em; }
+.faq-item summary { font-weight: 700; letter-spacing: -0.015em; }
+
+/* ── Phones: every header control is at least 44px tall ── */
+@media (max-width: 767px) {
+  header a, header button, nav a, nav button { min-height: 44px; display: inline-flex; align-items: center; }
+  .footer-contact { display: inline-block; padding: 10px 0 6px; }
+}
+
+/* ── Reveal (useReveal) ── */
+[data-reveal="out"] { opacity: 0; transform: translateY(14px); }
+[data-reveal="in"] { opacity: 1; transform: none; transition: opacity 0.6s ease var(--reveal-d, 0ms), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-d, 0ms); }

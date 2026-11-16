@@ -1,6 +1,6 @@
 export const gumpDict = {
   ru: {
-    nav: { allWorks: "Все работы", write: "Написать" },
+    nav: { allWorks: "Все работы", write: "Обсудить проект" },
     lightbox: { close: "Закрыть", prev: "Предыдущее", next: "Следующее" },
     videoPlayer: { unmute: "Включить звук", mute: "Выключить звук" },
     hero: {
@@ -198,7 +198,7 @@ export const gumpDict = {
     },
   },
   en: {
-    nav: { allWorks: "All work", write: "Message" },
+    nav: { allWorks: "All work", write: "Discuss a project" },
     lightbox: { close: "Close", prev: "Previous", next: "Next" },
     videoPlayer: { unmute: "Unmute", mute: "Mute" },
     hero: {

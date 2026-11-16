@@ -7,7 +7,7 @@ import SiteAnalytics from "@/components/SiteAnalytics";
 const spaceGrotesk = Golos_Text({
   variable: "--font-space-grotesk",
   subsets: ["latin", "cyrillic"],
-  weight: ["400", "500", "600", "700", "900"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 

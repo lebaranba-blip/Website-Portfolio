@@ -1,7 +1,7 @@
 export const showreelDict = {
   ru: {
     nav: { allWorks: "Все работы" },
-    header: { write: "Написать" },
+    header: { write: "Обсудить проект" },
     videoPlayer: { unmute: "Включить звук", mute: "Выключить звук" },
     lightbox: { close: "Закрыть" },
 
@@ -64,7 +64,7 @@ export const showreelDict = {
   },
   en: {
     nav: { allWorks: "All work" },
-    header: { write: "Message" },
+    header: { write: "Discuss a project" },
     videoPlayer: { unmute: "Unmute", mute: "Mute" },
     lightbox: { close: "Close" },
 

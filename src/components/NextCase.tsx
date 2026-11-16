@@ -27,7 +27,7 @@ export default function NextCase() {
       <div className="max-w-[1280px] mx-auto">
         <div className="flex items-center justify-between gap-4 mb-6 px-2">
           <span className="font-mono text-xs tracking-[0.22em] uppercase" style={{ color: "rgba(242,239,233,0.5)" }}>— {l.next}</span>
-          <Link href="/#works" className="font-mono text-xs tracking-[0.12em] uppercase" style={{ color: "rgba(242,239,233,0.6)", textDecoration: "none" }}>← {l.all}</Link>
+          <Link href="/#works" className="inline-flex items-center min-h-[44px] font-mono text-xs tracking-[0.12em] uppercase" style={{ color: "rgba(242,239,233,0.6)", textDecoration: "none" }}>← {l.all}</Link>
         </div>
         <article className="featured-card" style={{ ["--glow" as string]: next.glow }}>
           <Link href={next.href} className="grid grid-cols-1 md:grid-cols-[1.1fr_1fr]" style={{ color: "inherit", textDecoration: "none" }}>

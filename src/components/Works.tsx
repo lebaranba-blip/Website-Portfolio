@@ -204,7 +204,7 @@ export default function Works() {
   const t = useDict(worksDict)
 
   return (
-    <section id="works" className="py-24 md:py-36">
+    <section id="works" className="py-16 md:py-28">
       {/* Header */}
       <div className="flex items-end justify-between mb-12 md:mb-16 px-6 md:px-10 max-w-[1280px] mx-auto">
         <div>
@@ -219,9 +219,6 @@ export default function Works() {
             </h2>
           </TextReveal>
         </div>
-        <span className="hidden md:block font-mono text-xs tracking-[0.2em] pb-4" style={{ color: "var(--muted)" }}>
-          {String(VISIBLE.length).padStart(2, "0")} / {String(VISIBLE.length).padStart(2, "0")}
-        </span>
       </div>
 
       {/* Cards */}

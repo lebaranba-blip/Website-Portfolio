@@ -12,7 +12,6 @@ export default function NotFound() {
           fontSize: "clamp(4rem, 16vw, 10rem)",
           lineHeight: 1,
           letterSpacing: "-0.04em",
-          fontFamily: "var(--font-display), sans-serif",
         }}
       >
         404

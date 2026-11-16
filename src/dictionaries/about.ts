@@ -2,7 +2,7 @@ export const aboutDict = {
   ru: {
     eyebrowLabel: "Обо мне",
     name: "Дмитрий",
-    role: "AI Video · Visual Production",
+    role: "AI Artist · Visual Storyteller",
     bio: [
       "AI Artist. Строю AI-видео и визуал с нуля — сценарий, промпт-инжиниринг, генерация, монтаж, цвет.",
       "Начинал с видеомонтажа, потом веб-дизайн, графика, бренд-айдентика. Два года назад полностью перешёл на AI-продакшн. Самоучка — кино, режиссуру и операторскую работу разбирал по фильмам, не по курсам.",
@@ -21,7 +21,7 @@ export const aboutDict = {
   en: {
     eyebrowLabel: "About",
     name: "Dmitry",
-    role: "AI Video · Visual Production",
+    role: "AI Artist · Visual Storyteller",
     bio: [
       "AI Artist. I build AI video and visuals from scratch — script, prompt engineering, generation, edit, color.",
       "Started in video editing, then web design, graphics, brand identity. Moved fully into AI production two years ago. Self-taught — I studied film, direction, and cinematography from films, not courses.",

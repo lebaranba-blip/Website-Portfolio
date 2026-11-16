@@ -19,7 +19,7 @@ export default function Services() {
     <section
       id="services"
       aria-label={t.heading1}
-      className="py-24 md:py-32 px-6 md:px-10 max-w-[1280px] mx-auto relative"
+      className="py-16 md:py-24 px-6 md:px-10 max-w-[1280px] mx-auto relative"
     >
       {/* Ambient depth — matches About/Footer glow language */}
       <div
@@ -108,7 +108,6 @@ export default function Services() {
                   letterSpacing: "-0.03em",
                   lineHeight: 1.1,
                   color: "var(--text)",
-                  fontFamily: "var(--font-display), sans-serif",
                 }}
               >
                 {item.title}
@@ -123,7 +122,7 @@ export default function Services() {
                 {item.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="font-mono"
+                    className="font-semibold"
                     style={{
                       fontSize: 11,
                       padding: "5px 13px",
@@ -142,12 +141,11 @@ export default function Services() {
             {/* Price + affordance */}
             <div className="relative flex flex-row flex-wrap md:flex-col md:flex-nowrap items-baseline md:items-end justify-between md:justify-start gap-x-4 gap-y-1.5 md:pt-1 md:min-w-[9.5rem]">
               <span
-                className="font-black tabular-nums whitespace-nowrap"
+                className="font-bold tabular-nums whitespace-nowrap"
                 style={{
                   fontSize: "clamp(1.15rem,1.8vw,1.6rem)",
                   letterSpacing: "-0.02em",
                   color: "var(--text)",
-                  fontFamily: "var(--font-display), sans-serif",
                 }}
               >
                 {item.price}

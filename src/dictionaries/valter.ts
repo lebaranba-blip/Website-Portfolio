@@ -2,7 +2,7 @@ export const valterDict = {
   ru: {
     nav: {
       allWorks: "Все работы",
-      write: "Написать",
+      write: "Обсудить проект",
     },
     hero: {
       eyebrow: "AI Video · UGC · 2026",
@@ -114,7 +114,7 @@ export const valterDict = {
   en: {
     nav: {
       allWorks: "All work",
-      write: "Message",
+      write: "Discuss a project",
     },
     hero: {
       eyebrow: "AI Video · UGC · 2026",

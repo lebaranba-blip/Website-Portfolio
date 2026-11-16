@@ -73,7 +73,14 @@ export default function StickyNav() {
             exit={prefersReduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
             transition={{ duration: 0.35, ease: EASE_DEFAULT }}
           >
-            <div />
+            <a
+              href="#hero"
+              className="justify-self-start font-black text-lg tracking-tighter"
+              style={{ color: "var(--text)", textDecoration: "none" }}
+              onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }) }}
+            >
+              DK
+            </a>
 
             <TextNav
               items={navItems}

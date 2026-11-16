@@ -3,7 +3,7 @@ export const pumaYouthDict = {
   ru: {
     nav: {
       allWorks: "Все работы",
-      write: "Написать",
+      write: "Обсудить проект",
     },
     card: {
       title: "PUMA Suede — «Молодость»",
@@ -101,7 +101,7 @@ export const pumaYouthDict = {
   en: {
     nav: {
       allWorks: "All work",
-      write: "Message",
+      write: "Discuss a project",
     },
     card: {
       title: "PUMA Suede — \"Youth\"",

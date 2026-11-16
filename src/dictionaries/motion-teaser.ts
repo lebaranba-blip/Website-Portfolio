@@ -2,7 +2,7 @@ export const motionTeaserDict = {
   ru: {
     nav: {
       allWorks: "Все работы",
-      write: "Написать",
+      write: "Обсудить проект",
     },
     hero: {
       subtitle: "Не таймлайны. Не After Effects. Remotion + TypeScript — код превращается в видео кадр за кадром.",
@@ -123,7 +123,7 @@ export const motionTeaserDict = {
   en: {
     nav: {
       allWorks: "All work",
-      write: "Message",
+      write: "Discuss a project",
     },
     hero: {
       subtitle: "No timelines. No After Effects. Remotion + TypeScript — code becomes video, frame by frame.",

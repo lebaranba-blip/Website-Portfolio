@@ -1,7 +1,7 @@
 export const commonDict = {
   ru: {
     nav: { works: "Работы", services: "Услуги", about: "Обо мне", contact: "Контакт" },
-    write: "Написать",
+    write: "Обсудить проект",
     writeTelegram: "Написать в Telegram",
     discuss: "Обсудить проект",
     allWorks: "Все работы",
@@ -11,7 +11,7 @@ export const commonDict = {
   },
   en: {
     nav: { works: "Work", services: "Services", about: "About", contact: "Contact" },
-    write: "Message",
+    write: "Discuss a project",
     writeTelegram: "Message on Telegram",
     discuss: "Discuss a project",
     allWorks: "All work",

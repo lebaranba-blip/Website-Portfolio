@@ -2,7 +2,7 @@ export const yandexOctoberDict = {
   ru: {
     nav: {
       allWorks: "Все работы",
-      write: "Написать",
+      write: "Обсудить проект",
     },
     hero: {
       eyebrow: "AI Video · Commercial · 2026",
@@ -142,7 +142,7 @@ export const yandexOctoberDict = {
   en: {
     nav: {
       allWorks: "All work",
-      write: "Contact",
+      write: "Discuss a project",
     },
     hero: {
       eyebrow: "AI Video · Commercial · 2026",

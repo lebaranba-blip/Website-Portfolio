@@ -2,15 +2,17 @@
 import TextReveal from "@/components/ui/TextReveal"
 import { useDict } from "@/lib/language-context"
 import { faqDict } from "@/dictionaries/faq"
+import { useReveal } from "@/lib/use-reveal"
 
 /** Renders only the questions that already have an answer; nothing at all until one does. */
 export default function Faq() {
   const t = useDict(faqDict)
+  const listRef = useReveal<HTMLDivElement>()
   const items = t.items.filter((i) => (i.a as string).trim().length > 0)
   if (items.length === 0) return null
 
   return (
-    <section id="faq" aria-label={t.heading} className="py-24 md:py-32 px-6 md:px-10 max-w-[1280px] mx-auto">
+    <section id="faq" aria-label={t.heading} className="py-16 md:py-24 px-6 md:px-10 max-w-[1280px] mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1fr)] gap-x-16 gap-y-10">
         <div>
           <TextReveal>
@@ -24,9 +26,9 @@ export default function Faq() {
             </h2>
           </TextReveal>
         </div>
-        <div className="process-steps">
+        <div ref={listRef} className="process-steps">
           {items.map((i) => (
-            <details key={i.q} className="faq-item">
+            <details key={i.q} className="faq-item" data-reveal>
               <summary>{i.q}</summary>
               <p>{i.a}</p>
             </details>
