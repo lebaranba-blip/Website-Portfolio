@@ -174,7 +174,7 @@ function VideoPlayer({ src, label, description, onOpen }: {
         <div className="relative cursor-pointer" onClick={onOpen}>
           <video
             ref={ref}
-            src={src}
+            src={src.replace(".mp4", "-preview.mp4")}
             poster={src.replace(".mp4", ".webp")}
             preload="metadata"
             className="w-full h-auto"
@@ -399,7 +399,7 @@ export default function ShowreelPage() {
                 <span className="font-mono text-xs uppercase tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.4)" }}>{t.hero.eyebrow}</span>
               </motion.div>
 
-              <div aria-label="Skills Reel">
+              <h1 aria-label="Skills Reel" style={{ fontFamily: "inherit" }}>
                 <motion.div
                   className="font-black leading-none text-white"
                   style={{ fontSize: "clamp(4rem,10vw,9rem)", letterSpacing: "-0.04em" }}
@@ -414,7 +414,7 @@ export default function ShowreelPage() {
                   transition={{ delay: 0.5, duration: 1.0, ease: EASE_DEFAULT }}
                   suppressHydrationWarning
                 >{t.hero.headingLine2}</motion.div>
-              </div>
+              </h1>
 
               <motion.p className="text-base md:text-lg leading-relaxed mt-6 mb-10"
                 style={{ color: "rgba(255,255,255,0.5)", maxWidth: "44ch" }}

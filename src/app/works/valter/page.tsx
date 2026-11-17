@@ -396,9 +396,10 @@ export default function ValterPage() {
                 </div>
               </FadeIn>
               <FadeIn delay={0.15}>
-                {/* Checkerboard reads as "transparent background" */}
-                <div className="rounded-2xl overflow-hidden mx-auto" style={{ maxWidth: 360, border: "1px solid rgba(255,255,255,0.08)", backgroundColor: "#1a1a1a", backgroundImage: "linear-gradient(45deg,#232323 25%,transparent 25%),linear-gradient(-45deg,#232323 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#232323 75%),linear-gradient(-45deg,transparent 75%,#232323 75%)", backgroundSize: "24px 24px", backgroundPosition: "0 0,0 12px,12px -12px,-12px 0" }}>
-                  <LazyVideo src={`${MEDIA}/lower-third.webm`} className="block w-full h-auto" style={{ aspectRatio: "9 / 16" }} label={t.motion.caption} />
+                {/* The transparent plate composited over a real scene from the ad
+                    (baked into one mp4: Safari can't play WebM alpha) */}
+                <div className="rounded-2xl overflow-hidden mx-auto" style={{ maxWidth: 360, border: "1px solid rgba(255,255,255,0.08)", background: "#1a1a1a" }}>
+                  <LazyVideo src={`${MEDIA}/lower-third-demo.mp4`} poster={`${MEDIA}/lower-third-demo.webp`} className="block w-full h-auto" style={{ aspectRatio: "9 / 16" }} label={t.motion.caption} />
                 </div>
                 <div className="font-mono text-xs mt-3 text-center" style={{ color: "rgba(255,255,255,0.35)" }}>{t.motion.caption}</div>
               </FadeIn>

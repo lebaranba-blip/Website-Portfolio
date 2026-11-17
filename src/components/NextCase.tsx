@@ -7,8 +7,8 @@ import { VISIBLE } from "@/components/Works"
 import LazyVideo from "@/components/LazyVideo"
 
 const LABELS = {
-  ru: { next: "Следующий кейс", all: "Все работы" },
-  en: { next: "Next case", all: "All work" },
+  ru: { next: "Следующий кейс" },
+  en: { next: "Next case" },
 } as const
 
 /** Footer of every case page: the next case and a way to get in touch */
@@ -25,9 +25,8 @@ export default function NextCase() {
   return (
     <section aria-label={l.next} className="px-4 md:px-10 pt-6 pb-28 md:pb-20" style={{ background: "var(--bg)" }}>
       <div className="max-w-[1280px] mx-auto">
-        <div className="flex items-center justify-between gap-4 mb-6 px-2">
+        <div className="flex items-center min-h-[44px] mb-6 px-2">
           <span className="font-mono text-xs tracking-[0.22em] uppercase" style={{ color: "rgba(242,239,233,0.5)" }}>— {l.next}</span>
-          <Link href="/#works" className="inline-flex items-center min-h-[44px] font-mono text-xs tracking-[0.12em] uppercase" style={{ color: "rgba(242,239,233,0.6)", textDecoration: "none" }}>← {l.all}</Link>
         </div>
         <article className="featured-card" style={{ ["--glow" as string]: next.glow }}>
           <Link href={next.href} className="grid grid-cols-1 md:grid-cols-[1.1fr_1fr]" style={{ color: "inherit", textDecoration: "none" }}>

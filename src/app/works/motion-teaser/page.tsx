@@ -368,7 +368,7 @@ export default function MotionTeaserPage() {
               </motion.div>
 
               {/* H1 — split entrance */}
-              <div aria-label="Motion Design">
+              <h1 aria-label="Motion Design" style={{ fontFamily: "inherit" }}>
                 <motion.div
                   className="font-black leading-none text-white"
                   style={{ fontSize: "clamp(4rem,10vw,9rem)", letterSpacing: "-0.04em" }}
@@ -383,7 +383,7 @@ export default function MotionTeaserPage() {
                   transition={{ delay: 0.5, duration: 1.0, ease: EASE_DEFAULT }}
                   suppressHydrationWarning
                 >DESIGN</motion.div>
-              </div>
+              </h1>
 
               {/* Subtitle */}
               <motion.p className="text-base md:text-lg leading-relaxed mt-6 mb-10"

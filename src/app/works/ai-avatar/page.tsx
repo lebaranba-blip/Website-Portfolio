@@ -200,7 +200,6 @@ export default function AiAvatarPage() {
   const [lightbox, setLightbox] = useState<number | null>(null)
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
-  const isTouch = useIsTouch()
 
   const ROTATOR_IMAGES = getRotatorImages(t)
   const GALLERY = getGallery(t)
@@ -222,7 +221,7 @@ export default function AiAvatarPage() {
       >
         <Link
           href="/#works"
-          className="inline-flex items-center gap-2 text-sm font-mono transition-opacity hover:opacity-60"
+          className="inline-flex items-center gap-2 text-sm font-mono whitespace-nowrap transition-opacity hover:opacity-60"
           style={{ color: "var(--muted)" }}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -232,7 +231,7 @@ export default function AiAvatarPage() {
         </Link>
         <div className="flex items-center gap-3">
           <LanguageToggle dark />
-          <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" className="btn-primary text-xs px-5 py-2.5">
+          <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" className="btn-primary text-xs px-5 py-2.5 whitespace-nowrap">
             {tc.write}
           </a>
         </div>
@@ -240,31 +239,32 @@ export default function AiAvatarPage() {
 
       <main style={{ background: "var(--bg)", minHeight: "100vh" }}>
 
-        {/* ── Hero ── */}
-        <FadeSection
-          className="px-6 md:px-12 max-w-6xl mx-auto"
-          style={{ paddingTop: "100px", paddingBottom: "80px" } as React.CSSProperties}
-        >
-          {/* Мобиль: текст сверху, фото снизу. Десктоп: фото слева, текст справа */}
-          <div className="flex flex-col-reverse md:flex-row gap-10 md:gap-16 items-center">
-            {/* Hero image */}
-            <GlowCard
-              className="w-full rounded-2xl overflow-hidden flex-shrink-0 cursor-pointer"
-              style={{ aspectRatio: "3/4", background: "var(--surface)", maxWidth: 400 }}
-              onClick={() => openLightbox(6)}
-            >
-              <Image
-                src="/works/ai-avatar/outfit-full.png"
-                alt={t.hero.heroImageAlt}
-                width={480}
-                height={640}
-                className="w-full h-full object-cover object-top"
-                priority
-                quality={92}
-              />
-            </GlowCard>
+        {/* ── Hero: full-bleed editorial frame, like the other cases ── */}
+        <section className="relative w-full overflow-hidden" style={{ minHeight: "min(100svh, 980px)" }}>
+          <motion.div
+            className="absolute inset-0"
+            initial={{ scale: 1.08 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.6, ease: EASE_DEFAULT }}
+            suppressHydrationWarning
+          >
+            <Image
+              src="/works/ai-avatar/banner.png"
+              alt={t.hero.heroImageAlt}
+              fill
+              sizes="100vw"
+              className="object-cover"
+              style={{ objectPosition: "72% 30%" }}
+              priority
+              quality={82}
+            />
+          </motion.div>
+          <div className="absolute inset-0 pointer-events-none hidden md:block" style={{ background: "linear-gradient(to right, rgba(11,11,13,0.92) 0%, rgba(11,11,13,0.55) 38%, rgba(11,11,13,0) 62%)" }} aria-hidden="true" />
+          <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(to top, rgba(11,11,13,0.96) 0%, rgba(11,11,13,0.6) 30%, rgba(11,11,13,0) 58%)" }} aria-hidden="true" />
+          <div className="absolute inset-0 pointer-events-none md:hidden" style={{ background: "linear-gradient(to top, rgba(11,11,13,0.9) 0%, rgba(11,11,13,0.55) 38%, rgba(11,11,13,0) 62%)" }} aria-hidden="true" />
 
-            <div className="flex-1 flex flex-col justify-center">
+          <div className="relative flex items-end px-6 md:px-12 max-w-6xl mx-auto" style={{ minHeight: "min(100svh, 980px)", paddingTop: 100, paddingBottom: "clamp(3rem,6vw,5rem)" }}>
+            <div className="flex flex-col justify-end max-w-xl">
               <motion.span
                 className="text-xs font-mono uppercase tracking-widest mb-4 block"
                 style={{ color: "var(--muted)" }}
@@ -287,7 +287,7 @@ export default function AiAvatarPage() {
               </motion.h1>
               <motion.p
                 className="text-base md:text-xl leading-relaxed"
-                style={{ color: "var(--muted)" }}
+                style={{ color: "rgba(255,255,255,0.72)" }}
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25, duration: 0.6, ease: EASE_DEFAULT }}
@@ -297,11 +297,7 @@ export default function AiAvatarPage() {
               </motion.p>
             </div>
           </div>
-        </FadeSection>
-
-        <div className="px-6 md:px-12 max-w-6xl mx-auto">
-          <div style={{ height: 1, background: "rgba(255,255,255,0.07)" }} />
-        </div>
+        </section>
 
         {/* ── 360° Showcase ── */}
         <FadeSection className="px-6 md:px-12 max-w-6xl mx-auto py-20">
@@ -460,6 +456,12 @@ export default function AiAvatarPage() {
 
         {/* ── О проекте ── */}
         <FadeSection className="px-6 md:px-12 max-w-6xl mx-auto py-20">
+          <div className="mb-12">
+            <span className="text-xs font-mono uppercase tracking-widest mb-3 block" style={{ color: "var(--muted)" }}>{t.about.eyebrow}</span>
+            <h2 className="font-black leading-none" style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", letterSpacing: "-0.04em", color: "var(--text)" }}>
+              {t.about.heading}
+            </h2>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {

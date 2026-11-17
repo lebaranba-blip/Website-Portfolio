@@ -1,9 +1,11 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Valter · Хук на автобане — Дмитрий",
-  description: "UGC-ролик для рынка Великобритании: AI-герой с character sheet, сцены в Seedance 2.5, lower third на Remotion.",  openGraph: {
-    title: "Valter · Хук на автобане",
+  title: "Valter · Хук на автобане — UGC-ролик | Дмитрий Коломиец",
+  alternates: { canonical: "/works/valter" },
+  description: "UGC-ролик для рынка Великобритании: AI-герой с character sheet, сцены в Seedance 2.5, lower third на Remotion.",
+  openGraph: {
+    title: "Valter · Хук на автобане — UGC-ролик | Дмитрий Коломиец",
     description: "Вертикальный UGC-ролик на 45 секунд. Персонаж, сценарий, генерация и моушн — без съёмок.",
     type: "website",
     images: [

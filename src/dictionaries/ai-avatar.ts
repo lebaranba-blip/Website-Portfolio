@@ -52,6 +52,8 @@ export const aiAvatarDict = {
       description: "AI-модель в роли UGC-креатора — нативные видео для соцсетей без съёмок.",
     },
     about: {
+      eyebrow: "— 05",
+      heading: "О проекте",
       task: {
         title: "Задача",
         description:
@@ -129,6 +131,8 @@ export const aiAvatarDict = {
       description: "The AI model as a UGC creator — native social videos with no shoot.",
     },
     about: {
+      eyebrow: "— 05",
+      heading: "About the project",
       task: {
         title: "Task",
         description:

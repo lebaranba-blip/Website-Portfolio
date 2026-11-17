@@ -1,10 +1,11 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Motion Teaser — Дмитрий",
+  title: "Motion Teaser — моушн-дизайн на коде | Дмитрий Коломиец",
+  alternates: { canonical: "/works/motion-teaser" },
   description: "Motion design на коде. Remotion + TypeScript. Три видео от концепции до HQ рендера.",
   openGraph: {
-    title: "Motion Teaser",
+    title: "Motion Teaser — моушн-дизайн на коде | Дмитрий Коломиец",
     description: "Motion design на коде. Remotion + TypeScript.",
     type: "website",
     images: [
