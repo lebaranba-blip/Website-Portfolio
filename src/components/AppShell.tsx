@@ -3,6 +3,8 @@ import { useState, useEffect } from "react"
 import SmoothScroll from "@/components/SmoothScroll"
 import CustomCursor from "@/components/CustomCursor"
 import ScrollProgress from "@/components/ScrollProgress"
+import Ambience from "@/components/Ambience"
+import PageTransition from "@/components/PageTransition"
 import { PreloaderContext } from "@/lib/preloader-context"
 import { LanguageProvider } from "@/lib/language-context"
 
@@ -18,6 +20,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     <LanguageProvider>
       <PreloaderContext.Provider value={preloaderDone}>
         <SmoothScroll>
+          <Ambience />
+          <PageTransition />
           {mounted && preloaderDone && (
             <>
               <ScrollProgress />

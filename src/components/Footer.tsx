@@ -3,6 +3,7 @@ import { motion } from "framer-motion"
 import { Download } from "lucide-react"
 import { TELEGRAM_URL, WHATSAPP_URL, INSTAGRAM_URL, THREADS_URL, CV_EN_URL, CV_RU_URL, EASE_DEFAULT, EMAIL, TELEGRAM_HANDLE } from "@/lib/constants"
 import TelegramButton from "@/components/ui/telegram-button"
+import AssembleText from "@/components/ui/AssembleText"
 import { useIsTouch } from "@/lib/use-is-touch"
 import { useDict, useLanguage } from "@/lib/language-context"
 import { footerDict } from "@/dictionaries/footer"
@@ -17,7 +18,7 @@ export default function Footer() {
   const cvUrl = lang === "ru" ? CV_RU_URL : CV_EN_URL
 
   return (
-    <footer id="contact" className="relative pt-24 pb-10 px-6 md:px-10 overflow-x-hidden" style={{ boxShadow: "-1px 0 0 0 var(--border), 0 -1px 0 0 var(--border)" }}>
+    <footer id="contact" className="relative pt-24 pb-28 md:pb-10 px-6 md:px-10 overflow-x-hidden" style={{ boxShadow: "-1px 0 0 0 var(--border), 0 -1px 0 0 var(--border)" }}>
       <div
         aria-hidden="true"
         className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full pointer-events-none"
@@ -50,7 +51,7 @@ export default function Footer() {
               fontSize: "clamp(2.2rem, 11.5vw, 10.5rem)",
             }}
           >
-            {t.heading}
+            <AssembleText text={t.heading} />
           </h2>
           <p
             className="mt-4 opacity-60"

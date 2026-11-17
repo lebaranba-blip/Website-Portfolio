@@ -515,3 +515,13 @@ h3 { letter-spacing: -0.02em !important; font-weight: 700 !important; }
 /* ── Reveal (useReveal) ── */
 [data-reveal="out"] { opacity: 0; transform: translateY(14px); }
 [data-reveal="in"] { opacity: 1; transform: none; transition: opacity 0.6s ease var(--reveal-d, 0ms), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-d, 0ms); }
+
+/* ── Ambience: drifting light leaks behind the page ── */
+.ambience { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.amb { position: absolute; width: 80vmax; height: 80vmax; border-radius: 50%; transition: opacity 1.8s ease; will-change: transform, opacity; }
+.amb-cyan   { top: -35vmax; left: -30vmax; background: radial-gradient(circle, rgba(8,145,178,0.20) 0%, rgba(8,145,178,0.06) 38%, transparent 66%); animation: amb-a 28s ease-in-out infinite alternate; }
+.amb-orange { bottom: -40vmax; right: -30vmax; background: radial-gradient(circle, rgba(234,88,12,0.15) 0%, rgba(234,88,12,0.05) 38%, transparent 66%); animation: amb-b 34s ease-in-out infinite alternate; }
+.amb-blue   { top: 10vh; left: 20vw; background: radial-gradient(circle, rgba(29,78,216,0.17) 0%, rgba(29,78,216,0.05) 38%, transparent 66%); animation: amb-c 40s ease-in-out infinite alternate; }
+@keyframes amb-a { to { transform: translate3d(28vw, 22vh, 0) scale(1.15); } }
+@keyframes amb-b { to { transform: translate3d(-30vw, -18vh, 0) scale(0.9); } }
+@keyframes amb-c { to { transform: translate3d(-22vw, 30vh, 0) scale(1.2); } }

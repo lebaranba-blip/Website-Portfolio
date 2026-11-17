@@ -157,6 +157,8 @@ export default function HeroSection() {
   const scrollY = useMotionValue(0)
   const contentY = useTransform(scrollY, [0, 600], [0, prefersReduced ? 0 : -60])
   const contentOpacity = useTransform(scrollY, [0, 350], [1, 0])
+  const wallScale = useTransform(scrollY, [0, 700], [1, 1.45])
+  const wallOpacity = useTransform(scrollY, [0, 650], [1, 0])
 
   useEffect(() => {
     if (prefersReduced) return
@@ -190,6 +192,7 @@ export default function HeroSection() {
       />
 
       {/* ── Scattered video wall — mobile: fixed scatter, gentle float ── */}
+      <motion.div className="absolute inset-0 z-0 pointer-events-none" style={{ scale: wallScale, opacity: wallOpacity }}>
       {device === "mobile" && (
         <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
           {MOBILE_REEL.map((clip, i) => (
@@ -219,8 +222,11 @@ export default function HeroSection() {
         </div>
       )}
 
+      </motion.div>
+
       {/* ── Scattered video wall — desktop only, mouse parallax ── */}
       {device === "desktop" && (
+        <motion.div className="absolute inset-0 z-10" style={{ scale: wallScale, opacity: wallOpacity }}>
         <Floating className="z-10" sensitivity={prefersReduced ? 0 : 0.7}>
           {HERO_REEL.map((clip, i) => (
             <FloatingElement key={clip.src} depth={clip.depth} className={clip.pos}>
@@ -243,6 +249,7 @@ export default function HeroSection() {
             </FloatingElement>
           ))}
         </Floating>
+        </motion.div>
       )}
 
       {/* ── HEADER ── */}

@@ -1,6 +1,7 @@
 "use client"
 import Link from "next/link"
-import { useInView } from "framer-motion"
+import { motion, useInView, useScroll, useTransform } from "framer-motion"
+import { useReducedSafe } from "@/lib/use-reduced"
 import { useRef, useState, useEffect } from "react"
 import TextReveal from "@/components/ui/TextReveal"
 import { useDict } from "@/lib/language-context"
@@ -118,6 +119,11 @@ function FeaturedCard({ p, i }: { p: FeaturedItem; i: number }) {
   // Fetch the loop a little before the card arrives, play it only while on screen
   const near = useInView(ref, { once: true, margin: "40% 0px 40% 0px" })
   const onScreen = useInView(ref, { amount: 0.25 })
+  const reduced = useReducedSafe()
+  const { scrollYProgress: gate } = useScroll({ target: ref, offset: ["start end", "start 30%"] })
+  const gateClip = useTransform(gate, [0, 1], ["inset(10% 8% 10% 8% round 26px)", "inset(0% 0% 0% 0% round 0px)"])
+  const gateScale = useTransform(gate, [0, 1], [1.22, 1])
+  const gateY = useTransform(gate, [0, 1], ["-6%", "0%"])
   const [ready, setReady] = useState(false)
   const t = useDict(worksDict)
   const loc = t.cards[p.id]
@@ -149,7 +155,8 @@ function FeaturedCard({ p, i }: { p: FeaturedItem; i: number }) {
       <span className="featured-spot" aria-hidden="true" />
       <Link href={p.href} className={"grid grid-cols-1 h-full " + (flip ? "md:grid-cols-[1fr_1.1fr]" : "md:grid-cols-[1.1fr_1fr]")} style={{ color: "inherit", textDecoration: "none" }}>
         {/* Visual */}
-        <div className={"featured-visual relative overflow-hidden" + (flip ? " md:order-2" : "")} style={{ background: p.bg }}>
+        <motion.div className={"featured-visual relative overflow-hidden" + (flip ? " md:order-2" : "")} style={{ background: p.bg, clipPath: reduced ? "none" : gateClip }}>
+          <motion.div className="absolute inset-0" style={reduced ? { scale: 1, y: 0 } : { scale: gateScale, y: gateY }}>
           {p.poster && (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={p.poster} srcSet={p.poster ? `${p.poster.replace(".webp", "-760.webp")} 760w, ${p.poster} 1300w` : undefined} sizes="(max-width: 768px) 100vw, 52vw" alt="" loading="lazy" decoding="async" className="featured-media absolute inset-0 w-full h-full" style={{ objectFit: "cover" }} />
@@ -168,8 +175,9 @@ function FeaturedCard({ p, i }: { p: FeaturedItem; i: number }) {
               aria-hidden="true"
             />
           )}
+          </motion.div>
           <span className="featured-idx font-mono" aria-hidden="true">{idx}</span>
-        </div>
+        </motion.div>
 
         {/* Info */}
         <div className="relative flex flex-col justify-center" style={{ padding: "clamp(28px,4vw,64px) clamp(24px,3.6vw,60px)" }}>
